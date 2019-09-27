@@ -35,44 +35,6 @@
 
                     $url=SERVERURL."dashboard/";
 
-					/*$query1=mainModel::execute_single_query("SELECT BinnacleId FROM binnacle");
-					$correlative=($query1->rowCount())+1;
-
-					$bCode=mainModel::generate_code("BC",7,$correlative);
-
-					$dataBit=[
-						"BinnacleCode"=>$bCode,
-						"BinnacleDate"=>$dateNow,
-						"BinnacleStartTime"=>$timeNow,
-						"BinnacleEndTime"=>"Sin registro",
-						"BinnacleType"=>$row['AccountType'],
-						"YearCode"=>$yearNow,
-						"AccountCode"=>$row['AccountCode']
-					];
-
-					if(mainModel::save_binnacle($dataBit)){
-                    session_start(['name'=>'SRCE']);
-                    $_SESSION['user_name_srce']=$row['AccountUserName'];
-                    $_SESSION['user_type_srce']=$row['AccountType'];
-                    $_SESSION['user_privilege_srce']=$row['AccountPrivilege'];
-                    $_SESSION['user_photo_srce']=$row['AccountPhoto'];
-                    $_SESSION['user_token_srce']=md5(uniqid(mt_rand(), true));
-                    $_SESSION['account_code_srce']=$row['AccountCode'];
-                    $_SESSION['binnacle_code_srce']=$bCode;
-
-                    if($row['AccountType']=="Administrador"){
-                        $url=SERVERURL."dashboard/";
-                    }
-                    return $urlLocation='<script type="text/javascript"> window.location="'.$url.'"; </script>';
-                }else{
-                        $dataAlert=[
-                            "Title"=>"Ocurrió un error inesperado",
-                            "Text"=>"No hemos podido iniciar la sesión por problemas técnicos, por favor intente nuevamente",
-                            "Type"=>"error",
-                            "Alert"=>"single"
-                        ];
-                        return mainModel::sweet_alert($dataAlert);
-                    }*/
 				}else{
 					$dataAlert=[
 						"Title"=>"Ocurrió un error inesperado",

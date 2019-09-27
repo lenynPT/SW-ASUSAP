@@ -6,6 +6,44 @@
 	}
 	class adminController extends adminModel{
 
+
+        public function guardarUsuarioController(){
+            if (isset($_POST["nameUser"])){
+
+                $query3=mainModel::execute_single_query("SELECT telefono FROM asociado");
+                $correlative=($query3->rowCount())+1;
+                $code=mainModel::generate_code("AC",7,$correlative);
+
+                    $datosController = array(
+                        "idsociado" => $code,
+                        "dni" => $_POST["dniUser"],
+                        "direccion" => $_POST["direUser"],
+                        "nombre" => $_POST["nameUser"],
+                        "apellido" => $_POST["apellUser"],
+                        "telefono" => $_POST["telefUser"],
+                        "estado" => $_POST["estadoUser"]
+                    );
+                    $respuesta = adminModel::guardarUsuario($datosController);
+                    echo '<script>
+                    swal({
+                          title: "¡OK!",
+                          text: "¡Usuario ha sido creado correctamente!",
+                          type: "success",
+                          confirmButtonText: "Cerrar",
+                          closeOnConfirm: false
+                    },
+                    function(isConfirm){
+                             if (isConfirm) {	   
+                                window.location = "newaasociat";
+                              } 
+                    });
+                    </script>';
+
+
+            }
+
+        }
+
 		/*----------  Función para guardar admin - Function to save admin  ----------*/
 		/*public function add_admin_controller(){
 

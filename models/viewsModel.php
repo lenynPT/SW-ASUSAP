@@ -1,7 +1,7 @@
 <?php
 	class viewsModel{
 		public function getViewsModel($views){
-			$WhiteList=["dashboard","period","periodlist","subject","section","salon","admin","adminlist","adminsearch","teacher","student","representative","registration","payments","institution","year","yearlist","myaccount","mydata"];
+			$WhiteList=["dashboard","newaasociat","period","periodlist","subject","section","salon","admin","adminlist","adminsearch","teacher","student","representative","registration","payments","institution","year","yearlist","myaccount","mydata"];
 			if(in_array($views, $WhiteList)){
 				if(is_file("./views/modules/".$views."-view.php")){
 					$contents="./views/modules/".$views."-view.php";

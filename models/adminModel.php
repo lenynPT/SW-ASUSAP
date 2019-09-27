@@ -27,4 +27,21 @@
 			return $query;
 		}
 
+        public function guardarUsuario($datosModel){
+
+        $stmt=mainModel::connect()->prepare("INSERT INTO asociado (idasociado,dni,direccion,nombre,apellido,telefono,estado)
+                                            VALUES (:idasociado,:dni,:direccion,:nombre,:apellido,:telefono,:estado)");
+        $stmt->bindParam(":idasociado",$datosModel["idasociado"]);
+        $stmt->bindParam(":dni",$datosModel["dni"]);
+        $stmt->bindParam(":direccion",$datosModel["direccion"]);
+        $stmt->bindParam(":nombre",$datosModel["nombre"]);
+        $stmt->bindParam(":apellido",$datosModel["apellido"]);
+        $stmt->bindParam(":telefono",$datosModel["telefono"]);
+        $stmt->bindParam(":estado",$datosModel["estado"]);
+        $stmt->execute();
+        //$stmt->close();
+        return $stmt;
+
+        }
+
 	}
