@@ -17,47 +17,42 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form method="POST" action="AgregarNuevo.php">
-                        <div class="row form-group">
-                            <div class="col-sm-2">
-                                <label class="control-label" style="position:relative; top:7px;">Nombres:</label>
-                            </div>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="nombres">
+                    <form action="" method="post" enctype="multipart/form-data" autocomplete="off>
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="col-xs-12 col-md-12 form-group label-floating ">
+                                <label class="control-label">NOMBRE</label>
+                                <input class="form-control" type="text" name="nameUser">
                             </div>
                         </div>
-                        <div class="row form-group">
-                            <div class="col-sm-2">
-                                <label class="control-label" style="position:relative; top:7px;">Apellidos:</label>
-                            </div>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="apellidos">
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="col-xs-12 col-md-12 form-group label-floating ">
+                                <label class="control-label">APELLIDO</label>
+                                <input class="form-control" type="text" name="apellUser">
                             </div>
                         </div>
-                        <div class="row form-group">
-                            <div class="col-sm-2">
-                                <label class="control-label" style="position:relative; top:7px;">Telefono:</label>
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="col-xs-12 col-md-6 form-group label-floating ">
+                                <label class="control-label">DNI</label>
+                                <input class="form-control" type="text" name="dniUser">
                             </div>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="telefono">
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-sm-2">
-                                <label class="control-label" style="position:relative; top:7px;">Carrera:</label>
-                            </div>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="carrera">
+                            <div class="col-xs-12 col-md-6 form-group label-floating">
+                                <label class="control-label">DIRECCION</label>
+                                <input class="form-control" type="text" name="direUser">
                             </div>
                         </div>
-                        <div class="row form-group">
-                            <div class="col-sm-2">
-                                <label class="control-label" style="position:relative; top:7px;">Pais:</label>
+
+                        <div class="col-xs-12 col-sm-12">
+
+                            <div class="col-xs-12 col-md-6 form-group label-floating">
+                                <label class="control-label">TELEFONO</label>
+                                <input class="form-control" type="number" name="telefUser">
                             </div>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="pais">
+                            <div class="col-xs-12 col-md-6 form-group label-floating">
+                                <label class="control-label">ESTADO</label>
+                                <input class="form-control" type="text" name="estadoUser">
                             </div>
                         </div>
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -65,17 +60,17 @@
                 <button type="submit" name="agregar" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar Registro</button>
                 </form>
             </div>
-
         </div>
     </div>
+
 </div>
 
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-xs-12">
 			<ul class="nav nav-tabs" style="margin-bottom: 15px;">
-			  	<li class="active"><a href="#new" data-toggle="tab">New</a></li>
-			  	<li><a href="#list" data-toggle="tab">List</a></li>
+			  	<li class="active"><a href="#new" data-toggle="tab">Nuevo</a></li>
+			  	<li><a href="#list" data-toggle="tab">Lista</a></li>
 			</ul>
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="new">
@@ -86,11 +81,11 @@
 -->							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							    <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
                                     <div class="col-xs-12 col-sm-12">
-                                        <div class="col-xs-12 col-md-6 form-group label-floating ">
+                                        <div class="col-xs-12 col-md-12 form-group label-floating ">
                                           <label class="control-label">NOMBRE</label>
                                           <input class="form-control" type="text" name="nameUser">
                                         </div>
-                                        <div class="col-xs-12 col-md-6 form-group label-floating ">
+                                        <div class="col-xs-12 col-md-12 form-group label-floating ">
                                           <label class="control-label">APELLIDO</label>
                                           <input class="form-control" type="text" name="apellUser">
                                         </div>

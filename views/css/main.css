@@ -75,7 +75,9 @@ body, html{
 /*============ LogIn*/
 .login-bg{
 	height: 100%;
-	background-image: url('../assets/img/login.jpg');
+	background-image: url('../assets/img/login.jpg') ;
+
+
 }
 .logInForm{
 	position: absolute;
@@ -86,8 +88,9 @@ body, html{
 	width: 90%;
 	max-width: 300px;
 	padding: 15px;
+	background: rgba(0,0,0,.7);
 	border: 1px solid rgba(255,255,255,.5);
-	border-radius: 4px;
+	border-radius: 8px;
 }
 .logInForm p,
 .logInForm label{

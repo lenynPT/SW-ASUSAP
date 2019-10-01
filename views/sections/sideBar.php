@@ -72,7 +72,7 @@
 				</a>
 				<ul class="list-unstyled full-box">
 					<li>
-						<a href="<?php echo SERVERURL; ?>newaasociat/"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Nuevo Persona</a>
+						<a href="<?php echo SERVERURL; ?>newaasociat/"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Agregar Asociado</a>
 					</li>
 					<li>
 						<a href="<?php echo SERVERURL; ?>payments/"><i class="zmdi zmdi-card zmdi-hc-fw"></i><i class="zmdi zmdi-money zmdi-hc-fw"></i> Periodos</a>
