@@ -34,37 +34,35 @@
 				</a>
 				<ul class="list-unstyled full-box">
 					<li>
-						<a href="<?php echo SERVERURL; ?>period/"><i class="zmdi zmdi-timer zmdi-hc-fw"></i> Periodos</a>
+						<a href="<?php echo SERVERURL; ?>gconsumo/"><i class="zmdi zmdi-timer zmdi-hc-fw"></i>  Generar Consumo</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>subject/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a>
+						<a href="<?php echo SERVERURL; ?>erecibo/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Emitir Recibo</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>section/"><i class="zmdi zmdi-graduation-cap zmdi-hc-fw"></i> Secciones</a>
+                        <a href="<?php echo SERVERURL; ?>crecibo/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i><i class="zmdi zmdi-money zmdi-hc-fw"></i> Cobros Recibo</a>
 					</li>
-					<li>
-						<a href="<?php echo SERVERURL; ?>salon/"><i class="zmdi zmdi-font zmdi-hc-fw"></i> Salones</a>
-					</li>
+
 				</ul>
 			</li>
 			<li>
 				<a href="#!" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-account-add zmdi-hc-fw"></i> COBRO DE SERVICIOS <i class="zmdi zmdi-caret-down pull-right"></i>
 				</a>
-				<ul class="list-unstyled full-box">
+				<!--<ul class="list-unstyled full-box">
 					<li>
-						<a href="<?php echo SERVERURL; ?>admin/"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administradores</a>
+						<a href="<?php /*echo SERVERURL; */?>admin/"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administradores</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>teacher/"><i class="zmdi zmdi-male-alt zmdi-hc-fw"></i> Docentes</a>
+						<a href="<?php /*echo SERVERURL; */?>teacher/"><i class="zmdi zmdi-male-alt zmdi-hc-fw"></i> Docentes</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>student/"><i class="zmdi zmdi-face zmdi-hc-fw"></i> Estudiantes</a>
+						<a href="<?php /*echo SERVERURL; */?>student/"><i class="zmdi zmdi-face zmdi-hc-fw"></i> Estudiantes</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>representative/"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Padres</a>
+						<a href="<?php /*echo SERVERURL; */?>representative/"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Padres</a>
 					</li>
-				</ul>
+				</ul>-->
 			</li>
 			<li>
 				<a href="#!" class="btn-sideBar-SubMenu">
@@ -74,36 +72,36 @@
 					<li>
 						<a href="<?php echo SERVERURL; ?>newaasociat/"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Agregar Asociado</a>
 					</li>
-					<li>
-						<a href="<?php echo SERVERURL; ?>payments/"><i class="zmdi zmdi-card zmdi-hc-fw"></i><i class="zmdi zmdi-money zmdi-hc-fw"></i> Periodos</a>
-					</li>
+<!--					<li>-->
+<!--						<a href="--><?php //echo SERVERURL; ?><!--payments/"><i class="zmdi zmdi-card zmdi-hc-fw"></i><i class="zmdi zmdi-money zmdi-hc-fw"></i> Periodos</a>-->
+<!--					</li>-->
 				</ul>
 			</li>
 			<li>
 				<a href="#!" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-card zmdi-hc-fw"></i> REPORTES <i class="zmdi zmdi-caret-down pull-right"></i>
 				</a>
-				<ul class="list-unstyled full-box">
+				<!--<ul class="list-unstyled full-box">
 					<li>
-						<a href="<?php echo SERVERURL; ?>registration/"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Inscripción</a>
+						<a href="<?php /*echo SERVERURL; */?>registration/"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Inscripción</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>payments/"><i class="zmdi zmdi-money zmdi-hc-fw"></i> Periodos</a>
+						<a href="<?php /*echo SERVERURL; */?>payments/"><i class="zmdi zmdi-money zmdi-hc-fw"></i> Periodos</a>
 					</li>
-				</ul>
+				</ul>-->
 			</li>
 			<li>
 				<a href="#!" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-shield-security zmdi-hc-fw"></i> OTROS <i class="zmdi zmdi-caret-down pull-right"></i>
 				</a>
-				<ul class="list-unstyled full-box">
+				<!--<ul class="list-unstyled full-box">
 					<li>
-						<a href="<?php echo SERVERURL; ?>year/"><i class="zmdi zmdi-calendar zmdi-hc-fw"></i> Nuevo año escolar</a>
+						<a href="<?php /*echo SERVERURL; */?>year/"><i class="zmdi zmdi-calendar zmdi-hc-fw"></i> Nuevo año escolar</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>institution/"><i class="zmdi zmdi-balance zmdi-hc-fw"></i> Datos institución</a>
+						<a href="<?php /*echo SERVERURL; */?>institution/"><i class="zmdi zmdi-balance zmdi-hc-fw"></i> Datos institución</a>
 					</li>
-				</ul>
+				</ul>-->
 			</li>
 		</ul>
 	</div>

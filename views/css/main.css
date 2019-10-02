@@ -334,6 +334,10 @@ body, html{
 	transform: translateX(0) !important;
 }
 /*============ Estilos home*/
+.buscar{
+	border: 1px solid #272727;
+}
+
 .tile{
 	max-width: 300px;
 	height: 180px;
