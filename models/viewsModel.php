@@ -1,9 +1,7 @@
 <?php
 	class viewsModel{
 		public function getViewsModel($views){
-			$WhiteList=["dashboard","newaasociat","gconsumo","erecibo","crecibo"
-                ,"section","salon","admin","adminlist","adminsearch","teacher","student",
-                "representative","registration","payments","institution","year","yearlist","myaccount","mydata"];
+			$WhiteList=["dashboard","newaasociat","gconsumo","erecibo","crecibo"];
 			if(in_array($views, $WhiteList)){
 				if(is_file("./views/modules/".$views."-view.php")){
 					$contents="./views/modules/".$views."-view.php";
