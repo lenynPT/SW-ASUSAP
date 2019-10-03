@@ -1,8 +1,9 @@
 <div class="container-fluid">
     <div class="page-header">
-        <h1 class="text-titles"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Generar <small>Consumo</small></h1>
+        <h1 class="text-titles">
+            <i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Generar <small>Consumo <b>Octubre 2019</b></small>
+        </h1>
     </div>
-    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse voluptas reiciendis tempora voluptatum eius porro ipsa quae voluptates officiis sapiente sunt dolorem, velit quos a qui nobis sed, dignissimos possimus!</p>
 </div>
 <div class="container-fluid">
 
@@ -70,7 +71,18 @@
 
 <div class="container-fluid">
 
+
+
+
+
     <div class="col-xs-12 col-sm-12">
+
+
+        <diV class="row justify-content-center page-header">
+            <h3 class="tile-titles text-center font-weight-bold"><b>Generar recibo para usuarios con MEDIDOR</b></h3>
+        </diV>
+
+
         <div class="col-xs-12 col-md-4 form-group">
             <input class="form-control" type="search" name="nameUser">
         </div>
@@ -109,6 +121,7 @@
                         <th class="text-center">Monto</th>
                         <th class="text-center">Mes</th>
                         <th class="text-center">Año</th>
+                        <th class="text-center">G. Consumo</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -121,6 +134,8 @@
                         <td>s/ 6.25</td>
                         <td>Octubre</td>
                         <td>2019</td>
+                        <td><a href="#!" class="btn btn-info btn-raised btn-xs">G. Consumo</a></td>
+
 
                     </tr>
                     <tr>
@@ -132,6 +147,8 @@
                         <td>s/ 4.5</td>
                         <td>Octubre</td>
                         <td>2019</td>
+                        <td><a href="#!" class="btn btn-info btn-raised btn-xs">G. Consumo</a></td>
+
                     </tr>
                     <tr>
                         <td>3</td>
@@ -142,6 +159,8 @@
                         <td>s/ 8.00</td>
                         <td>Octubre</td>
                         <td>2019</td>
+                        <td><a href="#!" class="btn btn-info btn-raised btn-xs">G. Consumo</a></td>
+
                     </tr>
                     </tbody>
                 </table>

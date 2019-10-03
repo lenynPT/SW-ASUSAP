@@ -72,16 +72,15 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<ul class="nav nav-tabs" style="margin-bottom: 15px;">
-			  	<li class="active"><a href="#new" data-toggle="tab">Nuevo</a></li>
-			  	<li><a href="#list" data-toggle="tab">Lista</a></li>
+<!--			  	<li class="active"><a href="#new" data-toggle="tab">Nuevo</a></li>
+-->			  	<li><a href="#list" data-toggle="tab">Lista</a></li>
 			</ul>
-			<div id="myTabContent" class="tab-content">
+			<!--<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="new">
 					<div class="container-fluid">
 						<div class="row">
 
-<!--							<div class="col-xs-12 col-md-10 col-md-offset-1">
--->							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							    <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
                                     <div class="col-xs-12 col-sm-12">
                                         <div class="col-xs-12 col-md-12 form-group label-floating ">
@@ -122,18 +121,18 @@
 							</div>
 						</div>
 
-                        <?
+                        <?/*
 
                         require_once "./controllers/adminController.php";
                         $crearNoticia = new adminController();
                         $crearNoticia->guardarUsuarioController();
-                        ?>
+                        */?>
 					</div>
 				</div>
 
 
 
-			</div>
+			</div>-->
 		</div>
        <div class="col-xs-12"
            <div class="tab-pane fade" id="list">
