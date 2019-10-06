@@ -49,20 +49,20 @@
 				<a href="#!" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-account-add zmdi-hc-fw"></i> COBRO DE SERVICIOS <i class="zmdi zmdi-caret-down pull-right"></i>
 				</a>
-				<!--<ul class="list-unstyled full-box">
+				<ul class="list-unstyled full-box">
 					<li>
-						<a href="<?php /*echo SERVERURL; */?>admin/"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administradores</a>
+						<a href="<?php echo SERVERURL; ?>rservicio/"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Registrar servicio</a>
 					</li>
 					<li>
-						<a href="<?php /*echo SERVERURL; */?>teacher/"><i class="zmdi zmdi-male-alt zmdi-hc-fw"></i> Docentes</a>
+						<a href="<?php echo SERVERURL; ?>aservicio/"><i class="zmdi zmdi-male-alt zmdi-hc-fw"></i> Amortizar servicio</a>
 					</li>
-					<li>
+					<!--<li>
 						<a href="<?php /*echo SERVERURL; */?>student/"><i class="zmdi zmdi-face zmdi-hc-fw"></i> Estudiantes</a>
 					</li>
 					<li>
 						<a href="<?php /*echo SERVERURL; */?>representative/"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Padres</a>
-					</li>
-				</ul>-->
+					</li>-->
+				</ul>
 			</li>
 			<li>
 				<a href="#!" class="btn-sideBar-SubMenu">
