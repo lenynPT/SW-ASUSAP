@@ -8,26 +8,21 @@
 
 
         public function guardarUsuarioController(){
+
             if (isset($_POST["nameUser"])){
 
-                $query3=mainModel::execute_single_query("SELECT telefono FROM asociado");
-                $correlative=($query3->rowCount())+1;
-                $code=mainModel::generate_code("AC",7,$correlative);
+                $query2=self::execute_single_query("SELECT dni FROM asociado");
+                $correlative=($query2->rowCount())+1;
+                $code=self::generate_code("EC",4,$correlative);
 
-                    $datosController = array(
-                        "idsociado" => $code,
-                        "dni" => $_POST["dniUser"],
-                        "direccion" => $_POST["direUser"],
-                        "nombre" => $_POST["nameUser"],
-                        "apellido" => $_POST["apellUser"],
-                        "telefono" => $_POST["telefUser"],
-                        "estado" => $_POST["estadoUser"]
-                    );
+                $datosController = array(
+                    "dni" => $_POST["dniUser"]
+                );
                     $respuesta = adminModel::guardarUsuario($datosController);
                     echo '<script>
                     swal({
                           title: "¡OK!",
-                          text: "¡Usuario ha sido creado correctamente!",
+                          text: "¡Usuario ha sido creado correctamente!"+'.$correlative.',
                           type: "success",
                           confirmButtonText: "Cerrar",
                           closeOnConfirm: false

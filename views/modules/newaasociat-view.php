@@ -9,64 +9,88 @@
 <a href="#addnew" class="btn btn-primary" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Nuevo Asociado</a>
 
 <!-- Agregar Nuevos Registros -->
-    <div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <center><h4 class="modal-title" id="myModalLabel"> Llena los campos</h4></center>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="col-xs-12 col-md-12 form-group label-floating ">
-                                    <label class="control-label">NOMBRE</label>
-                                    <input class="form-control" type="text" name="nameUser">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="col-xs-12 col-md-12 form-group label-floating ">
-                                    <label class="control-label">APELLIDO</label>
-                                    <input class="form-control" type="text" name="apellUser">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="col-xs-12 col-md-6 form-group label-floating ">
-                                    <label class="control-label">DNI</label>
-                                    <input class="form-control" type="text" name="dniUser">
-                                </div>
-                                <div class="col-xs-12 col-md-6 form-group label-floating">
-                                    <label class="control-label">DIRECCION</label>
-                                    <input class="form-control" type="text" name="direUser">
-                                </div>
-                            </div>
-
-                            <div class="col-xs-12 col-sm-12">
-
-                                <div class="col-xs-12 col-md-6 form-group label-floating">
-                                    <label class="control-label">TELEFONO</label>
-                                    <input class="form-control" type="number" name="telefUser">
-                                </div>
-                                <div class="col-xs-12 col-md-6 form-group label-floating">
-                                    <label class="control-label">ESTADO</label>
-                                    <input class="form-control" type="text" name="estadoUser">
-                                </div>
-                            </div>
-
-                    </div>
-                </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-                                <button type="submit" name="agregar" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar Registro</button>
-
-                            </div>
-                    </form>
-            </div>
-        </div>
-
-    </div>
-</div>
+<!--<!--    <div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+<!--                    <center><h4 class="modal-title" id="myModalLabel"> Llena los campos</h4></center>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <div class="container-fluid">-->
+<!--                        <form action="" method="post" enctype="multipart/form-data" autocomplete="off">-->
+<!--                            <div class="col-xs-12 col-sm-12">-->
+<!--                                <div class="col-xs-12 col-md-12 form-group label-floating ">-->
+<!--                                    <label class="control-label">NOMBRE</label>-->
+<!--                                    <input class="form-control" type="text" name="nombreUser">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-xs-12 col-sm-12">-->
+<!--                                <div class="col-xs-12 col-md-12 form-group label-floating ">-->
+<!--                                    <label class="control-label">APELLIDO</label>-->
+<!--                                    <input class="form-control" type="text" name="apellUser">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-xs-12 col-sm-12">-->
+<!--                                <div class="col-xs-12 col-md-6 form-group label-floating ">-->
+<!--                                    <label class="control-label">DNI</label>-->
+<!--                                    <input class="form-control" type="text" name="dniUser">-->
+<!--                                </div>-->
+<!--                                <div class="col-xs-12 col-md-6 form-group label-floating">-->
+<!--                                    <label class="control-label">DIRECCION</label>-->
+<!--                                    <input class="form-control" type="text" name="direUser">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!---->
+<!--                            <div class="col-xs-12 col-sm-12">-->
+<!---->
+<!--                                <div class="col-xs-12 col-md-6 form-group label-floating">-->
+<!--                                    <label class="control-label">TELEFONO</label>-->
+<!--                                    <input class="form-control" type="number" name="telefUser">-->
+<!--                                </div>-->
+<!--                                <div class="col-xs-12 col-md-4 form-group label-floating">-->
+<!--                                    <label class="control-label">ESTADO</label>-->
+<!--                                    <input class="form-control" type="text" name="estadoUser">-->
+<!--                                </div>-->
+<!--                                <!--<div class="col-xs-12 col-md-6">-->
+<!--                                    <label class="control-label">Tipo de Vivienda</label>-->
+<!--                                    <select name="estadoUser" required>-->
+<!--                                        <option value="" disabled="" selected="">Estado</option>-->
+<!--                                        <option value="proyectado">PROYECTADO</option>-->
+<!--                                        <option value="ejecucion">EJECUCION</option>-->
+<!--                                        <option value="ejecutado">EJECUTADO</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->-->
+<!--                            </div>-->
+<!--                            <!--<div class="col-xs-12 col-md-6">-->
+<!--                                <label class="control-label">Estado de Obras y Proyectos</label>-->
+<!--                                <select name="estadoObrasP" required>-->
+<!--                                    <option value="" disabled="" selected="">Estado</option>-->
+<!--                                    <option value="proyectado">PROYECTADO</option>-->
+<!--                                    <option value="ejecucion">EJECUCION</option>-->
+<!--                                    <option value="ejecutado">EJECUTADO</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!---->-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                        <div class="modal-footer">-->
+<!--                            <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>-->
+<!--                            <button type="submit" name="agregar" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar Registro</button>-->
+<!---->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                --><?///*
+//
+//                       /* require_once "./controllers/adminController.php";
+//                        $crearNoticia = new adminController();
+//                        $crearNoticia->guardarUsuarioController();*/
+//                        */?>
+<!--            </div>-->
+<!--        </div>-->
+<!---->
+<!--    </div>-->
+<!----></div>-->
 
 <div class="container-fluid">
 	<div class="row">
@@ -75,7 +99,7 @@
 <!--			  	<li class="active"><a href="#new" data-toggle="tab">Nuevo</a></li>
 -->			  	<li><a href="#list" data-toggle="tab">Lista</a></li>
 			</ul>
-			<!--<div id="myTabContent" class="tab-content">
+			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="new">
 					<div class="container-fluid">
 						<div class="row">
@@ -98,7 +122,7 @@
                                           <input class="form-control" type="text" name="dniUser">
                                         </div>
                                         <div class="col-xs-12 col-md-6 form-group label-floating">
-                                          <label class="control-label">DIRECCION</label>
+                                          <label class="control-label">CANT S</label>
                                           <input class="form-control" type="text" name="direUser">
                                         </div>
 
@@ -115,24 +139,24 @@
                                     </div>
 
 								    <p class="text-center">
-								    	<button type="submit"  class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
+								    	<input type="submit"  class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> GUARDAR</input>
 								    </p>
 							    </form>
 							</div>
 						</div>
 
-                        <?/*
+                        <?
 
                         require_once "./controllers/adminController.php";
                         $crearNoticia = new adminController();
                         $crearNoticia->guardarUsuarioController();
-                        */?>
+                        ?>
 					</div>
 				</div>
 
 
 
-			</div>-->
+			</div>
 		</div>
        <div class="col-xs-12"
            <div class="tab-pane fade" id="list">
