@@ -3,9 +3,9 @@ console.log("probando...");
 //cuando ingresen código para buscar al asiciado
 document.getElementById("btnBuscarAsoc").addEventListener('click',function(){
     
-    var usuario = $("#txtBuscarAsoc").val();
+    let usuario = $("#txtBuscarAsoc").val();
     
-    var datos = new FormData();
+    let datos = new FormData();
     datos.append("codAsoc",usuario);
     datos.append("btnaccion","buscarAsociado");
     
@@ -84,3 +84,103 @@ document.getElementById("btnBuscarAsoc").addEventListener('click',function(){
 	});
 
 });
+
+
+function InsertarSuministro(){
+
+	document.getElementById("btnisum").addEventListener('click',(e)=>{
+		e.preventDefault();
+
+		let dni = $("#txtDniAsocModal").val();
+		//document.getElementById("direccionPsjSumi").focus();
+
+		let dt = new FormData(formularioSumi);
+		dt.append('dni',dni);
+		console.log(":)");
+		console.log(dt.get('dni'));
+		console.log(dt.get('categoriaSumi'));
+		console.log(dt.get('direccionSumi'));		
+		console.log(dt.get('direccionPsjSumi'));		
+		console.log(dt.get('direccionNroSumi'));		
+		console.log(dt.get('medidorSumi'));		
+		console.log(dt.get('corteSumi'));	
+
+		//validar que no se dejen valores vacios en el formulario
+		if(dt.get('direccionPsjSumi')=="" || dt.get('direccionNroSumi')==""){			
+			//colocar cursor donde falta rrellenar información					
+			if(dt.get('direccionPsjSumi')==""){
+				document.getElementById("direccionPsjSumi").focus();
+			}else{
+				document.getElementById("direccionNroSumi").focus();
+			}
+			//mensaje de error cuando no se rellenan todos los campos
+			swal({
+				text: "¡Ingrese todos los campos correctamente!",
+				type: "warning",										  		
+				confirmButtonText: 'corregir'			
+			});
+			return false;
+		}
+
+		fetch('../ajax/prueba.php',{
+			method: 'POST',
+			body: dt
+		})
+		.then(res => res.json())
+		.then(data=>{
+			console.log(data)
+			//response
+			swal({
+				title: "¡OK!",
+				text: "¡Usuario ha sido creado correctamente!",
+				type: "success",				
+				confirmButtonColor: '#03A9F4',		  		
+				confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',				
+			}).then(()=>{
+				console.log("le dio aceptar");
+				//Cuando le de la opción de ok
+				location.reload();
+			},function(){
+				console.log("No le dió aceptar")
+				//si no le da a la opcion de aceptar
+				location.reload();
+			});
+		})
+	});
+	/*
+	let element = $(".btnaSum");
+	element.click(function(){
+
+		let dni = $("#txtDniAsocModal").val();
+		let categoria = $("#listaCategoriaSumi").val();
+		let direccion = $("#listaDireccionSumi").val();
+		let pasaje = $("#direccionPsjSumi").val();
+		let numero = $("#direccionNroSumi").val();
+		let medidor = $("#medidorSumi").val();
+		let corte = $("#corteSumi").val();
+		let datosf = new FormData();
+		datosf.append('codAsoc','dni');
+		datosf.append('categoria','categoria');
+
+		console.log("-->> " + dni);
+		console.log("-->> " + categoria);
+		console.log("-->> " + direccion);
+		console.log("-->> " + pasaje);
+		console.log("-->> " + numero);
+		console.log("-->> " + medidor);
+		console.log("-->> " + corte);
+		console.log("-->> " + datosf);
+		//console.log("-->> " + datosf.);
+		
+		fetch('prueba.php',{
+			method: 'POST',
+			body: datos
+		});
+		//location.reload();
+		
+	})
+	*/	
+	
+	console.log("funcion de insert sumi");
+}
+InsertarSuministro();

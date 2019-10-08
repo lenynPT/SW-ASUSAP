@@ -26,19 +26,28 @@
                                     <div class="col-md-12">
 										<div class="col-md-4 form-group row label-floating">
 											<label for="listaDireccion" class="col-md-4 control-label">DIRECIÓN</label>
-											<div class="col-md-8">
+											<div class="col-md-12">
 												<select class="form-control" id="listaDireccion" name="direccionAsoc" >
 													<option>Jr. los chancas</option>
 													<option>Jr. leoncio</option>
 													<option>Jr. mariano melgar</option>
 													<option>Av. chasqui</option>
 												</select>
-											</div>											
-										</div>
-										
-										<div class="col-md-4 form-group label-floating">
+											</div>	                                            
+										</div>                                        
+                                        <div class="col-md-4 form-group label-floating ">
+                                            <label class="control-label">Pasaje</label>
+                                            <input class="form-control" type="text" name="direccionPsjAsoc" required>
+                                        </div>
+                                        <div class="col-md-4 form-group label-floating ">
+                                            <label class="control-label">Nro Dirección </label>
+                                            <input class="form-control" type="number" name="direccionNroAsoc" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+										<div class="col-md-6 form-group label-floating">
 											<label for="listaCategoria" class="col-md-4 control-label">CATEGORIA</label>
-											<div class="col-md-8">
+											<div class="col-md-12">
 												<select class="form-control" id="listaCategoria" name="categoriaAsoc">
 													<option>Domicilio</option>
 													<option>Comercial</option>
@@ -47,9 +56,9 @@
 											</div>											
                                         </div>
                                         
-                                        <div class="col-md-4 form-group label-floating">
+                                        <div class="col-md-6 form-group label-floating">
 											<label for="medidorAsoc" class="col-md-4 control-label">MEDIDOR</label>
-											<div class="col-md-8">
+											<div class="col-md-12">
 												<select class="form-control" id="medidorAsoc" name="medidorAsoc">
 													<option value="0">No</option>
 													<option value="1">Si</option>													
@@ -122,7 +131,7 @@
             <a href="#addSumiModal" class="btn btn-primary" id="btnAddSumiModal" data-toggle="#" disabled><span class="glyphicon glyphicon-plus"></span>Agregar suministro</a>
             <!-- FIN - BTN PARA AGREGAR SUMINISTRO-->
             <div class="col-md-12">                            
-                <div>
+                
 					<div class="table-responsive">
 						<table class="table table-hover text-center">
 							<thead>
@@ -155,76 +164,107 @@
 								</tr>							
 							</tbody>
                         </table>
-                        <div class="infoAsoc"></div>                      
-<!--MODAL PARA AGREGAR SUMINISTRO PARA USUARIO ESPECIFICO-->
-<div class="">
-    <!--
-        <a href="#addSumiModal" class="btn btn-primary" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span>Agregar suministro</a>
-    -->
-
-    <!-- Agregar Nuevos Registros modal 1 -->
-    <div class="modal fade" id="addSumiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddSumi" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <center><h4 class="modal-title" id="myModalLabelAddSumi"> Llena los campos</h4></center>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                                <div class="col-xs-12 col-sm-12">
-                                    <div class="col-xs-12 col-md-12 form-group label-floating ">
-                                        <label class="control-label">NOMBRE</label>
-                                        <input class="form-control" type="text" name="nameUser">
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <div class="col-xs-12 col-md-12 form-group label-floating ">
-                                        <label class="control-label">APELLIDO</label>
-                                        <input class="form-control" type="text" name="apellUser">
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <div class="col-xs-12 col-md-6 form-group label-floating ">
-                                        <label class="control-label">DNI</label>
-                                        <input class="form-control" type="text" name="dniUser">
-                                    </div>
-                                    <div class="col-xs-12 col-md-6 form-group label-floating">
-                                        <label class="control-label">DIRECCION</label>
-                                        <input class="form-control" type="text" name="direUser">
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12">
-
-                                    <div class="col-xs-12 col-md-6 form-group label-floating">
-                                        <label class="control-label">TELEFONO</label>
-                                        <input class="form-control" type="number" name="telefUser">
-                                    </div>
-                                    <div class="col-xs-12 col-md-6 form-group label-floating">
-                                        <label class="control-label">ESTADO</label>
-                                        <input class="form-control" type="text" name="estadoUser">
-                                    </div>
-                                </div>
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-                        <button type="submit" name="agregar" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar Registro</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-    </div>
-    <!-- Agregar Nuevos Registros fin modal 1 -->
-</div>
-<!--FIN - MODAL PARA AGREGAR SUMINISTRO PARA USUARIO ESPECIFICO-->
-
+                        <div class="infoAsoc">
+                        </div>  
 					</div>
-			  	</div>
+			  	
+                <!--MODAL PARA AGREGAR SUMINISTRO PARA USUARIO ESPECIFICO-->
+                <div class="">
+                    <!-- Agregar Nuevos Registros modal 1 -->
+                    <div class="modal fade" id="addSumiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddSumi" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="formularioSumi" enctype="multipart/form-data" autocomplete="off">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title text-center" id="myModalLabelAddSumi">INSERTAR SUMINISTRO</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                                <div class="col-xs-12 col-sm-12">
+                                                    <div class="col-md-6 form-group label-floating ">
+                                                        <label class="control-label">DNI</label>
+                                                        <input class="form-control" type="text" name="dniAsocSumi" id="txtDniAsocModal" value="#" disabled>
+                                                    </div>
+                                                    <div class="col-md-6 form-group label-floating ">
+                                                        <label class="control-label">NOMBRE</label>
+                                                        <input class="form-control" type="text" name="nombreAsocSumi" id="txtNombreAsocModal" value="#" disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-12 form-group label-floating ">
+                                                        <label for="listaCategoriaSumi" class="col-md-4 control-label">CATEGORIA</label>
+                                                        <div class="col-md-12">
+                                                            <select class="form-control" id="listaCategoriaSumi" name="categoriaSumi">
+                                                                <option>Domicilio</option>
+                                                                <option>Comercial</option>
+                                                                <option>Social</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12">
+
+                                                    <div class="col-md-12 form-group row label-floating">
+                                                        <label for="listaDireccionSumi" class="col-md-4 control-label">DIRECIÓN</label>
+                                                        <div class="col-md-12">
+                                                            <select class="form-control" id="listaDireccionSumi" name="direccionSumi" >
+                                                                <option>Jr. los chancas</option>
+                                                                <option>Jr. leoncio</option>
+                                                                <option>Jr. mariano melgar</option>
+                                                                <option>Av. chasqui</option>
+                                                            </select>
+                                                        </div>	                                            
+                                                    </div> 
+                                                    <div class="col-md-8 form-group label-floating ">
+                                                        <label class="control-label">Pasaje</label>
+                                                        <input type="text" class="form-control"  id="direccionPsjSumi" name="direccionPsjSumi" required autofocus> 
+                                                    </div>
+                                                    <div class="col-md-4 form-group label-floating ">
+                                                        <label class="control-label">Nro Dirección </label>
+                                                        <input type="number" class="form-control" id="direccionNroSumi" name="direccionNroSumi" required>
+                                                    </div>                                                            
+
+                                                </div>                                                        
+                                                
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 form-group label-floating">
+                                                        <label for="medidorSumi" class="col-md-4 control-label">MEDIDOR</label>
+                                                        <div class="col-md-12">
+                                                            <select class="form-control" id="medidorSumi" name="medidorSumi">
+                                                                <option value="0">No</option>
+                                                                <option value="1">Si</option>													
+                                                            </select>
+                                                        </div>											
+                                                    </div>
+                                                    <div class="col-md-6 form-group label-floating">
+                                                        <label for="corteSumi" class="col-md-4 control-label">CORTE</label>
+                                                        <div class="col-md-12">
+                                                            <select class="form-control" id="corteSumi" name="corteSumi">
+                                                                <option value="0">No</option>
+                                                                <option value="1">Si</option>													
+                                                            </select>
+                                                        </div>											
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                                        <button type="submit" class="btn btn-primary btnaSum" id="btnisum"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar Suministro</button>
+
+                                        <button type="submit" name='insertarSuministro' class='btn btn-primary btnaSum'><span class="glyphicon glyphicon-floppy-disk"></span>GUADARRR</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Agregar Nuevos Registros fin modal 1 -->
+                </div>
+                <!--FIN - MODAL PARA AGREGAR SUMINISTRO PARA USUARIO ESPECIFICO-->
             </div>
 
         </div>
