@@ -54,8 +54,8 @@ document.getElementById("btnBuscarAsoc").addEventListener('click',function(){
 				}
 
 				//Escribe datos en el modal del suministro. 
-				$("#txtDniAsocModal").val(datostabla["dni"]);
-				$("#txtNombreAsocModal").val(datostabla["nombre"]);
+				$(".txtDniAsocModal").val(datostabla["dni"]);
+				$(".txtNombreAsocModal").val(datostabla["nombre"]);
 				
 				//IMPRIME DATOS PARA LOS ASOCIADOS Y SUMINISTROS		
 				$(".responseAsoc").html(htmlAsoc);//Escribe datos en la tabla
@@ -122,7 +122,7 @@ function InsertarSuministro(){
 			return false;
 		}
 
-		fetch('../ajax/prueba.php',{
+		fetch('../ajax/gestionAS.php',{
 			method: 'POST',
 			body: dt
 		})

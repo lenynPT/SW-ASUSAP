@@ -46,12 +46,14 @@
 			$estado_corte = 0;
 			$contador_deuda = 0;
 
-			$stmt1=mainModel::connect()->prepare("INSERT INTO suministro (cod_suministro, cod_suministroA, direccion, estado_corte, tiene_medidor, categoria_suministro, contador_deuda, asociado_dni)
-												VALUES (:cod_suministro, :cod_suministroA, :direccion, :estado_corte, :tiene_medidor, :categoria_suministro, :contador_deuda, :asociado_dni)");
+			$stmt1=mainModel::connect()->prepare("INSERT INTO suministro (cod_suministro, cod_suministroA, direccion, pasaje, casa_nro, estado_corte, tiene_medidor, categoria_suministro, contador_deuda, asociado_dni)
+												VALUES (:cod_suministro, :cod_suministroA, :direccion, :pasaje, :casa_nro, :estado_corte, :tiene_medidor, :categoria_suministro, :contador_deuda, :asociado_dni)");
 			
 			$stmt1->bindParam(":cod_suministro",$datosModel["codigo_sum"]);
 			$stmt1->bindParam(":cod_suministroA",$cod_sumiA);
 			$stmt1->bindParam(":direccion",$datosModel["direccion"]);
+			$stmt1->bindParam(":pasaje",$datosModel["pasaje"]);
+			$stmt1->bindParam(":casa_nro",$datosModel["casa_nro"]);
 			$stmt1->bindParam(":estado_corte",$estado_corte);
 			$stmt1->bindParam(":tiene_medidor",$datosModel['tiene_medidor']); //falta en el formulario
 			$stmt1->bindParam(":categoria_suministro",$datosModel["categoria"]);
@@ -61,6 +63,34 @@
 			//$stmt->close();
 			return true;
 
-        }
+		}
+		
+		protected function insertarSuministroModel($datosModel){
+
+			$dniAsoc = $datosModel["asociado_dni"];
+			//insertar suministro
+			$stmt=mainModel::connect()->prepare("INSERT INTO suministro (cod_suministro, cod_suministroA, direccion, pasaje, casa_nro, estado_corte, tiene_medidor, categoria_suministro, contador_deuda, asociado_dni)
+												VALUES (:cod_suministro, :cod_suministroA, :direccion, :pasaje, :casa_nro, :estado_corte, :tiene_medidor, :categoria_suministro, :contador_deuda, :asociado_dni)");
+			$cod_sumiA = 0;
+			$contador_deuda = 0;
+			$stmt->bindParam(":cod_suministro",$datosModel["cod_suministro"]);
+			$stmt->bindParam(":cod_suministroA",$cod_sumiA);
+			$stmt->bindParam(":direccion",$datosModel["direccion"]);
+			$stmt->bindParam(":pasaje",$datosModel["pasaje"]);
+			$stmt->bindParam(":casa_nro",$datosModel["casa_nro"]);
+			$stmt->bindParam(":estado_corte",$datosModel["corte"]);
+			$stmt->bindParam(":tiene_medidor",$datosModel['medidor']);
+			$stmt->bindParam(":categoria_suministro",$datosModel["categoria"]);
+			$stmt->bindParam(":contador_deuda",$contador_deuda);
+			$stmt->bindParam(":asociado_dni",$dniAsoc);
+			$stmt->execute();
+
+			//actualizar cantidad_sumini de asociado 
+			$update_cant = $datosModel['cant_suministro'];
+			$queryUpd = "UPDATE asociado SET cant_suministro = $update_cant WHERE dni = $dniAsoc";
+			$stmt1 = mainModel::execute_single_query($queryUpd);
+
+			return true;
+		}
 
 	}
