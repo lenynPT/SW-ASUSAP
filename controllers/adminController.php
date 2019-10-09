@@ -8,21 +8,65 @@
 
 
         public function guardarUsuarioController(){
+            if (isset($_POST["registrarAsoc"])){
 
-            if (isset($_POST["nameUser"])){
+				$dniTemp = $_POST['dniAsoc'];
+				$consultDni = "SELECT dni FROM asociado WHERE dni = $dniTemp";
+                $query1=mainModel::execute_single_query($consultDni);
+				
+				if($query1->rowCount() == 0){
+					$codigo_sum=mainModel::generate_codigo_sum($dniTemp,0);
+					$datosController = array(
+						"categoria" => $_POST['categoriaAsoc'],
+						"direccion" => $_POST['direccionAsoc'],						
+						"nombre" => $_POST['nombreAsoc'],
+						"apellido" => $_POST['apellidoAsoc'],
+						"dni" => $_POST['dniAsoc'],
+						"telefono" => $_POST['telefonoAsoc'],
+						"tiene_medidor" => $_POST['medidorAsoc'],
+						"codigo_sum" => $codigo_sum 
+					);
+					$rsptaModel = adminModel::guardarUsuario($datosController);
+					if($rsptaModel){
+						//echo "Registro exitoso";
+						echo '<script>
+								swal({
+									title: "¡OK!",
+									text: "¡Usuario ha sido creado correctamente!",
+									type: "success",
+									confirmButtonText: "Cerrar",
+									closeOnConfirm: false
+								},
+								function(isConfirm){
+										if (isConfirm) {	   
+											window.location = "newaasociat";
+										} 
+								});
+							</script>';
+					}else{
+						echo "No se pudo registrar";
+					}
+					//return true;
+				}else{
+					echo "DNI ya registardo";
+					return false;
+				}
 
-                $query2=self::execute_single_query("SELECT dni FROM asociado");
-                $correlative=($query2->rowCount())+1;
-                $code=self::generate_code("EC",4,$correlative);
-
-                $datosController = array(
-                    "dni" => $_POST["dniUser"]
-                );
+				/*
+                    $datosController = array(
+                        "idsociado" => $code,
+                        "dni" => $_POST["dniUser"],
+                        "direccion" => $_POST["direUser"],
+                        "nombre" => $_POST["nameUser"],
+                        "apellido" => $_POST["apellUser"],
+                        "telefono" => $_POST["telefUser"],
+                        "estado" => $_POST["estadoUser"]
+                    );
                     $respuesta = adminModel::guardarUsuario($datosController);
                     echo '<script>
                     swal({
                           title: "¡OK!",
-                          text: "¡Usuario ha sido creado correctamente!"+'.$correlative.',
+                          text: "¡Usuario ha sido creado correctamente!",
                           type: "success",
                           confirmButtonText: "Cerrar",
                           closeOnConfirm: false
@@ -32,13 +76,24 @@
                                 window.location = "newaasociat";
                               } 
                     });
-                    </script>';
+					</script>';
+				*/
 
 
             }
 
-        }
+		}
+		
 
+		/* funcion de prueba */
+		public function pruebaController($msj){
+			return $msj;
+		}
+
+		public function consultaAsociado($query){
+			$result = mainModel::execute_single_query($query);
+			return $result;
+		}
 		/*----------  Función para guardar admin - Function to save admin  ----------*/
 		/*public function add_admin_controller(){
 

@@ -31,13 +31,20 @@
 
 
 		/* Funcion para generar codigos aleatorios - Function to generate random codes */
-        public function generate_code($letter,$length,$correlative){
-            for ($i=1; $i<=$length; $i++){
-                $number = rand(0,9);
-                $letter .= $number;
-            }
-            return $letter.$correlative;
-        }
+		protected function generate_code($letter,$length,$correlative){
+			for ($i=1; $i<=$length; $i++){ 
+			    $number = rand(0,9); 
+			    $letter .= $number; 
+			}
+			return $letter.$correlative;
+		}
+
+		protected function generate_codigo_sum($dni,$correlative){
+			
+			$codigo = $dni."-".$correlative; 
+
+			return $codigo;
+		}
 
 		/* Funcion para limpiar cadenas de texto - Function to clean text strings */
 		protected function clean_string($value) {
