@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <!--Aquí estaba el btn de agregar asociado-->
 </div>
-
+<!--AGREGAR ASOCIADO FORMULARIO-->
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-xs-12">
@@ -18,6 +18,7 @@
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="new">
 					<div class="container-fluid">
+                        <!---formulario nuevo asociado -->
 						<div class="row">
 
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
@@ -117,6 +118,8 @@
 				</div>
 			</div>
 		</div>
+<!-- FIN - AGREGAR ASOCIADO FORMULARIO-->
+
 <!-- BUSCAR ASOCIADO A TRAVÉS DE UN INPUT-->
         <div class="col-md-12"> 
             <div class="col-xs-12 col-sm-12">
@@ -184,11 +187,11 @@
                                                 <div class="col-xs-12 col-sm-12">
                                                     <div class="col-md-6 form-group label-floating ">
                                                         <label class="control-label">DNI</label>
-                                                        <input class="form-control" type="text" name="dniAsocSumi" id="txtDniAsocModal" value="#" disabled>
+                                                        <input class="form-control txtDniAsocModal" type="text" name="dniAsocSumi" id="txtDniAsocModal" value="#" disabled>
                                                     </div>
                                                     <div class="col-md-6 form-group label-floating ">
                                                         <label class="control-label">NOMBRE</label>
-                                                        <input class="form-control" type="text" name="nombreAsocSumi" id="txtNombreAsocModal" value="#" disabled>
+                                                        <input class="form-control txtNombreAsocModal" type="text" name="nombreAsocSumi" id="txtNombreAsocModal" value="#" disabled>
                                                     </div>
                                                 </div>
 
@@ -248,14 +251,14 @@
                                                             </select>
                                                         </div>											
                                                     </div>
+                                                    <!--Validar en el ajax para procesar la petición-->
+                                                    <input type="hidden" name="insertSumin" value="true">
                                                 </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-                                        <button type="submit" class="btn btn-primary btnaSum" id="btnisum"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar Suministro</button>
-
-                                        <button type="submit" name='insertarSuministro' class='btn btn-primary btnaSum'><span class="glyphicon glyphicon-floppy-disk"></span>GUADARRR</button>
+                                        <button type="submit" class="btn btn-primary btnaSum" id="btnisum"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar Suministro</button>                                        
                                     </div>
                                 </form>
                             </div>
@@ -276,7 +279,7 @@
         <div class="modal-content">            
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <center><h4 class="modal-title" id="myModalcantSumin"> LISTA DE SUMINISTROS POR ASOCIADO</h4></center>
+                    <h4 class="modal-title text-center" id="myModalcantSumin"> LISTA DE SUMINISTROS POR ASOCIADO</h4>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
@@ -284,11 +287,11 @@
                             <div class="col-xs-12 col-sm-12">
                                 <div class="col-xs-12 col-md-6 form-group label-floating ">
                                     <label class="control-label">DNI</label>
-                                    <input class="form-control" type="text" id="txtDniAsocModal" value="-" disabled>
+                                    <input class="form-control txtDniAsocModal" type="text" id="txtDniAsocModal" value="--" disabled>
                                 </div>
                                 <div class="col-xs-12 col-md-6 form-group label-floating">
                                     <label class="control-label">ASOCIADO</label>
-                                    <input class="form-control" type="text" id="txtNombreAsocModal" value="-" disabled>
+                                    <input class="form-control txtNombreAsocModal" type="text" id="txtNombreAsocModal" value="--" disabled>
                                 </div>
                             </div>
 
@@ -329,7 +332,8 @@
 </div>
 <!-- FIN - MODAL PARA LISTAR LOS SUMINISTROS DEL ASOCIADO -->
 
-
+    <!--TABLA LISTA DE REGISTROS-->
+    <!--
         <div class="col-xs-12">
            <div class="tab-pane">
                <div class="table-responsive">
@@ -396,5 +400,7 @@
                </div>
            </div>
        </div>
+    -->
+
 	</div>
 </div>

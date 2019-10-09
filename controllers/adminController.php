@@ -19,6 +19,8 @@
 					$datosController = array(
 						"categoria" => $_POST['categoriaAsoc'],
 						"direccion" => $_POST['direccionAsoc'],						
+						"pasaje" => $_POST['direccionPsjAsoc'],						
+						"casa_nro" => $_POST['direccionNroAsoc'],						
 						"nombre" => $_POST['nombreAsoc'],
 						"apellido" => $_POST['apellidoAsoc'],
 						"dni" => $_POST['dniAsoc'],
@@ -94,6 +96,40 @@
 			$result = mainModel::execute_single_query($query);
 			return $result;
 		}
+
+		public function insertarSuministroController(){
+
+			$dni = $_POST['dni'];
+
+			//Obtiene cant suministro del asociado. Luego suma más 1 para generar el códgio del sumin
+			$query = "SELECT cant_suministro FROM asociado WHERE dni = $dni";
+			$cant_sumi_asoc = mainModel::execute_single_query($query);
+			$cant_sumi_asoc = $cant_sumi_asoc->fetch();
+			$cant_sumi = $cant_sumi_asoc['cant_suministro'] + 1;
+
+			//genera códgio para el suministro de acuerdo a la cantidad e sum del asociado
+			$codigo_sum = mainModel::generate_codigo_sum($dni, $cant_sumi);
+
+			$arrdataSumi = array(
+				"asociado_dni" => $dni,
+				"cod_suministro" => $codigo_sum,
+				"direccion" => $_POST['direccionSumi'],
+				"pasaje" => $_POST['direccionPsjSumi'],
+				"casa_nro" => $_POST['direccionNroSumi'],
+				"corte" => $_POST['corteSumi'],
+				"medidor" => $_POST['medidorSumi'],
+				"categoria" => $_POST['categoriaSumi'],
+				"contador_deuda" => 0,
+	
+				"cant_suministro" => $cant_sumi
+	
+			);
+			
+			$rspModel = adminModel::insertarSuministroModel($arrdataSumi);
+
+			return "insertando suministro de codigo :{$codigo_sum} con numSum: {$cant_sumi}";
+		}
+
 		/*----------  Función para guardar admin - Function to save admin  ----------*/
 		/*public function add_admin_controller(){
 
