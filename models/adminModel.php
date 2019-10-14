@@ -6,7 +6,8 @@
 	}
 	class adminModel extends mainModel{
 
-		/* Modelo para guardar administrador - Administrator save model */
+
+        /* Modelo para guardar administrador - Administrator save model */
 		protected function add_admin_model($dataAd){
 			$query=mainModel::connect()->prepare("INSERT INTO admin(AdminName,AdminLastName,AdminAddress,AdminPhone,AccountCode) VALUES(:AdminName,:AdminLastName,:AdminAddress,:AdminPhone,:AccountCode)");
 			$query->bindParam(":AdminName",$dataAd['AdminName']);
@@ -26,6 +27,7 @@
 			$query->execute();
 			return $query;
 		}
+    /*================================GUARDAR ASOCIADO============================================*/
 
         public function guardarUsuario($datosModel){
 
@@ -33,7 +35,7 @@
 			$cant_sumi = 0;
 			$stmt=mainModel::connect()->prepare("INSERT INTO asociado (dni,nombre,apellido,telefono,estado,cant_suministro)
 												VALUES (:dni,:nombre,:apellido,:telefono,:estado,:cant_suministro)");
-			
+
 			$stmt->bindParam(":dni",$datosModel["dni"]);
 			$stmt->bindParam(":nombre",$datosModel["nombre"]);
 			$stmt->bindParam(":apellido",$datosModel["apellido"]);
@@ -48,7 +50,7 @@
 
 			$stmt1=mainModel::connect()->prepare("INSERT INTO suministro (cod_suministro, cod_suministroA, direccion, pasaje, casa_nro, estado_corte, tiene_medidor, categoria_suministro, contador_deuda, asociado_dni)
 												VALUES (:cod_suministro, :cod_suministroA, :direccion, :pasaje, :casa_nro, :estado_corte, :tiene_medidor, :categoria_suministro, :contador_deuda, :asociado_dni)");
-			
+
 			$stmt1->bindParam(":cod_suministro",$datosModel["codigo_sum"]);
 			$stmt1->bindParam(":cod_suministroA",$cod_sumiA);
 			$stmt1->bindParam(":direccion",$datosModel["direccion"]);
@@ -64,8 +66,10 @@
 			return true;
 
 		}
-		
-		protected function insertarSuministroModel($datosModel){
+
+	/*================================GUARDAR SUMINISTRO============================================*/
+
+        protected function insertarSuministroModel($datosModel){
 
 			$dniAsoc = $datosModel["asociado_dni"];
 			//insertar suministro
@@ -102,5 +106,49 @@
 			$stmt = mainModel::execute_single_query($query);
 			return true;
 		}
+	/*================================GENERAR CONSUMO============================================*/
 
-	}
+        public function listaGconsumoModelS($valor){
+
+            $conexion=mainModel::connect();
+            $query=$conexion->query("SELECT * FROM factura_recibo WHERE suministro_cod_suministro like '%".$valor."%'");
+            $result = mainModel::execute_single_query($query);
+            $arreglo= array();
+            while ($re=$result->fetch_array(MYSQL_NUM())){
+                $arreglo[]= $re;
+            }
+
+            return $arreglo;
+
+
+            /*$stmt=mainModel::connect()->prepare("INSERT INTO factura_recibo (idfactura_recibo,anio,mes,fecha_emision,hora_emision,fecha_vencimiento,consumo,monto_pagar,esta_cancelado,esta_impreso)
+												VALUES (:idfactura,:anio,:mes,:fecha_emision,:hora_emision,:fecha_vencimiento,:consumo,:monto_pagar,:esta_cancelado,:esta_impreso)");
+
+            $stmt->bindParam(":idfactura",$valor["dni"]);
+            $stmt->bindParam(":anio",$valor["nombre"]);
+            $stmt->bindParam(":mes",$valor["apellido"]);
+            $stmt->bindParam(":fecha_emision",$valor[""]);
+            $stmt->bindParam(":hora_emision",$valor[""]);
+            $stmt->bindParam(":fecha_vencimiento",$valor[""]);
+            $stmt->bindParam(":consumo",$valor[""]);
+            $stmt->bindParam(":monto_pagar",$valor[""]);
+            $stmt->bindParam(":esta_cancelado",$valor[""]);
+            $stmt->bindParam(":esta_impreso",$valor[""]);
+
+            return true;*/
+
+        }
+        public function actualizarGC($datosModels){
+
+            $stmt=mainModel::connect()->prepare("UPDATE factura_recibo SET consumo=:consumoupd WHERE idfactura_recibo=:id");
+            $stmt->bindParam(":consumoupd",$datosModels["consumo"]);
+            $stmt->bindParam(":id",$datosModels["id"]);
+            $stmt->execute();
+            return $stmt;
+
+
+        }
+
+
+    }
+
