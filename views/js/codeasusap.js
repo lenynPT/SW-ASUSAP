@@ -1,5 +1,6 @@
 console.log("probando...");
 actualizarTabla_gconsumo();
+generarConsumoSinMedidor();
 
 //cuando ingresen código para buscar al asiciado
 document.getElementById("btnBuscarAsoc").addEventListener('click',function(){
@@ -177,5 +178,22 @@ function actualizarTabla_gconsumo(){
     });   
 }
 
+function generarConsumoSinMedidor(){
+	document.querySelector("#btnGenerarCXD").addEventListener('click',()=>{
+		let optionData = new FormData();
+		optionData.append("OPTION","GCSMedi");
+
+		fetch('../ajax/gestionRcbAjax.php',{
+			method:'POST',
+			body:optionData
+		}).then(res => res.json())
+		.then(data=>{
+			console.log(data);
+		});
+
+		console.log("clickkk btn x defecto");
+		//location.reload();
+	});
+}
 
 InsertarSuministro();

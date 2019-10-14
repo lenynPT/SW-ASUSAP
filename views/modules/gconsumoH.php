@@ -125,12 +125,3 @@
     </div>
 </div>
 </div>
-
-<script>
-
-        document.querySelector("#btnGenerarCXD").addEventListener('click',()=>{
-            console.log("clickkk btn x defecto");
-            location.reload();
-        });
-
-</script>

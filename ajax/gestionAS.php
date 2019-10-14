@@ -23,7 +23,7 @@
         echo json_encode("server sumi response ".$result);
 
     }
-    
+    //Se valida la actualización de la tabla de fehcas de generación de consumo. Btn para dar inicio a la generación de consumo.
     elseif(isset($_POST['UPDfgc'])){
         
         require_once "../controllers/adminController.php";

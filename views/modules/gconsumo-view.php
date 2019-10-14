@@ -1,7 +1,7 @@
 <?php
     /** 
-     * LA TABLA gconsumo (SE ACTUALIZA CUANDO SE GENERÓ RECIBO PARA ESE MES QUE SE ESTÁ ACTUALIZANDO).
-     * funciones para modulo gestion de consumo 
+     * ----LA TABLA gconsumo (SE ACTUALIZA CUANDO SE GENERÓ RECIBO PARA ESE MES QUE SE ESTÁ ACTUALIZANDO).
+     * ----funciones para modulo gestion de consumo 
      * Si el mes es diferente => 
      * evaluar (gc_con_medidor = true && gc_sin_medidor = true) =>
      * Actualizar Tabla 'estado_mes_recibo' con: mes, año actual y con_medidor=false && sin_medidor=false
