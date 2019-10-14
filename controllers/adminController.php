@@ -185,7 +185,10 @@
 			$fecha_hoy = [
 				"anio"  => date("Y"),
 				"mes"   => date("n"),
-				"dia"   => date("d")
+				"dia"   => date("d"),
+				"hora" 	=> date("H"),
+				"minuto" 	=> date("i"),
+				"segundo" 	=> date("s"),
 			];
 			return $fecha_hoy;
 		}
@@ -323,6 +326,45 @@
 
 
 
-        }
+		}
+		
+
+		public function insertarConsumoSnMController(){
+			/**
+			 * Obtener los registros de todos los sumi. que no tengan Medidor.
+			 * Generar los codigos para la factura_recibo. (cod_sum + anio + mes)
+			 * insertar los datos e la taba factura. 
+			 */
+			$fecha_actual = self::consultar_fecha_actual();
+			$dia_v = $fecha_actual['dia']+10;
+
+			$query = "SELECT * FROM suministro WHERE tiene_medidor = 0";
+			$regSumiSnMed = mainModel::execute_single_query($query);
+
+			$Datos = array(
+				"codigos" => [
+					'suministro'=>[],					
+				],
+				"datosAdi"=>[
+					'anio'=>$fecha_actual['anio'],
+					'mes'=>$fecha_actual['mes'],
+					'fecha_e'=>"{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$fecha_actual['dia']}",
+					'hora_e'=>"{$fecha_actual['hora']}:{$fecha_actual['minuto']}:{$fecha_actual['segundo']}",
+					'fecha_v'=>"{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$dia_v}",
+					'consumo'=>0,
+					'monto'=>4.2
+				]);
+
+			$listCodSum = [];			
+			while($regis = $regSumiSnMed->fetch()){
+				$listCodSum[] = $regis['cod_suministro'];				
+			}
+			$Datos['codigos']['suministro'] = $listCodSum;	
+			
+			$result = adminModel::insertarConsumoSnMModel($Datos);
+
+			return $result;
+		}
+
 
 	}

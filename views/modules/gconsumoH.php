@@ -11,13 +11,25 @@
         <a href="#" id="btnGenerarCXD" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> 
             GENERAR CONSUMO X DEFECTO
         </a>
+        <br>
+        <br>
     <?php 
         }else{
-            echo "Ya se genero por defecto";
+            echo '
+                <div class="alert alert-success lead" role="alert">
+                    YA SE GENERO CONSUMO 4.20
+                </div>
+
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Muy bien!</h4>
+                    <p>Se generaron los consumos para los suministros sin medidor .</p>
+                    <hr>
+                    <p class="mb-0">Ahora toca llenar los consumos para los suministros con medidor!!</p>
+                </div>   
+                ';
         } 
     ?>
-
-    
+  
 </div>
 
 
@@ -28,12 +40,17 @@
             <ul class="nav nav-tabs">
                 <li class="active">
                     <a href="#tab_consultar" data-toggle="tab">
-                        Tab A ******
+                        Suministros con medidor 
                         <?php 
-                                echo $tabla_consumo?"FALTA GENERAR CONSUMOS":"YA SE GENERÓ LOS CONSUMOS";
+                            // echo $tabla_consumo?"FALTA GENERAR CONSUMOS":"YA SE GENERÓ LOS CONSUMOS";
+                        ?>
+                        <?php 
+                            echo $tabla_consumo?'<span class="text-danger "> FALTA</span>':'<span class="text-success blockquote"> LISTO!!</span>';
                         ?>
                     </a>
                 </li>
+                
+                
             </ul>
         </div>
         <br>

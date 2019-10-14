@@ -181,7 +181,7 @@ function actualizarTabla_gconsumo(){
 function generarConsumoSinMedidor(){
 	document.querySelector("#btnGenerarCXD").addEventListener('click',()=>{
 		let optionData = new FormData();
-		optionData.append("OPTION","GCSMedi");
+		optionData.append("OPTION","GCSnMedi");
 
 		fetch('../ajax/gestionRcbAjax.php',{
 			method:'POST',
@@ -189,10 +189,13 @@ function generarConsumoSinMedidor(){
 		}).then(res => res.json())
 		.then(data=>{
 			console.log(data);
+			if(data)
+				location.reload();
+			
 		});
 
-		console.log("clickkk btn x defecto");
-		//location.reload();
+		console.log("click en btn consumo x defecto");
+		
 	});
 }
 
