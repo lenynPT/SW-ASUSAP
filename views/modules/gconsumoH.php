@@ -47,10 +47,8 @@
                         <?php 
                             echo $tabla_consumo?'<span class="text-danger "> FALTA</span>':'<span class="text-success blockquote"> LISTO!!</span>';
                         ?>
-                    </a>
-                </li>
-                
-                
+                    </a>                    
+                </li>                                
             </ul>
         </div>
         <br>
@@ -67,13 +65,43 @@
                                     <label for="buscar" class="control-label">Buscar:</label>
                                 </div>
                                 <div class="col-xs-4">
-                                    <input  type="text" name="buscar" id="buscar" class="form-control" onkeyup="listar_gconsumo(this.value);" placeholder="Ingrese Cod. Suministro o Nombre"/>
+                                    <input  type="text" name="buscar" id="buscar" class="form-control" onkeyup="generarConsumoConMedidor(this.value)" placeholder="Ingrese Cod. Suministro o Nombre"/>
                                 </div>
                             </div>
                             <div class="form-group" id="datos-resultGC">
-                                    <div class="card-body" id="container">
+                                    <div class="card-body table-responsive" id="container">
+
+<table class="table">
+  <caption>List of users</caption>
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Suministro</th>
+      <th scope="col">Direccion</th>
+      <th scope="col">Psj.</th>
+      <th scope="col">Nro</th>
+      <th scope="col">Asociado</th>
+      <th scope="col">Monto</th>
+      <th scope="col">CONSUMO</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>70598957-0</td>
+      <td>Av. los libertadores</td>
+      <td>Psj. Grau</td>
+      <td>123</td>
+      <td>Kevin quispe lima</td>      
+      <td>12</td>
+      <td>12</td>
+    </tr>
+  </tbody>
+</table>                                    
                                     </div>
-                                    <div id="lista"></div>
+                                    <div id="lista">
+                                    
+                                    </div>
                             </div>
 
                         </div>

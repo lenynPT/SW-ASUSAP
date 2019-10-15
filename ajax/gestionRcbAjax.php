@@ -19,7 +19,15 @@
 
             }    
         
-        
+            if($_POST['OPTION'] == 'GCCnMedi'){
+                
+                $codigoSum = $_POST['codigo_sum'];
+
+                $regSumi = new adminController();
+                $response = $regSumi->datosSumiAsocController($codigoSum);
+
+                echo json_encode($response);
+            }
         
         
         }

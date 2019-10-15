@@ -199,4 +199,42 @@ function generarConsumoSinMedidor(){
 	});
 }
 
+function generarConsumoConMedidor(value){
+	console.log("hola ",value);
+
+	let optionData = new FormData();
+	optionData.append('OPTION',"GCCnMedi");
+	optionData.append("codigo_sum",value);
+	
+	fetch("../ajax/gestionRcbAjax.php",{
+		method:"POST",
+		body:optionData
+	}).then(res=>res.json())
+	.then(data=>{
+		console.log(data);
+		htmlSumi=`
+				<table class='mx-4 table-bordered table-responsive'>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Suministro</th>
+							<th>Dirección</th>
+							<th>Pasaje</th>
+							<th>Nro</th>
+							<th>Nombre</th>
+							<th>Apellido</th>
+							<th>CONSUMO</th>
+							<th>MONTO</th>
+						</tr>
+					</thead>
+					<tbody>`;
+		htmlSumi+=` </tbody> </table>`;
+
+		document.querySelector("#container").innerHTML = htmlSumi;
+		//$("#container").html(htmlSumi);
+		
+	});
+
+}
+
 InsertarSuministro();

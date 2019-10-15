@@ -366,5 +366,25 @@
 			return $result;
 		}
 
+		public function datosSumiAsocController($codigoSum){
+			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido 
+					FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni WHERE suministro.tiene_medidor = 0  AND suministro.cod_suministro LIKE '%$codigoSum%'";			
+			$regSumiCnMed = mainModel::execute_single_query($query);
+			
+			$rsptRegist = [];						
+			while($rgs = $regSumiCnMed->fetch()){
+				$rsptRegist[] = [
+					"codigo_sum"=>$rgs['cod_suministro'],
+					"direccion"=>$rgs['direccion'],
+					"pasaje"=>$rgs['pasaje'],
+					"casa_nro"=>$rgs['casa_nro'],
+					"nombre"=>$rgs['nombre'],
+					"apellido"=>$rgs['apellido']
+				];
+			}		
+			
+			return $rsptRegist;
+		}
+
 
 	}
