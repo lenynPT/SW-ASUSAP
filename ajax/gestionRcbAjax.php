@@ -28,6 +28,20 @@
 
                 echo json_encode($response);
             }
+
+            else if($_POST['OPTION'] == 'insertGCCnM'){
+
+                $arrData = [
+                    "cod_sum"=>$_POST['cod_sum'],
+                    "consumo"=>$_POST['consumo'],
+                    "monto"=>$_POST['monto']                    
+                ];
+
+                $respInsert = new adminController();
+                $response = $respInsert->insertarCSumCnMController($arrData);
+
+                echo json_encode($response);
+            }
         
         
         }

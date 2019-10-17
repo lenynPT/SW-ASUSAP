@@ -44,9 +44,11 @@
                         <?php 
                             // echo $tabla_consumo?"FALTA GENERAR CONSUMOS":"YA SE GENERÓ LOS CONSUMOS";
                         ?>
-                        <?php 
-                            echo $tabla_consumo?'<span class="text-danger "> FALTA</span>':'<span class="text-success blockquote"> LISTO!!</span>';
-                        ?>
+                        <span id="alertOfCompl">
+                            <?php 
+                                echo $tabla_consumo?'<span class="text-danger "> FALTA</span>':'<span class="text-success blockquote"> LISTO!!</span>';
+                            ?>
+                        </span>
                     </a>                    
                 </li>                                
             </ul>

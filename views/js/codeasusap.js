@@ -1,4 +1,4 @@
-console.log("probando...Codeasusap.js");
+console.log("arrancando->Codeasusap.js");
 actualizarTabla_gconsumo();
 busacarAsocBtn();
 generarConsumoSinMedidor();
@@ -101,7 +101,7 @@ function InsertarSuministro(){
 
  	let el =  document.getElementById("btnisum")
 	if(el){
-
+		console.log("funcion insertarSuministro");
 		el.addEventListener('click',(e)=>{
 			e.preventDefault();
 
@@ -161,8 +161,7 @@ function InsertarSuministro(){
 				});
 			})
 		});
-		
-		console.log("funcion de insert suministro");
+				
 	}
 }
 
@@ -223,7 +222,7 @@ function generarConsumoSinMedidor(){
 }
 
 function generarConsumoConMedidor(value){
-	console.log("hola ",value);
+	console.log("Fn->generarConsumoConMedidor",value);
 
 	let optionData = new FormData();
 	optionData.append('OPTION',"GCCnMedi");
@@ -234,7 +233,15 @@ function generarConsumoConMedidor(value){
 		body:optionData
 	}).then(res=>res.json())
 	.then(data=>{
-		
+
+		if(data==false){
+			//crear boton de reinicio. reload
+			console.log("MSJ DE LISTO - TERMINADO!!")
+			document.querySelector("#alertOfCompl").innerHTML = `<span class="text-success blockquote"> LISTO!!</span>`;
+			document.querySelector("#rspSumi").innerHTML = '';
+			return null;
+		}
+
 		let htmlSumi = ``;
 		let nmracion = 0;		
 		data.forEach(element => {			
@@ -278,12 +285,29 @@ function cogerConsumo(value,cod_sum){
 		cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Cancel'		
 	}).then(()=>{
 		//Cuando le de la opción de ok
-		console.log("le dio aceptar");
+		console.log("le dio aceptar",consumo,cod_sum);
 		//document.querySelector("#rspSumi").innerHTML = "--->>"+cod_sum;
-		let inputCode = document.querySelector("#buscar").value;
-		generarConsumoConMedidor(inputCode);
+		let monto = generarMonto(consumo);
+		/*
+		*/
+		dataS = new FormData();
+		dataS.append("consumo",consumo);
+		dataS.append("cod_sum",cod_sum);
+		dataS.append("monto",monto);
+		dataS.append("OPTION","insertGCCnM");
 		
-		//location.reload();
+		fetch('../ajax/gestionRcbAjax.php',{
+			method:'POST',
+			body:dataS
+		})
+		.then(res => res.json())
+		.then(data=>{
+			console.log("->",data);
+			
+			//actualizar tabla 
+			let inputCode = document.querySelector("#buscar").value;
+			generarConsumoConMedidor(inputCode);
+		});
 
 	},function(){
 		//si no le da a la opcion de aceptar
@@ -292,4 +316,9 @@ function cogerConsumo(value,cod_sum){
 
 		//location.reload();
 	});
+}
+
+//escribir algoritmo para generar el monto con respecto al consumo ingresado
+function generarMonto(consumo){
+	return consumo*2;
 }

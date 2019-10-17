@@ -407,6 +407,10 @@
 				-----
 				SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro WHERE suministro.cod_suministro LIKE '%74%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE suministro.tiene_medidor=1 AND suministro.estado_corte=0 AND factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
 				*/
+			//comprueba si aún falta suministros con medidor por registrar.
+			if(self::completadoGCSumCnM()){
+				return false;
+			}
 
 			$fecha_actual = self::consultar_fecha_actual();
 			$anio_hoy=$fecha_actual['anio'];
@@ -437,6 +441,55 @@
 			}		
 			
 			return $rsptRegist;
+		}
+
+		public function insertarCSumCnMController($dataController){
+			
+			
+			$fecha_actual = self::consultar_fecha_actual();
+
+			$Diasum = $fecha_actual['dia'] + 10;
+			$dia_v = ($Diasum<28)? $Diasum:28;
+
+			$anio_hoy=$fecha_actual['anio'];
+			$mes_hoy=$fecha_actual['mes'];
+			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
+
+			$dataModal = [				
+				'anio'=>$FConsumo['anio_GC'],
+				'mes'=>$FConsumo['mes_GC'],
+				'fecha_e'=>"{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$fecha_actual['dia']}",
+				'hora_e'=>"{$fecha_actual['hora']}:{$fecha_actual['minuto']}:{$fecha_actual['segundo']}",
+				'fecha_v'=>"{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$dia_v}",
+				'consumo'=>$dataController['consumo'],
+				'monto'=>$dataController['monto'],
+				'cod_sum'=>$dataController['cod_sum']
+			];			
+
+
+			$responseModel = adminModel::insertarCSumCnMModel($dataModal);
+			return $responseModel;
+
+		}
+
+		protected function completadoGCSumCnM(){
+			$fecha_actual = self::consultar_fecha_actual();
+			$anio_hoy=$fecha_actual['anio'];
+			$mes_hoy=$fecha_actual['mes'];
+			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
+
+			$query = "SELECT suministro.cod_suministro FROM suministro 
+					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro
+					NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo 
+					INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro 
+					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte=0 
+					AND factura_recibo.mes = {$FConsumo['mes_GC']} AND factura_recibo.anio = {$FConsumo['anio_GC']})";
+			$regResult = mainModel::execute_single_query($query);
+			if($regResult->rowCount() == 0){
+				$rs = adminModel::actualizarEGcnConsumoModel();
+				return true;
+			}
+			return false;
 		}
 
 

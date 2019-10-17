@@ -106,12 +106,13 @@
 			$stmt = mainModel::execute_single_query($query);
 			return true;
 		}
+
 		protected function actualizarEGsnConsumoModel(){
 			$query = "UPDATE estado_gonsumo SET sin_medidor=1 WHERE id = 0";
 			$stmt = mainModel::execute_single_query($query);
 			return true;
 		}
-		protected function actualizarEGcnConsumoModel(){
+		public function actualizarEGcnConsumoModel(){
 			$query = "UPDATE estado_gonsumo SET con_medidor=1 WHERE id = 0";
 			$stmt = mainModel::execute_single_query($query);
 			return true;
@@ -192,6 +193,20 @@
 			//return $dataModel['codigos']['suministro'];
 			return true;
 
+		}
+
+		protected function insertarCSumCnMModel($dataModel){
+
+			$query = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
+					VALUES (NULL, :anio, :mes, '{$dataModel['fecha_e']}', '{$dataModel['hora_e']}', '{$dataModel['fecha_v']}', {$dataModel['consumo']}, {$dataModel['monto']}, 0, 0, :suministro_cod_suministro)";
+			$stmt = mainModel::connect()->prepare($query);
+			$stmt->bindParam(":anio",$dataModel['anio']);
+			$stmt->bindParam(":mes",$dataModel['mes']);	
+			$stmt->bindParam(":suministro_cod_suministro",$dataModel['cod_sum']);
+			
+			$stmt->execute();
+
+			return true;
 		}
 
 
