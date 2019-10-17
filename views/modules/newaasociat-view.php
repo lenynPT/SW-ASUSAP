@@ -306,7 +306,8 @@
                                                 <th class="text-center">dirección</th>
                                                 <th class="text-center">Categoria</th>
                                                 <th class="text-center">Medidor</th>
-                                                <th class="text-center">Corte</th>                                            </tr>
+                                                <th class="text-center">Corte</th>                                            
+                                            </tr>
                                         </thead>
                                         <tbody class="responseSumi">
                                             <tr>

@@ -92,10 +92,24 @@
 			return $msj;
 		}
 
+		protected function obtenerFechasConsumo($anio,$n_mes){
+			$r_anio = $anio;
+			$r_mes = $n_mes - 1;
+
+			if($n_mes == 1 ){
+				$r_mes = 12;
+				$r_anio -= 1;
+			}
+			return [
+				"anio_GC"=>$r_anio,
+				"mes_GC"=>$r_mes
+			];
+		}
 		public function obtenerNombrefecha($anio,$n_mes){
 			$r_anio = $anio;
 			$r_mes = "";
 			if($n_mes <= 0){
+				//para controlar los mensajes referidos a la generación de consumo para el mes ya generado(-2 mes), y para el mes que falta generar(-1 mes). 
 				if($n_mes == 0){
 					$r_mes = "Diciembre";
 					$r_anio -=1;
@@ -328,16 +342,25 @@
 
 		}
 		
-
+		/**
+		 * FUNCION que inserta los consumos del mes anterior para los suministros sin medidor
+		 */
 		public function insertarConsumoSnMController(){
 			/**
 			 * Obtener los registros de todos los sumi. que no tengan Medidor.
 			 * Generar los codigos para la factura_recibo. (cod_sum + anio + mes)
 			 * insertar los datos e la taba factura. 
 			 */
+			//(x)FALTA TERMINAR CON LAS FECHAS... ANALIZAR PARA MES DE ENERO - OJO-> Parece que ya se Creo una solución con un metodo para fechas escrito anteriormente <-OJO. 
 			$fecha_actual = self::consultar_fecha_actual();
-			$dia_v = $fecha_actual['dia']+10;
 
+			$Diasum = $fecha_actual['dia'] + 10;
+			$dia_v = ($Diasum<28)? $Diasum:28;
+
+			$anio_hoy=$fecha_actual['anio'];
+			$mes_hoy=$fecha_actual['mes'];
+			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
+			
 			$query = "SELECT * FROM suministro WHERE tiene_medidor = 0";
 			$regSumiSnMed = mainModel::execute_single_query($query);
 
@@ -346,8 +369,8 @@
 					'suministro'=>[],					
 				],
 				"datosAdi"=>[
-					'anio'=>$fecha_actual['anio'],
-					'mes'=>$fecha_actual['mes'],
+					'anio'=>$FConsumo['anio_GC'],
+					'mes'=>$FConsumo['mes_GC'],
 					'fecha_e'=>"{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$fecha_actual['dia']}",
 					'hora_e'=>"{$fecha_actual['hora']}:{$fecha_actual['minuto']}:{$fecha_actual['segundo']}",
 					'fecha_v'=>"{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$dia_v}",
@@ -367,8 +390,38 @@
 		}
 
 		public function datosSumiAsocController($codigoSum){
+			/*	antiguoo
+				SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido 
+					FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni WHERE suministro.tiene_medidor = 0  AND suministro.cod_suministro LIKE '%$codigoSum%'
+				----->>>
+				SELECT * FROM suministro 
+				LEFT JOIN factura_recibo 
+				ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro 
+				WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND 
+				suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
+				FROM factura_recibo WHERE factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
+				----------
+				SELECT * FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro WHERE suministro.cod_suministro LIKE '%74%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo WHERE factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
+				-----------
+				SELECT * FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro WHERE suministro.cod_suministro LIKE '%74%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE suministro.tiene_medidor=1 AND suministro.estado_corte=0 AND factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
+				-----
+				SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro WHERE suministro.cod_suministro LIKE '%74%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE suministro.tiene_medidor=1 AND suministro.estado_corte=0 AND factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
+				*/
+
+			$fecha_actual = self::consultar_fecha_actual();
+			$anio_hoy=$fecha_actual['anio'];
+			$mes_hoy=$fecha_actual['mes'];
+			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
+
 			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido 
-					FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni WHERE suministro.tiene_medidor = 0  AND suministro.cod_suministro LIKE '%$codigoSum%'";			
+					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
+					LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro 
+					WHERE suministro.cod_suministro LIKE '%{$codigoSum}%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
+					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
+					FROM factura_recibo INNER JOIN suministro 
+					ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro 
+					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte=0 
+					AND factura_recibo.mes = {$FConsumo['mes_GC']} AND factura_recibo.anio = {$FConsumo['anio_GC']}) LIMIT 0,5";			
 			$regSumiCnMed = mainModel::execute_single_query($query);
 			
 			$rsptRegist = [];						
