@@ -50,9 +50,10 @@
 											<label for="listaCategoria" class="col-md-4 control-label">CATEGORIA</label>
 											<div class="col-md-12">
 												<select class="form-control" id="listaCategoria" name="categoriaAsoc">
-													<option>Domicilio</option>
+													<option>Domestico</option>
 													<option>Comercial</option>
-													<option>Social</option>
+													<option>Estatal</option>
+													<option>Industrial</option>
 												</select>
 											</div>											
                                         </div>
@@ -200,9 +201,10 @@
                                                         <label for="listaCategoriaSumi" class="col-md-4 control-label">CATEGORIA</label>
                                                         <div class="col-md-12">
                                                             <select class="form-control" id="listaCategoriaSumi" name="categoriaSumi">
-                                                                <option>Domicilio</option>
+                                                                <option>Domestico</option>
                                                                 <option>Comercial</option>
-                                                                <option>Social</option>
+                                                                <option>Estatal</option>
+                                                                <option>Industrial</option>
                                                             </select>
                                                         </div>
                                                     </div>

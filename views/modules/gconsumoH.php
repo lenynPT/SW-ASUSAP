@@ -87,8 +87,8 @@
                                                 <th scope="col">Nro</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="rspSumi">
-                                                <tr>
+                                            <tbody id="rspSumi">                                                
+                                                <!--<tr>
                                                     <th scope="row">1</th>
                                                     <td>70598957-0</td>
                                                     <td contenteditable="true" onBlur="cogerConsumo(this,'99-0')">12</td>
@@ -97,12 +97,9 @@
                                                     <td>Av. los libertadores</td>
                                                     <td>Psj. Grau</td>
                                                     <td>123</td>
-                                                </tr>
+                                                </tr>-->
                                             </tbody>
                                         </table>                                    
-                                    </div>
-                                    <div id="lista">
-                                    
                                     </div>
                             </div>
 

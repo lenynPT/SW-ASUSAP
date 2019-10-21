@@ -409,7 +409,7 @@
 				*/
 			//comprueba si aún falta suministros con medidor por registrar.
 			if(self::completadoGCSumCnM()){
-				return false;
+				return "LISTO";
 			}
 
 			$fecha_actual = self::consultar_fecha_actual();
@@ -417,7 +417,7 @@
 			$mes_hoy=$fecha_actual['mes'];
 			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
 
-			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido 
+			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, suministro.categoria_suministro, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
 					LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro 
 					WHERE suministro.cod_suministro LIKE '%{$codigoSum}%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
@@ -430,17 +430,35 @@
 			
 			$rsptRegist = [];						
 			while($rgs = $regSumiCnMed->fetch()){
+				$consm_ant = self::obtenerConsumoAnterior($rgs['cod_suministro'],$FConsumo['anio_GC'],$FConsumo['mes_GC']);
 				$rsptRegist[] = [
 					"codigo_sum"=>$rgs['cod_suministro'],
 					"direccion"=>$rgs['direccion'],
 					"pasaje"=>$rgs['pasaje'],
 					"casa_nro"=>$rgs['casa_nro'],
 					"nombre"=>$rgs['nombre'],
-					"apellido"=>$rgs['apellido']
+					"apellido"=>$rgs['apellido'],
+					"categoria"=>$rgs['categoria_suministro'],
+					"consm_ant"=>$consm_ant
 				];
 			}		
 			
 			return $rsptRegist;
+		}
+
+		public function obtenerConsumoAnterior($cod_sum,$anio,$mes){
+			$resltConsm=0;
+			$FCAnterior = self::obtenerFechasConsumo($anio,$mes);
+			$query = "SELECT factura_recibo.consumo FROM factura_recibo 
+				WHERE factura_recibo.suministro_cod_suministro = '{$cod_sum}' 
+				AND factura_recibo.anio = {$FCAnterior['anio_GC']} AND factura_recibo.mes={$FCAnterior['mes_GC']}
+			";
+			$dataConsm = mainModel::execute_single_query($query);
+			if($dataConsm->rowCount()==1){
+				$regConsm = $dataConsm->fetch();
+				$resltConsm = $regConsm['consumo'];
+			}
+			return $resltConsm;
 		}
 
 		public function insertarCSumCnMController($dataController){
@@ -491,6 +509,19 @@
 			}
 			return false;
 		}
+
+		public function obtenerRegXDirecController($data){
+			$query = "SELECT suministro.direccion FROM suministro WHERE suministro.direccion LIKE '%{$data['direccion']}%' GROUP BY suministro.direccion LIMIT 0, 4";
+			$result = mainModel::execute_single_query($query);
+
+			$arrDirec = [];
+			while($reg = $result->fetch()){
+				$arrDirec[] = [
+					"direccion"=>$reg['direccion']
+				];
+			}			
+			return $arrDirec;
+		}		
 
 
 	}

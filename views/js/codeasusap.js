@@ -234,7 +234,7 @@ function generarConsumoConMedidor(value){
 	}).then(res=>res.json())
 	.then(data=>{
 
-		if(data==false){
+		if(data=="LISTO"){
 			//crear boton de reinicio. reload
 			console.log("MSJ DE LISTO - TERMINADO!!")
 			document.querySelector("#alertOfCompl").innerHTML = `<span class="text-success blockquote"> LISTO!!</span>`;
@@ -249,7 +249,7 @@ function generarConsumoConMedidor(value){
 				<tr>
 					<th scope="row">${++nmracion}</th>
 					<td>${element.codigo_sum}</td>
-					<td contenteditable="true" onBlur="cogerConsumo(this,'${element.codigo_sum}')" style="background: #00aa9a;color: red;" autofocus>
+					<td contenteditable="true" onBlur="cogerConsumo(this,${element.consm_ant},'${element.codigo_sum}','${element.categoria}')" style="background: #00aa9a;color: red;" placeholder="0.0" autofocus>
 						0.0
 					</td>
 					<td>0.0</td>
@@ -267,58 +267,200 @@ function generarConsumoConMedidor(value){
 
 }
 
-function cogerConsumo(value,cod_sum){
-	//console.log("Click en campo consumo");
-	//console.log(value);
-	//console.log(value.innerHTML);
+function cogerConsumo(value, cons_ant, cod_sum, categoria){
+
+	//realizar el repintado por si habia cometido un error.
+	value.style.background = "#00aa9a";
+	value.style.color = "red";
+
+
 	let consumo = value.innerHTML;
+	consumo = consumo.replace(",",".");
+	consumo_df = eval(consumo - cons_ant);//diferencia de consumo ingresado y el consumo del mes anterior
+	consumo_df = Number(consumo_df.toFixed(2));// determinanod la cantidad de decimales.	
+	let monto = generarMonto(consumo_df,categoria);
+
+	//si distinto de false, el monto es valido
+	if(monto['res']!=false){
 
 	//MENSAJE DE ALERTA PARA INSERTAR CONSUMO O NO :d
-	swal({
-		title: "¿Ejecutar esta acción?",
-		text: "CONSUMO: " + consumo + "<br>USUARIO: " + cod_sum,
-		type: "info",				
-		confirmButtonColor: '#03A9F4',		  		
-		confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',		
-		showCancelButton: true,
-		cancelButtonColor: '#F44336',
-		cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Cancel'		
-	}).then(()=>{
-		//Cuando le de la opción de ok
-		console.log("le dio aceptar",consumo,cod_sum);
-		//document.querySelector("#rspSumi").innerHTML = "--->>"+cod_sum;
-		let monto = generarMonto(consumo);
-		/*
-		*/
-		dataS = new FormData();
-		dataS.append("consumo",consumo);
-		dataS.append("cod_sum",cod_sum);
-		dataS.append("monto",monto);
-		dataS.append("OPTION","insertGCCnM");
-		
-		fetch('../ajax/gestionRcbAjax.php',{
-			method:'POST',
-			body:dataS
-		})
-		.then(res => res.json())
-		.then(data=>{
-			console.log("->",data);
+		swal({
+			title: "¿Ejecutar esta acción?",
+			text: "CONSUMO: "+ consumo +"<br>USUARIO: " + cod_sum + "<br>MONTO: " + monto.valor,
+			type: "info",				
+			confirmButtonColor: '#03A9F4',		  		
+			confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',		
+			showCancelButton: true,
+			cancelButtonColor: '#F44336',
+			cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Cancel'		
+		}).then(()=>{
+			//Cuando le de la opción de ok
+			console.log("le dio aceptar",consumo,cod_sum);
+			//document.querySelector("#rspSumi").innerHTML = "--->>"+cod_sum;				
+			/*
+			*/
+			dataS = new FormData();
+			dataS.append("consumo",consumo.valor);
+			dataS.append("cod_sum",cod_sum);
+			dataS.append("monto",monto.valor);
+			dataS.append("OPTION","insertGCCnM");
 			
-			//actualizar tabla 
-			let inputCode = document.querySelector("#buscar").value;
-			generarConsumoConMedidor(inputCode);
+			fetch('../ajax/gestionRcbAjax.php',{
+				method:'POST',
+				body:dataS
+			})
+			.then(res => res.json())
+			.then(data=>{
+				console.log("->",data);
+				
+				//actualizar tabla 
+				let inputCode = document.querySelector("#buscar").value;
+				generarConsumoConMedidor(inputCode);
+			});
+		
+		},function(){
+			//si no le da a la opcion de aceptar
+			console.log("No le dió aceptar")
+			//value.innerHTML = 0;
+			//location.reload();
 		});
 
-	},function(){
-		//si no le da a la opcion de aceptar
-		console.log("No le dió aceptar")
-		value.innerHTML = 0;
-
-		//location.reload();
-	});
+	}else{
+		//color de ERROR para cuando ingrese un consumo invalido
+		if(monto.option == 'negativo'){
+			value.style.background = "orange";
+			value.style.color = "white";		
+		}else if(monto.option == 'invalido'){
+			value.style.background = "red";
+			value.style.color = "white";
+		}else{
+			value.style.background = "red";
+			value.style.color = "white";			
+		}
+		console.log("no p",value);
+	}
 }
 
 //escribir algoritmo para generar el monto con respecto al consumo ingresado
-function generarMonto(consumo){
-	return consumo*2;
+function generarMonto(consumo, categoria){
+	//validando que sea un efectivamente un número valido. 
+	if(!isNaN(parseFloat(consumo)) && isFinite(consumo)){
+		if(consumo>=0){
+			let calcMonto = 0, calcPrev = 0, igv = 0.18;
+			if(categoria == 'Domestico'){
+				consumo-=20;
+				calcMonto += 4.20;
+				if(consumo > 0){
+					if(consumo <= 20){
+						sumaMonto = consumo*0.60;
+						calcMonto += sumaMonto + sumaMonto*igv;						
+					}else{
+						consumo -= 20;
+						calcPrev = 20*0.60;
+						calcMonto += calcPrev + calcPrev*igv;
+
+						sumaMonto = consumo*0.95;
+						calcMonto += sumaMonto+sumaMonto*igv;
+					}
+				}
+
+			}
+			else if(categoria == 'Comercial'){
+				if(consumo <= 20){
+					calcMonto = 10.00;
+				}else{
+					consumo-=20;
+					calcMonto = 10.00;
+
+					calcPrev = consumo*0.95;
+					calcMonto += calcPrev + calcPrev*igv;
+				}
+			}
+			else if(categoria == 'Estatal'){
+				if(consumo <= 20){
+					calcMonto = 12.00;
+				}else{
+					consumo-=20;
+					calcMonto = 12.00;
+
+					calcPrev = consumo*0.95;
+					calcMonto += calcPrev + calcPrev*igv;
+				}
+			}
+			else if(categoria == 'Industrial'){
+				calcPrev = consumo*2.00;
+				calcMonto = calcPrev + calcPrev*igv;
+			}
+			calcMonto = Number(calcMonto.toFixed(1));
+			return {res:true, valor:calcMonto};
+
+		}else{
+			return {res:false, option:'negativo'};
+		}
+	}
+	return {res:false, option:'invalido'};
 }
+
+
+
+/***************** EVENTOS GENERAR RECIBOS **************************** */
+
+function GRbuscarXdireccion(){
+	let el = document.querySelector("#nombreDirec");
+	if(el){
+		$option_anio = document.querySelector('#fecha_anio');
+		$option_mes = document.querySelector('#fecha_mes');
+		
+		//Linpiando tabla y buscador
+		{
+			$option_anio.addEventListener('click',()=>{
+				el.value = '';
+				document.querySelector("#resTablaRD").innerHTML = '';
+			})
+			$option_mes.addEventListener('click',()=>{
+				el.value = '';
+				document.querySelector("#resTablaRD").innerHTML = '';
+			})
+		}
+		
+		console.log(el);
+		el.addEventListener("keyup",function(){
+			//console.log("keyup",this.value);
+			console.log($option_anio.value);
+			console.log($option_mes.value);
+
+			let nombreDireccion = this.value;
+
+			let data = new FormData();
+			data.append('OPTION','buscarRD');
+			data.append('nombreDirec',nombreDireccion);
+			data.append('anio',$option_anio.value);
+			data.append('mes',$option_mes.value);
+
+			fetch('../ajax/gestionRcbAjax.php',{
+				method:'POST',
+				body:data
+			}).then(res => res.json())
+			.then(rdata=>{
+				console.log(rdata);
+				//imprimir tabla
+
+				$htmlRecib=``;
+				let cont = 0;
+				rdata.forEach(element=>{
+					$htmlRecib += `
+						<tr>
+							<td>${++cont}</td>
+							<td>${element.direccion}</td>          
+							<td><a href="../reportes/rxd.php?direccion=${element.direccion}&anio=${$option_anio.value}&mes=${$option_mes.value}" class="btn btn-info btn-raised btn-xs" target="_blank">G. Recibo</a></td>
+						</tr>
+					`;					
+				});
+
+				document.querySelector("#resTablaRD").innerHTML = $htmlRecib;
+
+			})
+		});
+	}
+}
+GRbuscarXdireccion();

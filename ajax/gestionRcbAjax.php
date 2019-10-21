@@ -42,6 +42,19 @@
 
                 echo json_encode($response);
             }
+            
+            else if($_POST['OPTION'] == 'buscarRD'){
+                //solo se está usando la direccion
+                $dataController = [
+                    "direccion"=>$_POST['nombreDirec'],
+                    "anio",$_POST['anio'],
+                    "mes",$_POST['mes']
+                ];
+                $respRegDirec = new adminController();
+                $response = $respRegDirec->obtenerRegXDirecController($dataController);
+            
+                echo json_encode($response);
+            }            
         
         
         }
