@@ -300,7 +300,7 @@ function cogerConsumo(value, cons_ant, cod_sum, categoria){
 			/*
 			*/
 			dataS = new FormData();
-			dataS.append("consumo",consumo.valor);
+			dataS.append("consumo",consumo);
 			dataS.append("cod_sum",cod_sum);
 			dataS.append("monto",monto.valor);
 			dataS.append("OPTION","insertGCCnM");
