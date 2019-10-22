@@ -548,4 +548,16 @@
 		}		
 
 
+		//consulta de suministros con corte
+		public function obtenerRegSumCnCorteController($cod_sum){
+			$query = "SELECT * FROM suministro WHERE estado_corte=1 AND cod_suministro LIKE '%$cod_sum%' LIMIT 0,15";
+			$arrReg = mainModel::execute_single_query($query);
+			$responseStruc = [];
+			while($reg = $arrReg->fetch(PDO::FETCH_ASSOC)){
+				$responseStruc[] = $reg;
+			}
+			return $responseStruc;
+		}
+
+
 	}

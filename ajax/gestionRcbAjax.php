@@ -59,7 +59,15 @@
                 $response = $respRegDirec->obtenerRegXDirecController($dataController);
             
                 echo json_encode($response);
-            }            
+            }        
+            
+            else if ($_POST['OPTION'] == 'bscSumCnCorte'){
+                $cod_sum = $_POST['infoDBsqd'];
+                $dataRes = new adminController();
+                $response = $dataRes->obtenerRegSumCnCorteController($cod_sum);
+
+                echo json_encode($response);
+            }
         
         
         }

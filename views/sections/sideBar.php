@@ -40,7 +40,10 @@
 						<a href="<?php echo SERVERURL; ?>erecibo/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Emitir Recibo</a>
 					</li>
 					<li>
-                        <a href="<?php echo SERVERURL; ?>crecibo/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i><i class="zmdi zmdi-money zmdi-hc-fw"></i> Cobros Recibo</a>
+                        <a href="<?php echo SERVERURL; ?>crecibo/"> <i class="zmdi zmdi-money zmdi-hc-fw"></i> Cobros Recibo</a>
+					</li>
+					<li>
+                        <a href="<?php echo SERVERURL; ?>vercorte/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> Con Cortes</a>
 					</li>
 
 				</ul>

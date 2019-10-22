@@ -401,8 +401,57 @@ function generarMonto(consumo, categoria){
 	return {res:false, option:'invalido'};
 }
 
+//btn Buscar suministro con CORTE
+function buscarSumiConCorte(){	
+	let el = document.querySelector("#btnBuscarSumCorte");
+	if(el){
+		console.log("coem");			
+		actualizarTablaConCorte("");
+		el.addEventListener('keyup',function(){	
+			console.log(this.value);			
+			actualizarTablaConCorte(this.value);
+		});
+	}
+}
+function actualizarTablaConCorte($bsc_cod){
+	//traer toda la tabla completa con limit 10
+	let restbl = document.querySelector("#tblSumCorte");
+	let data = new FormData();
+	data.append('OPTION','bscSumCnCorte')
+	data.append('infoDBsqd',$bsc_cod)
+	fetch("../ajax/gestionRcbAjax.php",{
+		method:'post',
+		body:data
+	}).then(res => res.json())
+	.then(data=>{
+		console.log(data);
+		let htmlRS = ``;
+		let num = 0;
+		data.forEach(element => {
+			htmlRS += `
+					<tr>
+						<th scope="row">${++num}</th>
+						<td>${element.asociado_dni}</td>
+						<td>${element.cod_suministro}</td>
+						<td>${element.direccion}</td>
+						<td class="" >                            
+							
+							<button type="button" class="btn btn-danger">
+								En corte
+							</button>                     
+						</td>
+						<td>
+							<a href="#" class="btn btn-success btn-raised btn-md">Restaurar</a>
+						</td>
+					</tr>	
+			`;
+		});
+		restbl.innerHTML = htmlRS;
+	});
 
+}
 
+buscarSumiConCorte()
 /***************** EVENTOS GENERAR RECIBOS **************************** */
 
 function GRbuscarXdireccion(){
