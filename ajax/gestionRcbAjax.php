@@ -40,7 +40,12 @@
                 $respInsert = new adminController();
                 $response = $respInsert->insertarCSumCnMController($arrData);
 
-                echo json_encode($response);
+                //actualizar contador_deuda + 1
+                if($response){
+                    $ok = $respInsert->actualizarContadorDeudaController($arrData['cod_sum']);
+                }
+
+                echo json_encode($ok);
             }
             
             else if($_POST['OPTION'] == 'buscarRD'){

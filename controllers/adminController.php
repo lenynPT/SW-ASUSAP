@@ -361,7 +361,7 @@
 			$mes_hoy=$fecha_actual['mes'];
 			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
 			
-			$query = "SELECT * FROM suministro WHERE tiene_medidor = 0";
+			$query = "SELECT cod_suministro FROM suministro WHERE tiene_medidor = 0 AND estado_corte = 0";
 			$regSumiSnMed = mainModel::execute_single_query($query);
 
 			$Datos = array(
@@ -380,7 +380,13 @@
 
 			$listCodSum = [];			
 			while($regis = $regSumiSnMed->fetch()){
-				$listCodSum[] = $regis['cod_suministro'];				
+				$listCodSum[] = $regis['cod_suministro'];	
+				
+				/**
+				 * Esto se debe de hacer en el Modelo por cuestiones de orden 
+				 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
+				 */
+				$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);			
 			}
 			$Datos['codigos']['suministro'] = $listCodSum;	
 			
@@ -488,6 +494,24 @@
 			$responseModel = adminModel::insertarCSumCnMModel($dataModal);
 			return $responseModel;
 
+		}
+		//cuando se realiza inserción de consumo
+		public function actualizarContadorDeudaController($cod_sum){
+			$cont_deuda=0;
+			$query = "SELECT suministro.contador_deuda FROM suministro WHERE suministro.cod_suministro =  '{$cod_sum}'";
+			$reg_deuda = mainModel::execute_single_query($query);
+			if($reg_deuda->rowCount()==1){
+				$rsdeud = $reg_deuda->fetch();
+				$cont_deuda = $rsdeud['contador_deuda'];
+				$cont_deuda++;
+			}
+			$query2 = "UPDATE suministro SET contador_deuda = $cont_deuda WHERE cod_suministro = '{$cod_sum}'";
+			$resqr2 = mainModel::execute_single_query($query2);
+			if($cont_deuda == 3){
+				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
+				$resqr3 = mainModel::execute_single_query($query3);
+			}
+			return $cont_deuda;
 		}
 
 		protected function completadoGCSumCnM(){
