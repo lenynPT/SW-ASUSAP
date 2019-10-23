@@ -2,7 +2,7 @@
 <div class="container-fluid">
     <div class="page-header">
         <h1 class="text-titles">                
-            <i class="zmdi zmdi-money-box zmdi-hc-fw"></i> GENERAR CONSUMO <small>para <b><?php echo "$FechaGConsumoNum $FechaGConsumo $FechLiteral[r_anio]"; ?></b></small>            
+            <i class="zmdi zmdi-money-box zmdi-hc-fw"></i> GENERAR CONSUMO <small>para <b><?php echo "$FechaGConsumo del $FechLiteral[r_anio]"; ?></b></small>            
         </h1>
     </div>
 </div>
@@ -31,10 +31,7 @@
     ?>
   
 </div>
-
-
-<div class="container-fluid">
-</div>
+<!--
     <div class="container" onload="listar_gconsumo('');">
         <div class="row form-horizontal">
             <ul class="nav nav-tabs">
@@ -46,7 +43,7 @@
                         ?>
                         <span id="alertOfCompl">
                             <?php 
-                                echo $tabla_consumo?'<span class="text-danger "> FALTA</span>':'<span class="text-success blockquote"> LISTO!!</span>';
+                                //echo $tabla_consumo?'<span class="text-danger "> FALTA</span>':'<span class="text-success blockquote"> LISTO!!</span>';
                             ?>
                         </span>
                     </a>                    
@@ -70,24 +67,26 @@
                                     <input  type="text" name="buscar" id="buscar" class="form-control" onkeyup="generarConsumoConMedidor(this.value)" placeholder="Ingrese Cod. Suministro o Nombre"/>
                                 </div>
                             </div>
-                            <div class="form-group" id="datos-resultGC">
-                                    <div class="card-body table-responsive" id="container">
-
-                                        <table class="table">
+                            <div class="card-body" > --><!--id="datos-resultGC" class="form-group"-->
+                                  <!--  <div class="table-responsive" >--><!--id="container"-->
+                                    <!--
+                                        <table class="table table-striped table-hover">
                                             <caption>Lista de suministros</caption>
                                             <thead>
                                                 <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Suministro</th>
-                                                <th scope="col">CONSUMO</th>
-                                                <th scope="col">Monto</th>
-                                                <th scope="col">Asociado</th>
-                                                <th scope="col">Direccion</th>
-                                                <th scope="col">Psj.</th>
-                                                <th scope="col">Nro</th>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Suministro</th>
+                                                    <th scope="col">CONSUMO</th>
+                                                    <th scope="col">Consumo Anterior</th>
+                                                    <th scope="col">Cant. Deudas</th>
+                                                    <th scope="col">Asociado</th>
+                                                    <th scope="col">Categoria</th>
+                                                    <th scope="col">Direccion</th>
+                                                    
                                                 </tr>
                                             </thead>
-                                            <tbody id="rspSumi">                                                
+                                            <tbody id="rspSumio">  
+                                        -->                                              
                                                 <!--<tr>
                                                     <th scope="row">1</th>
                                                     <td>70598957-0</td>
@@ -98,7 +97,7 @@
                                                     <td>Psj. Grau</td>
                                                     <td>123</td>
                                                 </tr>-->
-                                            </tbody>
+                                         <!--   </tbody>
                                         </table>                                    
                                     </div>
                             </div>
@@ -110,6 +109,68 @@
 
 
             </div>
-
-        </div><!-- tab content -->
+            
+        </div>--><!-- tab content -->
+        <!--
     </div>
+-->
+
+<div class="card">
+    <div class="card-header text-center">
+
+        <div class="row form-horizontal">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#tab_consultar" data-toggle="tab">
+                        Suministros con medidor 
+                        <?php 
+                            // echo $tabla_consumo?"FALTA GENERAR CONSUMOS":"YA SE GENERÓ LOS CONSUMOS";
+                        ?>
+                        <span id="alertOfCompl">
+                            <?php 
+                                echo $tabla_consumo?'<span class="text-danger "> FALTA</span>':'<span class="text-success blockquote"> LISTO!!</span>';
+                            ?>
+                        </span>
+                    </a>                    
+                </li>                                
+            </ul>
+        </div>
+        <br>
+
+                <div class="form-group row">
+                    <label for="btnBuscarSumCorte" class="col-sm-1 col-form-label"><i class="zmdi zmdi-search zmdi-hc-2x pull-left"></i></label>
+                    <div class="col-sm-11">                       
+                        <input  type="search" name="buscar" id="buscarSumCnM" class="form-control" onkeyup="generarConsumoConMedidor(this.value)" placeholder="Ingrese Cod. Suministro o Nombre"/>
+                    </div>
+                </div> 
+
+    </div>
+    <div class="card-body">        
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Suministro</th>
+                        <th scope="col">CONSUMO</th>
+                        <th scope="col">Consumo Anterior</th>
+                        <th scope="col">Cant. Deudas</th>
+                        <th scope="col">Asociado</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Direccion</th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="rspSumi">
+
+                </tbody>
+            </table>
+        </div> 
+    </div>
+
+    <div class="card-footer text-muted">
+
+    </div>
+
+</div>
+<hr>

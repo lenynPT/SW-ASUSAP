@@ -223,49 +223,55 @@ function generarConsumoSinMedidor(){
 
 function generarConsumoConMedidor(value){
 	console.log("Fn->generarConsumoConMedidor",value);
+	let el = document.querySelector('#buscarSumCnM');
+	if(el){
+		
+		let optionData = new FormData();
+		optionData.append('OPTION',"GCCnMedi");
+		optionData.append("codigo_sum",value);
+		
+		fetch("../ajax/gestionRcbAjax.php",{
+			method:"POST",
+			body:optionData
+		}).then(res=>res.json())
+		.then(data=>{
 
-	let optionData = new FormData();
-	optionData.append('OPTION',"GCCnMedi");
-	optionData.append("codigo_sum",value);
-	
-	fetch("../ajax/gestionRcbAjax.php",{
-		method:"POST",
-		body:optionData
-	}).then(res=>res.json())
-	.then(data=>{
+			if(data=="LISTO"){
+				//crear boton de reinicio. reload
+				console.log("MSJ DE LISTO - TERMINADO!!")
+				document.querySelector("#alertOfCompl").innerHTML = `<span class="text-success blockquote"> LISTO!!</span>`;
+				document.querySelector("#rspSumi").innerHTML = '';
+				return null;
+			}
 
-		if(data=="LISTO"){
-			//crear boton de reinicio. reload
-			console.log("MSJ DE LISTO - TERMINADO!!")
-			document.querySelector("#alertOfCompl").innerHTML = `<span class="text-success blockquote"> LISTO!!</span>`;
-			document.querySelector("#rspSumi").innerHTML = '';
-			return null;
-		}
+			let htmlSumi = ``;
+			let nmracion = 0;		
+			data.forEach(element => {			
+				htmlSumi +=`
+					<tr>
+						<th scope="row">${++nmracion}</th>
+						<td>${element.codigo_sum}</td>
+						<td contenteditable="true" onBlur="cogerConsumo(this,${element.consm_ant},'${element.codigo_sum}','${element.categoria}')" style="background: #00aa9a;color: red;" placeholder="0.0" autofocus>
+							0.0
+						</td>
+						<td>${element.consm_ant}</td>
+						<td>${element.contador_deuda}</td>
+						<td>${element.nombre} ${element.apellido}</td>      
+						<td>${element.categoria}</td>
+						<td>${element.direccion}</td>
 
-		let htmlSumi = ``;
-		let nmracion = 0;		
-		data.forEach(element => {			
-			htmlSumi +=`
-				<tr>
-					<th scope="row">${++nmracion}</th>
-					<td>${element.codigo_sum}</td>
-					<td contenteditable="true" onBlur="cogerConsumo(this,${element.consm_ant},'${element.codigo_sum}','${element.categoria}')" style="background: #00aa9a;color: red;" placeholder="0.0" autofocus>
-						0.0
-					</td>
-					<td>0.0</td>
-					<td>${element.nombre} ${element.apellido}</td>      
-					<td>${element.direccion}</td>
-					<td>${element.pasaje}</td>
-					<td>${element.casa_nro}</td>
-				</tr>
-			`;
+					</tr>
+				`;
+			});
+
+			document.querySelector("#rspSumi").innerHTML = htmlSumi;		
+			
 		});
 
-		document.querySelector("#rspSumi").innerHTML = htmlSumi;		
-		
-	});
+	}
 
 }
+generarConsumoConMedidor("");
 
 function cogerConsumo(value, cons_ant, cod_sum, categoria){
 
@@ -314,7 +320,7 @@ function cogerConsumo(value, cons_ant, cod_sum, categoria){
 				console.log("->",data);
 				
 				//actualizar tabla 
-				let inputCode = document.querySelector("#buscar").value;
+				let inputCode = document.querySelector("#buscarSumCnM").value;
 				generarConsumoConMedidor(inputCode);
 			});
 		
@@ -401,7 +407,7 @@ function generarMonto(consumo, categoria){
 	return {res:false, option:'invalido'};
 }
 
-//btn Buscar suministro con CORTE
+//---------------------btn Buscar suministro con CORTE
 function buscarSumiConCorte(){	
 	let el = document.querySelector("#btnBuscarSumCorte");
 	if(el){
@@ -424,24 +430,21 @@ function actualizarTablaConCorte($bsc_cod){
 		body:data
 	}).then(res => res.json())
 	.then(data=>{
-		console.log(data);
+		//console.log(data);
 		let htmlRS = ``;
 		let num = 0;
 		data.forEach(element => {
 			htmlRS += `
 					<tr>
 						<th scope="row">${++num}</th>
-						<td>${element.asociado_dni}</td>
 						<td>${element.cod_suministro}</td>
+						<td>${element.nombre} ${element.apellido}</td>
 						<td>${element.direccion}</td>
-						<td class="" >                            
-							
-							<button type="button" class="btn btn-danger">
-								En corte
-							</button>                     
-						</td>
-						<td>
-							<a href="#" class="btn btn-success btn-raised btn-md">Restaurar</a>
+						<td>${element.telefono}</td>
+						<td>${element.categoria_suministro}</td>
+						<td class="text-center text-info">${element.contador_deuda}</td>
+						<td class="text-center text-danger">                            							
+							<b>EN CORTE</b>                  
 						</td>
 					</tr>	
 			`;
@@ -452,6 +455,8 @@ function actualizarTablaConCorte($bsc_cod){
 }
 
 buscarSumiConCorte()
+//---------------------FIN - btn Buscar suministro con CORTE
+
 /***************** EVENTOS GENERAR RECIBOS **************************** */
 
 function GRbuscarXdireccion(){

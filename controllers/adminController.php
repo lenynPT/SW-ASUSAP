@@ -423,7 +423,7 @@
 			$mes_hoy=$fecha_actual['mes'];
 			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
 
-			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, suministro.categoria_suministro, asociado.nombre, asociado.apellido 
+			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
 					LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro 
 					WHERE suministro.cod_suministro LIKE '%{$codigoSum}%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
@@ -441,7 +441,7 @@
 					"codigo_sum"=>$rgs['cod_suministro'],
 					"direccion"=>$rgs['direccion'],
 					"pasaje"=>$rgs['pasaje'],
-					"casa_nro"=>$rgs['casa_nro'],
+					"contador_deuda"=>$rgs['contador_deuda'],
 					"nombre"=>$rgs['nombre'],
 					"apellido"=>$rgs['apellido'],
 					"categoria"=>$rgs['categoria_suministro'],
@@ -507,7 +507,7 @@
 			}
 			$query2 = "UPDATE suministro SET contador_deuda = $cont_deuda WHERE cod_suministro = '{$cod_sum}'";
 			$resqr2 = mainModel::execute_single_query($query2);
-			if($cont_deuda == 3){
+			if($cont_deuda >= 3){
 				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
 				$resqr3 = mainModel::execute_single_query($query3);
 			}
@@ -550,7 +550,11 @@
 
 		//consulta de suministros con corte
 		public function obtenerRegSumCnCorteController($cod_sum){
-			$query = "SELECT * FROM suministro WHERE estado_corte=1 AND cod_suministro LIKE '%$cod_sum%' LIMIT 0,15";
+			$query = "SELECT asociado.nombre,asociado.apellido, asociado.telefono, 
+			suministro.cod_suministro, suministro.direccion, suministro.categoria_suministro, suministro.contador_deuda 
+			FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni 
+			WHERE asociado.estado = 1 AND suministro.estado_corte=1 AND suministro.cod_suministro LIKE '%$cod_sum%' LIMIT 0,15";
+			//$query = "SELECT * FROM suministro WHERE estado_corte=1 AND cod_suministro LIKE '%$cod_sum%' LIMIT 0,15";
 			$arrReg = mainModel::execute_single_query($query);
 			$responseStruc = [];
 			while($reg = $arrReg->fetch(PDO::FETCH_ASSOC)){
