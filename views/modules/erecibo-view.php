@@ -8,9 +8,9 @@
     $FechLiteral = $fechas->obtenerNombrefecha($fecha_hoy['anio'],$FechaER);    
 ?>
 
-<div class="container-fluid">
+<div class="container-fluid" id="pageXDIREC">
     <div class="page-header">
-        <h1 class="text-titles"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Emitir <small>Recibo</small> <?php echo "{$FechLiteral['r_mes']} {$FechLiteral['r_anio']}";?></h1>
+        <h2 class="text-titles"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Emitir <small>Recibo</small> <?php echo "{$FechLiteral['r_mes']} {$FechLiteral['r_anio']}";?></h2>
     </div>
 <!--    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse voluptas reiciendis tempora voluptatum eius porro ipsa quae voluptates officiis sapiente sunt dolorem, velit quos a qui nobis sed, dignissimos possimus!</p>
 -->
@@ -22,9 +22,11 @@
     <!--
         <h3 class="tile-titles text-center font-weight-bold"><b>Recibos X Dirección</b></h3>-->
         <div class="jumbotron jumbotron-fluid">
-        <div class="container bg-info">
-            <h4 class="display-4 text-center text-muted">Emitir Recibos Por Dirección</h4>
-        </div>
+            
+            <a href="#pageXSUM" class="btn btn-secondary btn-raised ">BUSCAR POR SUMINISTRO</a>
+            <div class="container bg-info">
+                <h4 class="display-4 text-center text-muted">Emitir Recibos Por Dirección</h4>            
+            </div>
         </div>
                 
         <div class="col-xs-12 col-sm-12">
@@ -35,11 +37,11 @@
                 <button class="btn btn-success btn-raised btn-xs" name="nameUser">buscar</button>
             </div>
             <div class="col-xs-12 col-md-3 form-group ">
-                <select name="fecha_mes" id="fecha_mes" class="form-control">
+                <select name="fecha_mes" id="fecha_mes" class="form-control fechas-meses">
                     <option value="<?php echo $FechaER;?>"><?php echo $FechLiteral["r_mes"];?></option>
                     <?php 
                         //Gnerea los nombres de los meses
-                        for ($i_mes=1; $i_mes <= 12; $i_mes++) { 
+                        for ($i_mes=1; $i_mes <= $FechaER; $i_mes++) { 
                             # code...
                             if($FechaER == $i_mes)continue;
 
@@ -92,10 +94,11 @@
     <div class="row">
         <!--<h3 class="tile-titles text-center font-weight-bold"><b>Recibos X Persona</b></h3>-->
 
-        <div class="jumbotron jumbotron-fluid">
-        <div class="container bg-info">
-            <h4 class="display-4 text-center text-muted">Emitir Recibos Por Persona</h4>
-        </div>
+        <div class="jumbotron jumbotron-fluid" id="pageXSUM">
+            <a href="#pageXDIREC" class="btn btn-secondary btn-raised">BUSCAR POR DIRECCIÓN</a>
+            <div class="container bg-info">
+                <h4 class="display-4 text-center text-muted">Emitir Recibos Por Persona</h4>
+            </div>
         </div>
 
         <div class="col-xs-12 col-sm-12">
@@ -110,7 +113,7 @@
                     <option value="<?php echo $FechaER;?>"><?php echo $FechLiteral["r_mes"];?></option>
                     <?php 
                         //Gnerea los nombres de los meses
-                        for ($i_mes=1; $i_mes <= 12; $i_mes++) { 
+                        for ($i_mes=1; $i_mes <= $FechaER; $i_mes++) { 
                             # code...
                             if($FechaER == $i_mes)continue;
 
@@ -181,7 +184,7 @@
 
 <div class="alert alert-success" role="alert">
   <h4 class="alert-heading">Importante Recordar!!</h4>
-  <p class="card-text">Recuerda que utilizar este apartado exclusivamente para generar recibos de suministros que perdieron su recibo</p>
+  <p class="card-text">Recuerda utilizar este apartado exclusivamente para generar recibos de suministros que perdieron su recibo</p>
   <hr>
     <img src="../views/assets/img/cara.png" class="mb-3 card-img-top" style="height:50px; margin:0 0 15px 0">    
   <p class="mb-0"><small class=""><?php echo "{$FechLiteral['r_mes']} {$FechLiteral['r_anio']}";?></small></p>

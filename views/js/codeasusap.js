@@ -458,6 +458,31 @@ buscarSumiConCorte()
 //---------------------FIN - btn Buscar suministro con CORTE
 
 /***************** EVENTOS GENERAR RECIBOS **************************** */
+function generarmeses($selectmese, $selectanio){
+	let elfech = document.querySelector($selectmese);
+	if(elfech){
+		console.log(elfech);
+		let anio = document.querySelector($selectanio);
+		let anioActual = anio.value; //la primera vez que corre es el año actual. :D
+		mesesAct = elfech.innerHTML; //la primera vez que corre es los meses transcurridos hasta hoy :D
+		anio.addEventListener('click',()=>{
+			console.log(anio.value);
+			console.log(anioActual);
+			if(anio.value == anioActual){
+				console.log("pintar hasta este mes")
+				elfech.innerHTML = mesesAct;
+			}else{
+				console.log("pintar todos los mese")
+				mesCom = `
+					<option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option><option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option><option value="7">Julio</option><option value="8">Agosto</option><option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+				`;
+				elfech.innerHTML = mesCom;
+			}
+		})
+	}
+}
+generarmeses(".fechas-meses","#fecha_anio");
+generarmeses("#fecha_mesXsumi","#fecha_anioXsumi");
 
 function GRbuscarXdireccion(){
 	let el = document.querySelector("#nombreDirec");
@@ -471,7 +496,7 @@ function GRbuscarXdireccion(){
 		{
 			$option_anio.addEventListener('click',()=>{
 				el.value = '';
-				document.querySelector("#resTablaRD").innerHTML = '';
+				document.querySelector("#resTablaRD").innerHTML = ``;
 			})
 			$option_mes.addEventListener('click',()=>{
 				el.value = '';
