@@ -535,7 +535,7 @@
 		}
 
 		public function obtenerRegXDirecController($data){
-			$query = "SELECT suministro.direccion FROM suministro WHERE suministro.direccion LIKE '%{$data['direccion']}%' GROUP BY suministro.direccion LIMIT 0, 4";
+			$query = "SELECT suministro.direccion FROM suministro WHERE suministro.direccion LIKE '%{$data['direccion']}%' GROUP BY suministro.direccion LIMIT 0, 5";
 			$result = mainModel::execute_single_query($query);
 
 			$arrDirec = [];
@@ -563,5 +563,18 @@
 			return $responseStruc;
 		}
 
+		//GR emitir recibo
+		public function obtenerSumGRxCod($data){			
+			$query = "SELECT asociado.dni,suministro.tiene_medidor,suministro.estado_corte,factura_recibo.anio,factura_recibo.mes,factura_recibo.consumo,factura_recibo.monto_pagar,factura_recibo.esta_cancelado,factura_recibo.suministro_cod_suministro 
+				FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro
+				INNER JOIN asociado ON asociado.dni = suministro.asociado_dni 
+				WHERE suministro.estado_corte<>2 AND factura_recibo.anio={$data['anio']} AND factura_recibo.mes={$data['mes']} AND factura_recibo.suministro_cod_suministro LIKE '%{$data['cod_sum']}%' limit 0,3";
+			$arrReg = mainModel::execute_single_query($query);
+			$respData = [];
+			while($reg = $arrReg->fetch(PDO::FETCH_ASSOC)){
+				$respData[] = $reg;
+			}
+			return $respData;
+		}
 
 	}

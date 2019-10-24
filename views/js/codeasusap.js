@@ -222,9 +222,9 @@ function generarConsumoSinMedidor(){
 }
 
 function generarConsumoConMedidor(value){
-	console.log("Fn->generarConsumoConMedidor",value);
 	let el = document.querySelector('#buscarSumCnM');
 	if(el){
+		console.log("Fn->generarConsumoConMedidor",value);
 		
 		let optionData = new FormData();
 		optionData.append('OPTION',"GCCnMedi");
@@ -462,6 +462,8 @@ buscarSumiConCorte()
 function GRbuscarXdireccion(){
 	let el = document.querySelector("#nombreDirec");
 	if(el){
+		console.log("function->GRbuscarXdireccion()")
+
 		$option_anio = document.querySelector('#fecha_anio');
 		$option_mes = document.querySelector('#fecha_mes');
 		
@@ -477,7 +479,8 @@ function GRbuscarXdireccion(){
 			})
 		}
 		
-		console.log(el);
+		actualizarTblGRDireccion("",$option_anio.value,$option_mes.value);
+		console.log(el);		
 		el.addEventListener("keyup",function(){
 			//console.log("keyup",this.value);
 			console.log($option_anio.value);
@@ -485,36 +488,94 @@ function GRbuscarXdireccion(){
 
 			let nombreDireccion = this.value;
 
-			let data = new FormData();
-			data.append('OPTION','buscarRD');
-			data.append('nombreDirec',nombreDireccion);
-			data.append('anio',$option_anio.value);
-			data.append('mes',$option_mes.value);
+			actualizarTblGRDireccion(nombreDireccion,$option_anio.value,$option_mes.value);
 
-			fetch('../ajax/gestionRcbAjax.php',{
-				method:'POST',
-				body:data
-			}).then(res => res.json())
-			.then(rdata=>{
-				console.log(rdata);
-				//imprimir tabla
-
-				$htmlRecib=``;
-				let cont = 0;
-				rdata.forEach(element=>{
-					$htmlRecib += `
-						<tr>
-							<td>${++cont}</td>
-							<td>${element.direccion}</td>          
-							<td><a href="../reportes/rxd.php?direccion=${element.direccion}&anio=${$option_anio.value}&mes=${$option_mes.value}" class="btn btn-info btn-raised btn-xs" target="_blank">G. Recibo</a></td>
-						</tr>
-					`;					
-				});
-
-				document.querySelector("#resTablaRD").innerHTML = $htmlRecib;
-
-			})
 		});
 	}
 }
+function actualizarTblGRDireccion(direccion,anio,mes){
+	let data = new FormData();
+	data.append('OPTION','buscarRD');
+	data.append('nombreDirec',direccion);
+	data.append('anio',anio);
+	data.append('mes',mes);
+
+	fetch('../ajax/gestionRcbAjax.php',{
+		method:'POST',
+		body:data
+	}).then(res => res.json())
+	.then(rdata=>{
+		console.log(rdata);
+		//imprimir tabla
+
+		$htmlRecib=``;
+		let cont = 0;
+		rdata.forEach(element=>{
+			$htmlRecib += `
+				<tr>
+					<td>${++cont}</td>
+					<td>${element.direccion}</td>          
+					<td><a href="../reportes/rxd.php?direccion=${element.direccion}&anio=${$option_anio.value}&mes=${$option_mes.value}" class="btn btn-info btn-raised btn-xs" target="_blank">G. Recibo</a></td>
+				</tr>
+			`;					
+		});
+
+		document.querySelector("#resTablaRD").innerHTML = $htmlRecib;
+
+	})
+}
+
 GRbuscarXdireccion();
+
+// onkeyup(this) Función en el HTML erecibo-view.php
+function GRbuscarSumXCod($this){
+	console.log("Function -> GRbuscarSumXcod(value)")
+
+	{
+		document.querySelector("#fecha_anioXsumi").addEventListener('click',()=>{
+			document.querySelector("#tblRspxSum_GR").innerHTML=``;			
+		})
+		document.querySelector("#fecha_mesXsumi").addEventListener('click',()=>{
+			document.querySelector("#tblRspxSum_GR").innerHTML=``;			
+		})
+	}
+
+	let txtCodSum = $this.value;
+	let anioxsum = document.querySelector("#fecha_anioXsumi").value;
+	let mesxsum = document.querySelector("#fecha_mesXsumi").value;
+	console.log(txtCodSum);
+	console.log(anioxsum, mesxsum);
+
+	let data = new FormData();
+	data.append("OPTION",'bscGRxSum');
+	data.append("cod_sum",txtCodSum);
+	data.append("anio",anioxsum);
+	data.append("mes",mesxsum);
+
+	fetch('../ajax/gestionRcbAjax.php',{
+		method:"post",
+		body:data
+	}).then(res => res.json())
+	.then(data => {
+		console.log(data);
+		let cont = 0;
+		let html =``;	
+		data.forEach(element=>{
+			html +=`
+			<tr>
+				<td>${++cont}</td>
+				<td>${element.suministro_cod_suministro}</td>
+				<td>${element.anio}</td>
+				<td>${element.mes}</td>
+				<td>${element.monto_pagar}</td>
+				<td>${element.esta_cancelado=='1'?"<span class='text-info'>Si</span>":"<span class='text-danger'>No</span>"}</td>
+				<td>${element.tiene_medidor=='1'?'Si':'No'}</td>
+				<td>${element.estado_corte=='1'?"<span class='text-danger'>Si</span>":"<span class='text-info'>No</span>"}</td>
+				<td><a href="#!" class="btn btn-info btn-raised btn-xs">G. Recibo</a></td>
+			</tr>			
+			`;
+		})	
+		document.querySelector("#tblRspxSum_GR").innerHTML=html;
+	})
+
+}

@@ -70,6 +70,14 @@
                 echo json_encode($response);
             }
         
-        
+            else if ($_POST['OPTION'] == 'bscGRxSum'){
+
+                $dataPost = $_POST;
+                $rspRegGR = new adminController();
+                $response = $rspRegGR->obtenerSumGRxCod($dataPost);
+                echo json_encode($response);
+            }
+            
+
         }
     }
