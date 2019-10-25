@@ -89,7 +89,7 @@
 
 	/*================================GENERADOR DE SUMINISTRO============================================*/
 		public function pruebaController($msj){
-			return $msj;
+			return "SERVER ".$msj;
 		}
 
 		protected function obtenerFechasConsumo($anio,$n_mes){
@@ -575,6 +575,25 @@
 				$respData[] = $reg;
 			}
 			return $respData;
+		}
+
+		//
+		public function recibosObtenerDataSumXdirec($direccion,$anio,$mes){
+			$direccion = trim($direccion);
+			$query="SELECT asociado.dni,asociado.nombre,asociado.apellido,suministro.cod_suministro,suministro.direccion,
+			 suministro.estado_corte,suministro.tiene_medidor,suministro.categoria_suministro,suministro.contador_deuda,
+			 factura_recibo.anio,factura_recibo.mes,factura_recibo.fecha_emision,factura_recibo.fecha_vencimiento,
+			 factura_recibo.consumo, factura_recibo.monto_pagar,factura_recibo.esta_cancelado,factura_recibo.esta_impreso 
+			 FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
+			 INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro 
+			 WHERE suministro.estado_corte<>2 AND suministro.direccion = '$direccion' AND
+			  factura_recibo.anio=$anio AND factura_recibo.mes=$mes";
+			//$query = "SELECT * FROM suministro WHERE direccion='{$direccion}'";
+			$arrData = mainModel::execute_single_query($query);
+			if($arrData->rowCount()>0){
+				return ['res'=>true, 'data'=>$arrData];
+			}
+			return ['res'=>false,'data'=>[]];
 		}
 
 	}
