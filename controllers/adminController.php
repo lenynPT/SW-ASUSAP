@@ -6,14 +6,56 @@
 	}
 	class adminController extends adminModel{
 
+    /*================================AGREGAR ASOCIADO============S================================*/
 
         public function guardarUsuarioController(){
-            if (isset($_POST["nameUser"])){
+            if (isset($_POST["registrarAsoc"])){
 
-                $query3=mainModel::execute_single_query("SELECT telefono FROM asociado");
-                $correlative=($query3->rowCount())+1;
-                $code=mainModel::generate_code("AC",7,$correlative);
+				$dniTemp = $_POST['dniAsoc'];
+				$consultDni = "SELECT dni FROM asociado WHERE dni = $dniTemp";
+                $query1=mainModel::execute_single_query($consultDni);
+				
+				if($query1->rowCount() == 0){
+					$codigo_sum=mainModel::generate_codigo_sum($dniTemp,0);
+					$datosController = array(
+						"categoria" => $_POST['categoriaAsoc'],
+						"direccion" => $_POST['direccionAsoc'],						
+						"pasaje" => $_POST['direccionPsjAsoc'],						
+						"casa_nro" => $_POST['direccionNroAsoc'],						
+						"nombre" => $_POST['nombreAsoc'],
+						"apellido" => $_POST['apellidoAsoc'],
+						"dni" => $_POST['dniAsoc'],
+						"telefono" => $_POST['telefonoAsoc'],
+						"tiene_medidor" => $_POST['medidorAsoc'],
+						"codigo_sum" => $codigo_sum 
+					);
+					$rsptaModel = adminModel::guardarUsuario($datosController);
+					if($rsptaModel){
+						//echo "Registro exitoso";
+						echo '<script>
+								swal({
+									title: "¡OK!",
+									text: "¡Usuario ha sido creado correctamente!",
+									type: "success",
+									confirmButtonText: "Cerrar",
+									closeOnConfirm: false
+								},
+								function(isConfirm){
+										if (isConfirm) {	   
+											window.location = "newaasociat";
+										} 
+								});
+							</script>';
+					}else{
+						echo "No se pudo registrar";
+					}
+					//return true;
+				}else{
+					echo "DNI ya registardo";
+					return false;
+				}
 
+				/*
                     $datosController = array(
                         "idsociado" => $code,
                         "dni" => $_POST["dniUser"],
@@ -37,355 +79,521 @@
                                 window.location = "newaasociat";
                               } 
                     });
-                    </script>';
+					</script>';
+				*/
 
 
             }
 
+		}
+
+	/*================================GENERADOR DE SUMINISTRO============================================*/
+		public function pruebaController($msj){
+			return $msj;
+		}
+
+		public function obtenerNombrefecha($anio,$n_mes){
+			$r_anio = $anio;
+			$r_mes = "";
+			if($n_mes <= 0){
+				if($n_mes == 0){
+					$r_mes = "Diciembre";
+					$r_anio -=1;
+					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+				}else{ // cuando sea enero y ya e hayan generado todos los consumos.
+					$r_mes = "Noviembre";
+					$r_anio -=1;
+					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+				}
+			}
+			
+			switch ($n_mes) {
+				case '1':
+					$r_mes = "Enero";
+					break;
+				case '2':
+					$r_mes = "Febrero";
+					break;
+				case '3':
+					$r_mes = "Marzo";
+					break;
+				case '4':
+					$r_mes = "Abril";
+					break;				
+				case '5':
+					$r_mes = "Mayo";
+					break;
+				case '6':
+					$r_mes = "Junio";
+					break;
+				case '7':
+					$r_mes = "Julio";
+					break;
+				case '8':
+					$r_mes = "Agosto";
+					break;
+				case '9':
+					$r_mes = "Septiembre";
+					break;
+				case '10':
+					$r_mes = "Octubre";
+					break;
+				case '11':
+					$r_mes = "Noviembre";
+					break;
+				case '12':
+					$r_mes = "Diciembre";
+					break;												
+				default:
+					# code...
+					$r_mes = "Diciembre";
+					$r_anio -=1;
+					break;
+			}
+			return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+		}
+
+		public function consultaAsociado($query){
+			$result = mainModel::execute_single_query($query);
+			return $result;
+		}
+		public function consultar_stado_gconsumo(){
+			/* recuperar
+			*/
+			$query = "SELECT * FROM estado_gonsumo WHERE id=0";
+			$stmt = mainModel::execute_single_query($query);
+			$data_gc = $stmt->fetch();
+			$result = [
+				"anio"  => $data_gc['anio'],
+				"mes"   => $data_gc['mes'],
+				"gcn_consumo"   => $data_gc['con_medidor'],
+				"gsn_consumo"   => $data_gc['sin_medidor']
+			];
+			/*
+			$result = [
+				"anio"  => 2019,
+				"mes"   => 10,
+				"gcn_consumo"   => 0,
+				"gsn_consumo"   => 0
+			];
+			*/
+			return $result;
+		}
+		public function consultar_fecha_actual(){
+			date_default_timezone_set('America/Lima');
+
+			$fecha_hoy = [
+				"anio"  => date("Y"),
+				"mes"   => date("n"),
+				"dia"   => date("d")
+			];
+			return $fecha_hoy;
+		}
+
+		public function actualizarFGConsumoController(){
+			$fecha_actual = self::consultar_fecha_actual();
+			$dataController = [
+				'anio' => $fecha_actual['anio'],
+				'mes' => $fecha_actual['mes'],
+				'gcn_consumo' => 0,
+				'gsn_consumo' => 0
+			];
+			$result = adminModel::actualizarFGConsumoModel($dataController);
+			return $result;
+		}
+
+		public function insertarSuministroController(){
+
+			$dni = $_POST['dni'];
+
+			//Obtiene cant suministro del asociado. Luego suma más 1 para generar el códgio del sumin
+			$query = "SELECT cant_suministro FROM asociado WHERE dni = $dni";
+			$cant_sumi_asoc = mainModel::execute_single_query($query);
+			$cant_sumi_asoc = $cant_sumi_asoc->fetch();
+			$cant_sumi = $cant_sumi_asoc['cant_suministro'] + 1;
+
+			//genera códgio para el suministro de acuerdo a la cantidad e sum del asociado
+			$codigo_sum = mainModel::generate_codigo_sum($dni, $cant_sumi);
+
+			$arrdataSumi = array(
+				"asociado_dni" => $dni,
+				"cod_suministro" => $codigo_sum,
+				"direccion" => $_POST['direccionSumi'],
+				"pasaje" => $_POST['direccionPsjSumi'],
+				"casa_nro" => $_POST['direccionNroSumi'],
+				"corte" => $_POST['corteSumi'],
+				"medidor" => $_POST['medidorSumi'],
+				"categoria" => $_POST['categoriaSumi'],
+				"contador_deuda" => 0,
+	
+				"cant_suministro" => $cant_sumi
+	
+			);
+			
+			$rspModel = adminModel::insertarSuministroModel($arrdataSumi);
+
+			return "insertando suministro de codigo :{$codigo_sum} con numSum: {$cant_sumi}";
+		}
+
+	/*================================GENERADOR DE CONSUMO============================================*/
+
+        public function listaGconsumo($valor){
+
+            if (!empty($valor)) {
+                $conexion = mainModel::connect();
+             /// $query = "SELECT cod_suministro FROM suministro WHERE cod_suministro like '%" . $valor . "%'";
+                $query= "SELECT a.idfactura_recibo,f.nombre,s.cod_suministro,s.direccion,a.consumo,a.monto_pagar,a.anio,a.mes,a.fecha_emision,a.hora_emision,a.fecha_vencimiento,a.consumo,a.monto_pagar, s.cod_suministro
+                            FROM ((factura_recibo a INNER JOIN suministro s ON a.suministro_cod_suministro = s.cod_suministro)
+                            INNER JOIN asociado f ON f.dni = s.asociado_dni) WHERE a.suministro_cod_suministro  like '%" . $valor . "%' OR f.nombre  like '%" . $valor . "%' OR s.direccion  like '%" . $valor . "%'";
+
+                $result = mainModel::execute_single_query($query);
+
+                $registroModal = [];
+                while($dataModal = $result->fetch()){
+                    $registroModal[] = [
+                        "idfact"=>$dataModal['idfactura_recibo'],
+                        "nombre"=>$dataModal['nombre'],
+                        "codSu"=>$dataModal['cod_suministro'],
+                        "dire"=>$dataModal['direccion'],
+                        "consumo"=>$dataModal['consumo'],
+                        "monto"=>$dataModal['monto_pagar'],
+                        "anio"=>$dataModal['anio'],
+                        "mes"=>$dataModal['mes'],
+                        "fechE"=>$dataModal['fecha_emision'],
+                        "horaE"=>$dataModal['hora_emision']
+                    ];
+
+                }
+
+
+
+                return $registroModal;
+
+            }
+
+
+
+
+
         }
 
-		/*----------  Función para guardar admin - Function to save admin  ----------*/
-		/*public function add_admin_controller(){
+        public function updGConsumo($valor,$id){
+                $res=0;
+            if (!empty($id)){
+                $dataAd = [
+                    "id" => $id,
+                    "consumo" => $valor,
+                ];
+                $res = adminModel::actualizarGC($dataAd);
+            }
+            return $res;
+        }
 
-			$name=mainModel::clean_string($_POST['name-reg']);
-			$lastname=mainModel::clean_string($_POST['lastname-reg']);
-			$phone=mainModel::clean_string($_POST['phone-reg']);
-			$address=mainModel::clean_string($_POST['address-reg']);
+    /*================================REGISTRAR SERVICIO  ============================================*/
+        public function idRegistroServ(){
+            $query2=self::execute_single_query("SELECT idfactura_servicio FROM factura_servicio");
+            $correlative=($query2->rowCount())+1;
 
-			$username=mainModel::clean_string($_POST['username-reg']);
-			$password1=mainModel::clean_string($_POST['password1-reg']);
-			$password2=mainModel::clean_string($_POST['password2-reg']);
-			$gender=mainModel::clean_string($_POST['gender-reg']);
-			$email=mainModel::clean_string($_POST['email-reg']);
+            $code=self::generate_code("RS",4,$correlative);
+            $IDS=['Idcod'=>$code];
 
-			$privelege=mainModel::decryption($_POST['privelege-reg']);
-			$privelege=mainModel::clean_string($privelege);
+            return $IDS;
+        }
 
-			if($privelege<1 || $privelege>3){
-				$dataAlert=[
-					"Title"=>"Ocurrió un error inesperado",
-					"Text"=>"El nivel de privilegio que intenta asignar no es correcto",
-					"Type"=>"error",
-					"Alert"=>"single"
-				];
-			}else{
-				if($password1!=$password2){
-					$dataAlert=[
-						"Title"=>"Ocurrió un error inesperado",
-						"Text"=>"Las contraseñas que acabas de ingresar no coinciden, por favor verifique e intente nuevamente",
-						"Type"=>"error",
-						"Alert"=>"single"
-					];
-				}else{
+        public function listaRservicio($valorS){
 
-					if($email!=""){
-						$query1=mainModel::execute_single_query("SELECT * FROM account WHERE AccountEmail='$email'");
-						$ne=$query1->rowCount();
-					}else{
-						$ne=0;
-					}
-
-					if($ne>=1){
-						$dataAlert=[
-							"Title"=>"Ocurrió un error inesperado",
-							"Text"=>"El Email que acaba de ingresar ya se encuentra registrado, por favor verifique e intente nuevamente",
-							"Type"=>"error",
-							"Alert"=>"single"
-						];
-					}else{
-						$query2=mainModel::execute_single_query("SELECT AccountUserName FROM account WHERE AccountUserName='$username'");
-						if($query2->rowCount()>=1){
-							$dataAlert=[
-								"Title"=>"Ocurrió un error inesperado",
-								"Text"=>"El nombre de usuario que acaba de ingresar ya se encuentra registrado, por favor verifique e intente nuevamente",
-								"Type"=>"error",
-								"Alert"=>"single"
-							];
-						}else{
-
-							$query3=mainModel::execute_single_query("SELECT AdminCode FROM admin");
-							$correlative=($query3->rowCount())+1;
-							$code=mainModel::generate_code("AC",7,$correlative);
-
-							if($gender=="Masculino"){
-								$photo="AdminMaleAvatar.png";
-							}else{
-								$photo="AdminFemaleAvatar.png";
-							}
-
-							$password=mainModel::encryption($password1);
-
-							$dataAc=[
-								"AccountCode"=>$code,
-								"AccountPrivilege"=>$privelege,
-								"AccountUserName"=>$username,
-								"AccountEmail"=>$email,
-								"AccountPass"=>$password,
-								"AccountStatus"=>"Activo",
-								"AccountType"=>"Administrador",
-								"AccountGender"=>$gender,
-								"AccountPhoto"=>$photo
-							];
-
-							$AddAccount=mainModel::save_account($dataAc);
-							if($AddAccount->rowCount()>=1){
-
-								$dataAd=[
-									"AdminName"=>$name,
-									"AdminLastName"=>$lastname,
-									"AdminAddress"=>$address,
-									"AdminPhone"=>$phone,
-									"AccountCode"=>$code
-								];
-
-								$AddAdmin=adminModel::add_admin_model($dataAd);
-								if($AddAdmin->rowCount()>=1){
-									$dataAlert=[
-										"Title"=>"Administrador registrado",
-										"Text"=>"Los datos del administrador se registraron con éxito",
-										"Type"=>"success",
-										"Alert"=>"clear"
-									];
-								}else{
-									mainModel::delete_account($code);
-									$dataAlert=[
-										"Title"=>"Ocurrió un error inesperado",
-										"Text"=>"No hemos podido registrar el administrador, por favor intente nuevamente",
-										"Type"=>"error",
-										"Alert"=>"single"
-									];
-								}
-							}else{
-								$dataAlert=[
-									"Title"=>"Ocurrió un error inesperado",
-									"Text"=>"No hemos podido registrar el administrador, por favor intente nuevamente",
-									"Type"=>"error",
-									"Alert"=>"single"
-								];
-							}
-						}
-					}
-				}	
-			}
-			return mainModel::sweet_alert($dataAlert);
-		}*/
+            $fecha_actual = self::consultar_fecha_actual();
 
 
-		/*----------  Función para paginar los administradores - Function for paging administrators  ----------*/
-//		public function pagination_admin_controller($page,$result,$level,$codeA,$search){
-//
-//			$page=mainModel::clean_string($page);
-//			$result=mainModel::clean_string($result);
-//			$level=mainModel::clean_string($level);
-//			$codeA=mainModel::clean_string($codeA);
-//			$search=mainModel::clean_string($search);
-//			$table="";
-//
-//
-//			$page = (isset($page) && $page>0) ? (int) $page : 1;
-//
-//			$startR = ($page>0) ? (($page * $result)-$result) : 0;
-//
-//
-//			if(isset($search) && $search!=""){
-//				$consult="SELECT SQL_CALC_FOUND_ROWS * FROM admin WHERE ((AccountCode!='$codeA' AND 	AdminCode!='1') AND (AdminName LIKE '%$search%' OR AdminLastName LIKE '%$search%' OR AdminPhone LIKE '%$search%')) ORDER BY AdminName ASC LIMIT $startR,$result";
-//				$pageurl="adminsearch";
-//			}else{
-//				$consult="SELECT SQL_CALC_FOUND_ROWS * FROM admin WHERE AccountCode!='$codeA' AND AdminCode!='1' ORDER BY AdminName ASC LIMIT $startR,$result";
-//				$pageurl="adminlist";
-//			}
-//
-//
-//			$conection = mainModel::connect();
-//
-//			$data = $conection->query($consult);
-//			$data = $data->fetchAll();
-//
-//			$total = $conection->query("SELECT FOUND_ROWS()");
-//			$total = (int) $total->fetchColumn();
-//
-//			$numPages=ceil($total/$result);
-//
-//			$table.='
-//				<div class="table-responsive">
-//					<table class="table table-hover text-center">
-//						<thead>
-//							<tr>
-//								<th class="text-center">#</th>
-//								<th class="text-center">Nombres</th>
-//								<th class="text-center">Apellidos</th>
-//								<th class="text-center">Télefono</th>';
-//								if($level<=2){
-//									$table.='
-//										<th class="text-center">A. Cuenta</th>
-//										<th class="text-center">A. Datos</th>
-//									';
-//								}
-//								if($level==1){
-//									$table.='
-//										<th class="text-center">Eliminar</th>
-//									';
-//								}
-//			$table.='
-//							</tr>
-//						</thead>
-//						<tbody>
-//			';
-//
-//			if($total>=1 && $page<=$numPages){
-//				$nt=$startR+1;
-//				foreach($data as $rows){
-//					$table.='
-//						<tr>
-//							<td>'.$nt.'</td>
-//							<td>'.$rows['AdminName'].'</td>
-//							<td>'.$rows['AdminLastName'].'</td>
-//							<td>'.$rows['AdminPhone'].'</td>
-//					';
-//					if($level<=2){
-//						$table.='
-//							<td>
-//								<a href="'.SERVERURL.'myaccount/admin/'.mainModel::encryption($rows['AccountCode']).'/" class="btn btn-success btn-raised btn-xs">
-//									<i class="zmdi zmdi-refresh"></i>
-//								</a>
-//							</td>
-//							<td>
-//								<a href="'.SERVERURL.'mydata/admin/'.mainModel::encryption($rows['AccountCode']).'/" class="btn btn-success btn-raised btn-xs">
-//									<i class="zmdi zmdi-refresh"></i>
-//								</a>
-//							</td>
-//						';
-//					}
-//					if($level==1){
-//						$table.='
-//							<td>
-//								<form action="'.SERVERURL.'ajax/adminAjax.php" method="POST" class="DataAjaxForm" data-form="delete" enctype="multipart/form-data" autocomplete="off">
-//									<input type="hidden" name="code-del" value="'.mainModel::encryption($rows['AccountCode']).'">
-//									<input type="hidden" name="admin-level" value="'.mainModel::encryption($level).'">
-//									<button type="submit" class="btn btn-danger btn-raised btn-xs">
-//										<i class="zmdi zmdi-delete"></i>
-//									</button>
-//									<span class="AjaxReply"></span>
-//								</form>
-//							</td>
-//						';
-//					}
-//					$table.='
-//						</tr>
-//					';
-//					$nt++;
-//				}
-//			}else{
-//				if($total>=1){
-//					$table.='
-//						<tr>
-//							<td colspan="7">
-//								<a href="'.SERVERURL.$pageurl.'/" class="btn btn-sm btn-info btn-raised">
-//									Haga clic acá para recargar el listado
-//								</a>
-//							</td>
-//						</tr>
-//					';
-//				}else{
-//					$table.='
-//						<tr>
-//							<td colspan="7">
-//								No hay registros en el sistema
-//							</td>
-//						</tr>
-//					';
-//				}
-//			}
-//
-//			$table.='</tbody></table></div>
-//			';
-//
-//			if($total>=1 && $page<=$numPages){
-//				$table.='<nav class="text-center"><ul class="pagination pagination-sm">';
-//
-//				if($page==1){
-//					$table.='<li class="disabled"><a><i class="zmdi zmdi-arrow-left"></i></a></li>';
-//				}else{
-//					$table.='<li><a href="'.SERVERURL.$pageurl.'/'.($page-1).'/"><i class="zmdi zmdi-arrow-left"></i></a></li>';
-//				}
-//
-//				for($i=1; $i <= $numPages; $i++){
-//					if($page == $i){
-//						$table.='<li class="active"><a href="'.SERVERURL.$pageurl.'/'.$i.'/">'.$i.'</a></li>';
-//					}else{
-//						$table.='<li><a href="'.SERVERURL.$pageurl.'/'.$i.'/">'.$i.'</a></li>';
-//					}
-//				}
-//
-//				if($page==$numPages){
-//					$table.='<li class="disabled"><a><i class="zmdi zmdi-arrow-right"></i></a></li>';
-//				}else{
-//					$table.='<li><a href="'.SERVERURL.$pageurl.'/'.($page+1).'/"><i class="zmdi zmdi-arrow-right"></i></a></li>';
-//				}
-//
-//				$table.='</nav></div>';
-//			}
-//			return $table;
-//		}
-//
-//
-//		/*----------  Función para eliminar administrador - Function to delete administrator  ----------*/
-//		public function delete_admin_controller(){
-//			$code=mainModel::decryption($_POST['code-del']);
-//			$adminLevel=mainModel::decryption($_POST['admin-level']);
-//
-//			$code=mainModel::clean_string($code);
-//			$adminLevel=mainModel::clean_string($adminLevel);
-//
-//			if($adminLevel==1){
-//				$query1=mainModel::execute_single_query("SELECT * FROM admin WHERE AccountCode='$code'");
-//				$adminData=$query1->fetch();
-//				if($adminData['AdminCode']!=1){
-//					$DelAdmin=adminModel::delete_admin_model($code);
-//					mainModel::delete_binnacle($code);
-//					if($DelAdmin->rowCount()>=1){
-//						$DelAccount=mainModel::delete_account($code);
-//						if($DelAccount->rowCount()>=1){
-//							$dataAlert=[
-//								"Title"=>"Administrador eliminado",
-//								"Text"=>"El administrador fue eliminado del sistema con éxito",
-//								"Type"=>"success",
-//								"Alert"=>"reload"
-//							];
-//						}else{
-//							$dataAlert=[
-//								"Title"=>"Ocurrió un error inesperado",
-//								"Text"=>"No podemos eliminar la cuenta en este momento",
-//								"Type"=>"error",
-//								"Alert"=>"single"
-//							];
-//						}
-//					}else{
-//						$dataAlert=[
-//							"Title"=>"Ocurrió un error inesperado",
-//							"Text"=>"No podemos eliminar este administrador en este momento",
-//							"Type"=>"error",
-//							"Alert"=>"single"
-//						];
-//					}
-//				}else{
-//					$dataAlert=[
-//						"Title"=>"Ocurrió un error inesperado",
-//						"Text"=>"No podemos eliminar el administrador principal del sistema",
-//						"Type"=>"error",
-//						"Alert"=>"single"
-//					];
-//				}
-//			}else{
-//				$dataAlert=[
-//					"Title"=>"Ocurrió un error inesperado",
-//					"Text"=>"Tú no tienes los permisos necesarios para eliminar registros",
-//					"Type"=>"error",
-//					"Alert"=>"single"
-//				];
-//			}
-//			return mainModel::sweet_alert($dataAlert);
-//		}
+            if (!empty($valorS)) {
 
+                $conexion = mainModel::connect();
+                $query1 ="SELECT f.nombre,f.apellido,s.cod_suministro,s.direccion FROM 
+                 suministro s INNER JOIN asociado f ON f.dni = s.asociado_dni
+                 WHERE s.cod_suministro  like '%" . $valorS . "%' OR f.nombre  like '%" . $valorS . "%' OR s.direccion  like '%" . $valorS . "%'";
+
+                $results = mainModel::execute_single_query($query1);
+
+                $registroModal = [];
+                while($dataModal = $results->fetch()){
+                    $registroModal[] = [
+                        "idfacts"=>$dataModal['idfactura_servicio'],
+                        "nombreAS"=>$dataModal['nombre'],
+                        "apellidoAS"=>$dataModal['apellido'],
+                        "codSum"=>$dataModal['cod_suministro'],
+                        "direSR"=>$dataModal['direccion'],
+                        "anio"=>$fecha_actual['anio'],
+                        "mes"=>$fecha_actual['mes'],
+                        "anombre"=>$dataModal['a_nombre'],
+                        "cancel"=>$dataModal['esta_cancelado']
+                    ];
+
+                }
+
+                return $registroModal;
+
+            }
+
+
+
+        }
+
+        public function agregarRS($ANOM,$ANIO,$AMES,$ACOD){
+            $fecha_actual = self::consultar_fecha_actual();
+
+                $fecha=$fecha_actual['anio']+$fecha_actual['mes'];
+
+            $idRS=self::idRegistroServ();
+
+
+            $datosController = array(
+                "codRS" => $idRS['Idcod'],
+                "anombre" => $ANOM,
+                "anio" =>$fecha_actual['anio'],
+                "mes" => $fecha_actual['mes'],
+                "fecha" => $fecha,
+                "monto" => 0,
+                "totalp" => 0,
+                "estac" => 0,
+                "cods" => $ACOD
+
+
+            );
+            $rsptaModel = adminModel::guardarRS($datosController);
+
+          /*
+            if($rsptaModel){
+                //echo "Registro exitoso";
+                echo '<script>
+								swal({
+									title: "¡OK!",
+									text: "¡Usuario ha sido creado correctamente!",
+									type: "success",
+									confirmButtonText: "Cerrar",
+									closeOnConfirm: false
+								},
+								function(isConfirm){
+										if (isConfirm) {	   
+											window.location = "aservicio";
+										} 
+								});
+							</script>';
+            }else{
+                echo '<script>
+								swal({
+									title: "¡OK!",
+									text: "¡Usuario ha sido creado correctamente!",
+									type: "success",
+									confirmButtonText: "Cerrar",
+									closeOnConfirm: false
+								},
+								function(isConfirm){
+										if (isConfirm) {	   
+											window.location = "aservicio";
+										} 
+								});
+							</script>';
+            }*/
+
+            $rsptaModel = $idRS['Idcod'];
+
+
+            return $rsptaModel;
+
+        }
+
+        public function modificarRS($idFactRS,$CostTotal,$Anombre){
+            date_default_timezone_set('America/Lima');
+            $created_date = date("Y-m-d H:i:s");
+          //  "ids="+idf+"&cost="+tot+"&cod="+codsu+"&anom="+anrs,
+            $res=0;
+            if (!empty($idFactRS)){
+                $dataAd = [
+                    "id" => $idFactRS,
+                    "cosTotal" => $CostTotal,
+                    "fecha" =>$created_date,
+                    "anombre" =>$Anombre
+                ];
+                $res = adminModel::actualizarRS($dataAd);
+            }
+            return $res;
+
+        }
+        /*################ADREGANDO LOS ITEMS###############33*/
+        public function agregarRSI($Des,$DCost,$DCS){
+
+            //$idRS=self::idRegistroServ();
+
+
+            $res=0;
+            if (!empty($Des)){
+                $dataAd = [
+                    "descrip" => $Des,
+                    "dcosto" => $DCost,
+                    "cds" => $DCS
+
+                ];
+                $res = adminModel::insertsRS($dataAd);
+            }
+            else{
+                echo "no se guardo";
+            }
+
+            return $res;
+
+        }
+
+        public function eliminarRSI($IDF){
+            $res=0;
+            if (!empty($IDF)){
+                $dataAd = [
+                    "idfi" => $IDF
+                ];
+                $res = adminModel::eliminarRSI($dataAd);
+            }
+            else{
+                echo "no se guardo";
+            }
+            return $res;
+        }
+/*        public function viewsRS(){
+            $tabla="";
+
+            $conexion=mainModel::connect();
+
+            $datos=$conexion->query("
+            SELECT * FROM detalle_servicio ");
+            $datos=$datos->fetchAll();
+
+
+            $tabla.='<div class="table-responsive">
+                                        <table class="table table-bordered  text-center" >
+                                            <thead class="tabla-cabezera">
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Nombre - Descripcion</th>
+                                                <th class="text-center">Costo</th>
+                                                <th class="text-center">Accion</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="table table-striped" id="table-body">';
+
+            foreach ($datos as $k=>$v){
+
+                $tabla.='<tr class="table-row" id="table-row-">
+                        
+                        <td contenteditable="true" onClick="editRowRS(this);">'.$datos[$k]["factura_servicio_idfactura_servicio"].'</td>
+                        <td contenteditable="true" onClick="editRowRS(this);">'.$datos[$k]["servicio_idservicio"].'</td>
+                        <td contenteditable="true"  onClick="editRowRS(this);">'.$datos[$k]["descripcion"].'</td>
+                        <td><a class="ajax-action-links" >BorrarASS</a></td>
+                        </tr>';
+
+
+           }
+
+            $tabla.=' </tbody>
+                                        </table>
+                                    </div>';
+
+            return $tabla;
+        }*/
+
+        /*##########################SELECTORES DEL SERVICIO###############################*/
+        public function SelectorS(){
+
+
+            $conexion=mainModel::connect();
+
+            $datos=$conexion->query("
+            SELECT * FROM servicio");
+
+           $datoss=$datos->fetchAll();
+            $groups = array();
+
+
+            foreach ($datoss as $k){
+
+                echo '<option value="'.$k['idservicio'].'" id="servi'.$k['idservicio'].'">'.$k['nombre_servicio'].'</option>';
+
+
+            }
+
+
+
+
+
+        }
+
+        /*:::::::::::::::::::::::::::::::::::::::AMORTIZAR SERVICIO:::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+        public function listaAservicio($valorS){
+
+            //$ca=mainModel::buscarMontoRest($valorS);
+
+
+            if (!empty($valorS)) {
+
+                $conexion = mainModel::connect();
+                 $query1="SELECT idfactura_servicio,a_nombre,suministro_cod_suministro,anio,mes,fecha,total_pago FROM factura_servicio WHERE idfactura_servicio like '%" . $valorS . "%' OR a_nombre like '%" . $valorS . "%'";
+                $results = mainModel::execute_single_query($query1);
+
+                $registroModal = [];
+                while($dataModal = $results->fetch()){
+                    $registroModal[] = [
+                        "idfacts"=>$dataModal['idfactura_servicio'],
+                        "anombre"=>$dataModal['a_nombre'],
+                        "codSum"=>$dataModal['suministro_cod_suministro'],
+                        "anio"=>$dataModal['anio'],
+                        "mes"=>$dataModal['mes'],
+                        "fechars"=>$dataModal['fecha'],
+                        "totalPago"=>$dataModal['total_pago']
+                    ];
+
+                }
+
+                return $registroModal;
+
+            }
+        }
+        /*---------------------------AMORTIZAR-----------------------------------------------*/
+        public function datos_AmortizarC($codigo){
+
+            return adminController::datos_Amortizar($codigo);
+        }
+
+        public function montoPagado($mopagr,$IDS,$MR){
+            $res=0;
+            $SS=$mopagr;
+            if (!empty($SS)){
+                $dataAd = [
+                    "id" => $IDS,
+                    "MPAGADO" => $mopagr,
+                    "MREST" => $MR
+                ];
+
+                $res = adminModel::actualizarASR($dataAd);
+            }
+            return $res;
+        }
+        /*------------------------AMORTIZACION SU DETALLE-------------------------------------*/
+        public function listaAservicioDetalle($valorS){
+            $conexion = mainModel::connect();
+
+            $query1 ="SELECT descripcion,costo FROM detalle_servicio
+                 WHERE factura_servicio_idfactura_servicio = '.$valorS.'";
+
+            $results = mainModel::execute_single_query($query1);
+
+            $registroModal = [];
+            while($dataModal = $results->fetch()){
+                $registroModal[] = [
+                    "descrRA"=>$dataModal['descripcion'],
+                    "costoRA"=>$dataModal['costo']
+                ];
+
+            }
+
+            return $registroModal;
+        }
 
 	}

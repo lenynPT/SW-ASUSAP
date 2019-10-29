@@ -8,3 +8,4 @@
 <script src="<?php echo SERVERURL; ?>views/js/ripples.min.js"></script>
 <script src="<?php echo SERVERURL; ?>views/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="<?php echo SERVERURL; ?>views/js/main.js"></script>
+<script src="<?php echo SERVERURL; ?>views/js/gc_asusap.js"></script>

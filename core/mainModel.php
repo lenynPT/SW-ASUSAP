@@ -39,6 +39,12 @@
 			return $letter.$correlative;
 		}
 
+		protected function generate_codigo_sum($dni,$correlative){
+			
+			$codigo = $dni."-".$correlative; 
+
+			return $codigo;
+		}
 
 		/* Funcion para limpiar cadenas de texto - Function to clean text strings */
 		protected function clean_string($value) {
@@ -62,6 +68,16 @@
 	    }
 
 
+		protected function fecha_actual(){
+			date_default_timezone_set('America/Lima');
+
+			$fecha_hoy = [
+				"anio"  => date("Y"),
+				"mes"   => date("n"),
+				"dia"   => date("d")
+			];
+			return $fecha_hoy;
+		}
 		/*----------  
 		Función para mostrar alerta de SweetAlert - SweetAlert alert display function  
 		----------*/
