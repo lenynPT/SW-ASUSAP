@@ -596,11 +596,143 @@ function GRbuscarSumXCod($this){
 				<td>${element.esta_cancelado=='1'?"<span class='text-info'>Si</span>":"<span class='text-danger'>No</span>"}</td>
 				<td>${element.tiene_medidor=='1'?'Si':'No'}</td>
 				<td>${element.estado_corte=='1'?"<span class='text-danger'>Si</span>":"<span class='text-info'>No</span>"}</td>
-				<td><a href="#!" class="btn btn-info btn-raised btn-xs">G. Recibo</a></td>
+				<td><a href="../reportes/rxp.php?codigoSum=${element.suministro_cod_suministro}&anio=${element.anio}&mes=${element.mes}" target="_blank" class="btn btn-info btn-raised btn-xs">G. Recibo</a></td>				
 			</tr>			
 			`;
 		})	
 		document.querySelector("#tblRspxSum_GR").innerHTML=html;
 	})
 
+}
+
+
+//fUNCIONES PARA CRECIBO
+function buscarSuministrosParaCobrar(){
+	let el = document.getElementById('txtBscSumCobro');
+	if(el){
+		buscarSuministrosParaCobrarTBL('');
+		el.addEventListener('keyup',()=>{	
+			console.log(el.value);
+			buscarSuministrosParaCobrarTBL(el.value);
+		})
+	}
+}
+function buscarSuministrosParaCobrarTBL(txtInput){
+	
+	let data = new FormData();
+	data.append('OPTION','CobrarRecibo');
+	data.append('cod_sum',txtInput);
+	
+	fetch('../ajax/gestionRcbAjax.php',{
+		method:'POST',
+		body:data
+	}).then(res => res.json())
+	.then(data=>{
+		console.log(data)
+		let ahtml = ``;
+		let cont = 0;
+		data.forEach(element=>{
+			console.log(element)			
+			ahtml += `
+				<tr>
+					<td>${++cont}</td>
+					<td>${element.suministro_cod_suministro}</td>
+					<td>${element.categoria_suministro}</td>
+					<td>${element.anio}</td>
+					<td>${element.mes}</td>
+					<td>s/ ${element.monto_pagar}</td>
+					<td><a href="#!" class="btn btn-success btn-raised btn-xs" onclick="cobrarAgua(this,'${element.suministro_cod_suministro}',${element.anio},${element.mes},${element.monto_pagar},${txtInput})">Cobrar</a></td>
+				</tr>				
+			`;
+		});
+		document.querySelector('#rspTblCrecibo').innerHTML = ahtml;
+	})
+}
+function cobrarAgua(e,cod_sum,anio,mes,monto,txtinput){
+	//DESCONTAR CONTADOR DEUDA
+	//ESTADO CORTE, RESTAURAR. 
+	let lmes = NombreMes(mes);
+
+	console.log(e,cod_sum,lmes);
+	swal({
+		title: "¿Realizar cobro?",
+		text: "<p>Para el mes de <b>"+lmes+"</b></p>SUMINISTRO: <b>" + cod_sum + "</b><br>COBRAR:    <b>S/ " + monto +" Soles</b>",
+		type: "info",				
+		confirmButtonColor: '#03A9F4',		  		
+		confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',		
+		showCancelButton: true,
+		cancelButtonColor: '#F44336',
+		cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Cancel'		
+	}).then(()=>{
+		//Cuando le de la opción de ok
+		let data = new FormData();
+		data.append('OPTION','PagoRecibo');
+		data.append('cod_sum',cod_sum);
+		data.append('anio',anio);
+		data.append('mes',mes);
+	
+		fetch('../ajax/gestionRcbAjax.php',{
+			method:'post',
+			body:data
+		}).then(res => res.json())
+		.then(data =>{
+			console.log(data);
+			buscarSuministrosParaCobrarTBL(txtinput);
+		})
+	},function(){
+		//si no le da a la opcion de aceptar
+		console.log("No le dió aceptar",cod_sum)
+	});
+
+
+	
+}
+
+buscarSuministrosParaCobrar()
+
+//Función Nombre de fechas mes
+function NombreMes($n_mes){
+	$n_mes = Number($n_mes);
+	switch ($n_mes) {
+		case 1:
+			$r_mes = "Enero";
+			break;
+		case 2:
+			$r_mes = "Febrero";
+			break;
+		case 3:
+			$r_mes = "Marzo";
+			break;
+		case 4:
+			$r_mes = "Abril";
+			break;				
+		case 5:
+			$r_mes = "Mayo";
+			break;
+		case 6:
+			$r_mes = "Junio";
+			break;
+		case 7:
+			$r_mes = "Julio";
+			break;
+		case 8:
+			$r_mes = "Agosto";
+			break;
+		case 9:
+			$r_mes = "Septiembre";
+			break;
+		case 10:
+			$r_mes = "Octubre";
+			break;
+		case 11:
+			$r_mes = "Noviembre";
+			break;
+		case 12:
+			$r_mes = "Diciembre";
+			break;												
+		default:
+			$r_mes = $n_mes;
+			break;
+	}	
+	return $r_mes;
 }

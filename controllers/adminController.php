@@ -587,13 +587,76 @@
 			 FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
 			 INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro 
 			 WHERE suministro.estado_corte<>2 AND suministro.direccion = '$direccion' AND
-			  factura_recibo.anio=$anio AND factura_recibo.mes=$mes";
+			  factura_recibo.anio=$anio AND factura_recibo.mes=$mes ORDER BY asociado.apellido";
 			//$query = "SELECT * FROM suministro WHERE direccion='{$direccion}'";
 			$arrData = mainModel::execute_single_query($query);
 			if($arrData->rowCount()>0){
 				return ['res'=>true, 'data'=>$arrData];
 			}
 			return ['res'=>false,'data'=>[]];
+		}
+
+		//RG
+		public function recibosObtenerDataSumXCod($cod_sum,$anio,$mes){
+			
+			$cod_sum = trim($cod_sum);
+			$query="SELECT asociado.dni,asociado.nombre,asociado.apellido,suministro.cod_suministro,suministro.direccion,
+			 suministro.estado_corte,suministro.tiene_medidor,suministro.categoria_suministro,suministro.contador_deuda,
+			 factura_recibo.anio,factura_recibo.mes,factura_recibo.fecha_emision,factura_recibo.fecha_vencimiento,
+			 factura_recibo.consumo, factura_recibo.monto_pagar,factura_recibo.esta_cancelado,factura_recibo.esta_impreso 
+			 FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
+			 INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro 
+			 WHERE suministro.estado_corte<>2 AND suministro.cod_suministro = '$cod_sum' AND
+			  factura_recibo.anio=$anio AND factura_recibo.mes=$mes";
+
+			$arrData = mainModel::execute_single_query($query);
+			if($arrData->rowCount()>0){
+				return ['res'=>true, 'data'=>$arrData];
+			}
+			return ['res'=>false,'data'=>[]];			
+		}
+
+		//function para COBRAR
+		public function obtenerSumParaCobrar($cod_sum){
+
+			$query = "SELECT * FROM suministro INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro
+						WHERE factura_recibo.esta_cancelado=0 AND factura_recibo.suministro_cod_suministro LIKE '%$cod_sum%' LIMIT 0,10";
+			$arrData = mainModel::execute_single_query($query);
+			$arrResp = [];
+			while($reg = $arrData->fetch(PDO::FETCH_ASSOC)){
+				$arrResp[] = $reg;
+			}
+			return $arrResp;
+		}
+
+		public function cobrarRecibo($cod_sum,$anio,$mes){
+			//$query = "SELECT * FROM suministro WHERE suministro.estado_corte=1 AND suministro.contador_deuda=0";
+			$query = "UPDATE factura_recibo SET esta_cancelado = 1, esta_impreso = 1
+					WHERE factura_recibo.suministro_cod_suministro = $cod_sum AND factura_recibo.anio = $anio AND factura_recibo.mes = $mes";
+			$arrData = mainModel::execute_single_query($query);
+			if($arrData){
+				$resCont = self::reducirContadorDeuda($cod_sum);
+			}
+			return $arrData;			
+		}
+
+		public function reducirContadorDeuda($cod_sum){			
+			$query = "SELECT contador_deuda FROM suministro WHERE cod_suministro = $cod_sum";
+			$queryRes = mainModel::execute_single_query($query);
+			$dbCont = $queryRes->fetch();
+			$contador_deuda = $dbCont['contador_deuda'];
+			$contador_deuda--;
+			
+			//Actualizando corte de manera automática
+			if($contador_deuda == 0){
+				$query0 = "UPDATE suministro SET estado_corte=$contador_deuda WHERE suministro.cod_suministro=$cod_sum";
+				$queryRes0 = mainModel::execute_single_query($query0);
+			}
+			//actualizando contador de deudas
+			$query1 = "UPDATE suministro SET contador_deuda=$contador_deuda WHERE suministro.cod_suministro=$cod_sum";
+			$queryRes1 = mainModel::execute_single_query($query1);
+
+			return true;
 		}
 
 	}

@@ -78,6 +78,19 @@
                 echo json_encode($response);
             }
             
+            else if ($_POST['OPTION'] == 'CobrarRecibo'){
+
+                $obj = new adminController();
+                $response = $obj->obtenerSumParaCobrar($_POST['cod_sum']);
+                echo json_encode($response);
+            }
+            
+            else if ($_POST['OPTION'] == 'PagoRecibo'){
+
+                $obj = new adminController();
+                $response = $obj->cobrarRecibo($_POST['cod_sum'],$_POST['anio'],$_POST['mes']);
+                echo json_encode($response);                
+            }
 
         }
     }
