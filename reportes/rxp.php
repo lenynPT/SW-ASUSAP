@@ -52,10 +52,21 @@ class PDF extends FPDF
         $dataQuery = $arrData['data'];
         header('Content-Type: text/html; charset=UTF-8');
         while($element = $dataQuery->fetch(PDO::FETCH_ASSOC)){   
+
+            $esta_cancelado = $element['esta_cancelado']?'RECIBO CANCELADO':'FALTA PAGAR RECIBO';
+            
+            
+        //verifica que sea una institución para solo imprimir el nombre        
+        $_POST['urlimg'] = $element['estado_corte']?'img/corte.jpg':'img/reciboAgua.jpg';
+
+        //recuperar los meses de las deudas anteriores
+        $deudasMes = $dataObj->consultaDeudasMes($element['cod_suministro']);
+
+
             $medidor = $element['tiene_medidor']?'Si':'No';    
             $cortado = $element['estado_corte']?'Si':'No';
             $nombre_completo = $element['categoria_suministro']=='Estatal'?utf8_decode($element['nombre']):utf8_decode($element['apellido']." ".$element['nombre']); 
-            $msjCorte = ($element['contador_deuda']>=2)?'EN CORTE':'No eaksd akdka ndaks dnka sna';
+            $msjCorte = ($element['contador_deuda']>=2)?'EN CORTE':'no está en corte';
 
             $pdf->AddPage();    
             $pdf->Image($_POST['urlimg'] ,0,0,148,210);
@@ -64,13 +75,18 @@ class PDF extends FPDF
             $pdf->SetXY(5,7);
             $pdf->Cell(30,12,'ASUSAP',0,0,'C');
 
-            $pdf->SetFont('Arial','B',7);
-            $pdf->SetXY(55,7);
-            //$info = utf8_decode($element['apellido']);
-            $pdf->Cell(60,5,"$nombre_completo ",1,1,'');//
-            $pdf->SetXY(22,8);
-            $pdf->Cell(100,10,$element['direccion'],0,0,'C');
+            $pdf->SetFont('Arial','B',7);        
+            //fecha seleccionado para el recibo 
+            $pdf->SetXY(5,12);
+            $pdf->Cell(30,12,"{$mesLit} del {$anio}",0,0,'C');
+
+            $pdf->SetXY(57,7);
+            $pdf->Cell(60,5,"$nombre_completo",0,0,'');//
+            $pdf->SetXY(57,8);
+            $pdf->Cell(60,10,$element['direccion'],0,0,'');
         
+            $pdf->SetXY(27,95);
+            $pdf->Cell(100,10,$esta_cancelado,0,0,'C');
             $pdf->SetXY(27,100);
             $pdf->Cell(100,10,$element['monto_pagar'],0,0,'C');
             $pdf->SetXY(27,105);
@@ -79,10 +95,21 @@ class PDF extends FPDF
             $pdf->Cell(100,10,$element['categoria_suministro'],0,0,'C');
             $pdf->SetXY(27,115);
             $pdf->Cell(100,10,"Tiene medidor:".$medidor,0,0,'C');
-            $pdf->SetXY(27,120);
-            $pdf->Cell(100,10,"Cantidad deudas: {$element['contador_deuda']}",0,0,'C');
+            $pdf->SetXY(10,99);
+            $pdf->Cell(100,5,"Cantidad deudas: {$element['contador_deuda']}",0,0,'');
+
+        //Imprime los meses endeudados
+        $pdf->SetXY(10,104);     
+        foreach ($deudasMes as $value) {
+            # code...
+            $nombreMes =  $dataObj->obtenerNombrefecha($value['anio'],$value['mes']);
+            $pdf->SetX(10);
+            $pdf->Cell(30,3,$nombreMes['r_mes']." del ".$nombreMes['r_anio'],1,0,'');
+            $pdf->ln();
+        }   
+
             $pdf->SetXY(10,150);
-            $pdf->Cell(0,10,$msjCorte,0,0,'');
+            $pdf->Cell(0,10,utf8_decode($msjCorte),0,0,'');
 
         }        
     }

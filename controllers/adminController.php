@@ -939,4 +939,19 @@
             return $registroModal;
         }
 
+		/*================================ IMPRESION RECIBOS ============================================*/ 
+		public function consultaDeudasMes($cod_sum){
+			$query = "SELECT factura_recibo.suministro_cod_suministro,factura_recibo.anio,factura_recibo.mes,factura_recibo.esta_cancelado 
+			FROM factura_recibo 
+			WHERE factura_recibo.esta_cancelado=0 AND factura_recibo.suministro_cod_suministro='$cod_sum'";
+
+			$resArr = mainModel::execute_single_query($query);
+			$arrData = [];
+			while($reg = $resArr->fetch(PDO::FETCH_ASSOC)){				
+				$arrData[] = $reg;
+			}
+
+			return $arrData;
+		}
+
 	}

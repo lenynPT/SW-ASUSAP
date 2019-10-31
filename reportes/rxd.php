@@ -14,12 +14,12 @@ $selectMes = $_GET['mes'];
 
 //Inicializando objeto de consultas
 $objDirec = new adminController();
-
+//devuelve los registros por dirección
 $resConsult = $objDirec->recibosObtenerDataSumXdirec($selectDireccion,$selectAnio,$selectMes);
-
+//devuelve el mes en forma literal
 $fechaL = $objDirec->obtenerNombrefecha($selectAnio,$selectMes);
 $mesLit = $fechaL['r_mes'];
-
+//Asigna el fondo para el recibo 
 $_POST['urlimg'] = $resConsult['res']?'img/reciboAgua.jpg':'img/sinResultado.jpg';
 
 class PDF extends FPDF
@@ -61,7 +61,7 @@ class PDF extends FPDF
 $pdf = new PDF('P','mm','A5');
 
 if(!$resConsult['res']){
-    //Sin registros para emitir recibo
+    //cUANDO NO HAY REGISTRO
     $pdf->AddPage();    
     $pdf->Image($_POST['urlimg'] ,0,0,148,210);
 
@@ -74,12 +74,24 @@ if(!$resConsult['res']){
     $pdf->Cell(100,10,"REGISTRO VACIO PARA {$mesLit} del {$selectAnio}",0,0,'C');
 
 }else{
+    //CUANDO HAY REGISTROS
+
     $dataQuery = $resConsult['data'];
 
     while($element = $dataQuery->fetch(PDO::FETCH_ASSOC)){
 
+        $medidor = $element['tiene_medidor']?'Si':'No';    
+        $cortado = $element['estado_corte']?'Si':'No';
+        $esta_cancelado = $element['esta_cancelado']?'RECIBO CANCELADO':'FALTA PAGAR RECIBO';
+
         //verifica que sea una institución para solo imprimir el nombre
         $nombre_completo = ($element['categoria_suministro']=='Estatal')?utf8_decode($element['nombre']):utf8_decode($element['apellido']." ".$element['nombre']); 
+        $_POST['urlimg'] = $element['estado_corte']?'img/corte.jpg':'img/reciboAgua.jpg';
+        $msjCorte = ($element['contador_deuda']>=2)?'EN CORTE':'no está en corte';
+
+        //recuperar los meses de las deudas anteriores
+        $deudasMes = $objDirec->consultaDeudasMes($element['cod_suministro']);
+
 
         $pdf->AddPage();    
         $pdf->Image($_POST['urlimg'] ,0,0,148,210);
@@ -87,16 +99,44 @@ if(!$resConsult['res']){
         $pdf->SetFont('Arial','B',20);
         $pdf->SetXY(5,7);
         $pdf->Cell(30,12,'ASUSAP',0,0,'C');
+        
+        $pdf->SetFont('Arial','B',7);        
+        //fecha seleccionado para el recibo 
+        $pdf->SetXY(5,12);
+        $pdf->Cell(30,12,"{$mesLit} del {$selectAnio}",0,0,'C');
 
-        $pdf->SetFont('Arial','B',7);
-        //$result = $sql->reporte_prueba("SELECT * FROM asociado");
         $pdf->SetXY(57,7);
         $pdf->Cell(50,5,$nombre_completo ,0,0,'');
         $pdf->SetXY(57,10.4);
-        $pdf->Cell(50,5,$selectDireccion,0,0,'');
-    
+        $pdf->Cell(50,5,$selectDireccion,0,0,'');    
+
+        $pdf->SetXY(27,95);
+        $pdf->Cell(100,10,$esta_cancelado,0,0,'C');
         $pdf->SetXY(27,100);
-        $pdf->Cell(100,10,$element['direccion'],0,0,'C');
+        $pdf->Cell(100,10,$element['monto_pagar'],0,0,'C');
+        $pdf->SetXY(27,105);
+        $pdf->Cell(100,10,$element['cod_suministro'],0,0,'C');
+        $pdf->SetXY(27,110);
+        $pdf->Cell(100,10,$element['categoria_suministro'],0,0,'C');
+        $pdf->SetXY(27,115);
+        $pdf->Cell(100,10,"Tiene medidor:".$medidor,0,0,'C');
+        $pdf->SetXY(10,99);
+        $pdf->Cell(100,5,"Cantidad deudas: {$element['contador_deuda']}",0,0,'');        
+
+
+    
+        //Imprime los meses endeudados
+        $pdf->SetXY(10,103);        
+        for ($i=0; $i < count($deudasMes); $i++) { 
+            # code...
+            $nombreMes =  $objDirec->obtenerNombrefecha($deudasMes[$i]['anio'],$deudasMes[$i]['mes']);
+            $pdf->SetX(10);
+            $pdf->Cell(30,3,$nombreMes['r_mes']." del ".$nombreMes['r_anio'],1,0,'');
+            $pdf->ln();
+        }
+
+        $pdf->SetXY(10,150);
+        $pdf->Cell(0,10,utf8_decode($msjCorte),0,0,'');
     }
     
 }
