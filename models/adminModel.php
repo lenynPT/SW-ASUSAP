@@ -148,6 +148,22 @@
 
             return true;*/
 
+
+        }
+
+
+    /*================================REGISTRAR SERVICIOO============================================*/
+
+        public  function insertsRS($datosModels){
+
+            //insertar Registro de servicio los items
+            $stmt=mainModel::connect()->prepare("INSERT INTO  detalle_servicio( descripcion, costo,factura_servicio_idfactura_servicio)
+												                    VALUES (:descripcion, :costo, :idfactuServ)");
+            $stmt->bindParam(":descripcion",$datosModels["descrip"]);
+            $stmt->bindParam(":costo",$datosModels["dcosto"]);
+            $stmt->bindParam(":idfactuServ",$datosModels["cds"]);
+
+            $stmt->execute();
         }
         public function actualizarGC($datosModels){
 
@@ -209,6 +225,70 @@
 			return true;
 		}
 
+
+    
+
+        public function  guardarRS($datosModels){
+            //insertar Registro de servicio los items
+            $stmt=mainModel::connect()->prepare("INSERT INTO factura_servicio (idfactura_servicio,a_nombre ,anio,mes,fecha,monto_pagado,total_pago,esta_cancelado, suministro_cod_suministro)
+												                                 VALUES (:idfs, :a_nombre, :anio,:mes,:fecha,:monto_p,:total_p,:esta_c,:codigo_su)");
+
+
+            $stmt->bindParam(":idfs",$datosModels["codRS"]);
+            $stmt->bindParam(":a_nombre",$datosModels["anombre"]);
+            $stmt->bindParam(":anio",$datosModels["anio"]);
+            $stmt->bindParam(":mes",$datosModels["mes"]);
+            $stmt->bindParam(":fecha",$datosModels["fecha"]);
+            $stmt->bindParam(":monto_p",$datosModels["monto"]);
+            $stmt->bindParam(":total_p",$datosModels["totalp"]);
+            $stmt->bindParam(":esta_c",$datosModels["estac"]);
+            $stmt->bindParam(":codigo_su",$datosModels["cods"]);
+
+            $stmt->execute();
+        }
+
+        public function actualizarRS($datosModels){
+
+            $stmt=mainModel::connect()->prepare("UPDATE factura_servicio SET total_pago=:cosTotal,fecha=:fechas,a_nombre=:anombre,mont_restante=:montrestante WHERE idfactura_servicio=:id");
+            $stmt->bindParam(":cosTotal",$datosModels["cosTotal"]);
+            $stmt->bindParam(":montrestante",$datosModels["cosTotal"]);
+            $stmt->bindParam(":id",$datosModels["id"]);
+            $stmt->bindParam(":fechas",$datosModels["fecha"]);
+            $stmt->bindParam(":anombre",$datosModels["anombre"]);
+
+            $stmt->execute();
+            return $stmt;
+        }
+
+        public function eliminarRSI($datosModels){
+            $stmt=mainModel::connect()->prepare("DELETE FROM detalle_servicio  WHERE factura_servicio_idfactura_servicio=:id");
+            $stmt->bindParam(":id",$datosModels["idfi"]);
+            $stmt->execute();
+            return $stmt;
+        }
+        /*::::::::::::::::::::::::::::::::::::::::::::::AMORTIZAR::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+        public function buscarMontoRest($datosModels){
+            $query = "SELECT mont_restante FROM factura_servicio WHERE  idfactura_servicio='.$datosModels.'";
+            $query->execute();
+            return $query;
+        }
+        public function datos_Amortizar($codigo){
+
+            $query=mainModel::connect()->prepare("SELECT * FROM factura_servicio WHERE idfactura_servicio=:coRecibo");
+            $query->bindParam(":coRecibo",$codigo);
+            $query->execute();
+            return $query;
+        }
+
+        public function actualizarASR($dataAd){
+            $stmt=mainModel::connect()->prepare("UPDATE factura_servicio SET monto_pagado=:montPagado,mont_restante=:montREST WHERE idfactura_servicio=:id");
+            $stmt->bindParam(":montPagado",$dataAd["MPAGADO"]);
+            $stmt->bindParam(":montREST",$dataAd["MREST"]);
+            $stmt->bindParam(":id",$dataAd["id"]);
+
+            $stmt->execute();
+            return $stmt;
+        }
 
     }
 
