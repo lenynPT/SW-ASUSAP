@@ -676,7 +676,9 @@ function cobrarAgua(e,cod_sum,anio,mes,monto,txtinput){
 			body:data
 		}).then(res => res.json())
 		.then(data =>{
-			console.log(data);
+			console.log("data -> ",data);
+			console.log("txtinput -> ",txtinput)
+			txtinput = (txtinput==null || txtinput==undefined)?'':txtinput;
 			buscarSuministrosParaCobrarTBL(txtinput);
 		})
 	},function(){

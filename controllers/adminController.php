@@ -587,7 +587,7 @@
 		public function cobrarRecibo($cod_sum,$anio,$mes){
 			//$query = "SELECT * FROM suministro WHERE suministro.estado_corte=1 AND suministro.contador_deuda=0";
 			$query = "UPDATE factura_recibo SET esta_cancelado = 1, esta_impreso = 1
-					WHERE factura_recibo.suministro_cod_suministro = $cod_sum AND factura_recibo.anio = $anio AND factura_recibo.mes = $mes";
+					WHERE factura_recibo.suministro_cod_suministro = '$cod_sum' AND factura_recibo.anio = $anio AND factura_recibo.mes = $mes";
 			$arrData = mainModel::execute_single_query($query);
 			if($arrData){
 				$resCont = self::reducirContadorDeuda($cod_sum);
@@ -596,7 +596,7 @@
 		}
 
 		public function reducirContadorDeuda($cod_sum){			
-			$query = "SELECT contador_deuda FROM suministro WHERE cod_suministro = $cod_sum";
+			$query = "SELECT contador_deuda FROM suministro WHERE cod_suministro = '$cod_sum'";
 			$queryRes = mainModel::execute_single_query($query);
 			$dbCont = $queryRes->fetch();
 			$contador_deuda = $dbCont['contador_deuda'];
@@ -604,11 +604,11 @@
 			
 			//Actualizando corte de manera automática
 			if($contador_deuda == 0){
-				$query0 = "UPDATE suministro SET estado_corte=$contador_deuda WHERE suministro.cod_suministro=$cod_sum";
+				$query0 = "UPDATE suministro SET estado_corte=$contador_deuda WHERE suministro.cod_suministro='$cod_sum'";
 				$queryRes0 = mainModel::execute_single_query($query0);
 			}
 			//actualizando contador de deudas
-			$query1 = "UPDATE suministro SET contador_deuda=$contador_deuda WHERE suministro.cod_suministro=$cod_sum";
+			$query1 = "UPDATE suministro SET contador_deuda=$contador_deuda WHERE suministro.cod_suministro='$cod_sum'";
 			$queryRes1 = mainModel::execute_single_query($query1);
 
 			return true;
