@@ -92,6 +92,16 @@ if(!$resConsult['res']){
         //Función que recupera los meses de las deudas anteriores
         $deudasMes = $objDirec->consultaDeudasMes($element['cod_suministro']);
 
+        //Operacion de importe total
+        $lectura_ant="#";
+        $lectura_act = "#";
+        $consumo_dif = "#";            
+        if($medidor == "Si"){
+            $lectura_act = $element['consumo'];
+            $lectura_ant = $objDirec->obtenerConsumoAnterior($element['cod_suministro'],$selectAnio,$selectMes);
+            $consumo_dif = $lectura_act-$lectura_ant;
+        }
+
         //AGREGAMOS PÁGINA ****************************************************
         $pdf->AddPage();    
         $pdf->Image($_POST['urlimg'] ,0,0,148,210);
@@ -127,8 +137,13 @@ if(!$resConsult['res']){
         //REGISTROS DEL MEDIDOR ****************************************************
         $pdf->SetXY(7,62);
         $pdf->Cell(100,10,$medidor,0,0,''); // Tiene medidor??
+        $pdf->SetXY(18,63);
+        $pdf->Cell(19,8,$lectura_ant." m3",1,0,'C'); // lectura anterior
+        $pdf->SetXY(37,63);
+        $pdf->Cell(19,8,$lectura_act." m3",1,0,'C'); // lectura Actual
         $pdf->SetXY(56,63);
-        $pdf->Cell(19,8,$element['consumo']." m3",1,0,'C'); // Tiene medidor??
+        $pdf->Cell(19,8,$consumo_dif." m3",1,0,'C'); // consumo
+
 
         //INFORMACIÓN COMPLEMENTARIA ****************************************************              
         $pdf->SetXY(10,75);
@@ -148,6 +163,20 @@ if(!$resConsult['res']){
         }
         
         //DETALLE DE LA FACTURACIÓN ****************************************************
+        if($medidor=="Si"){
+            modoDePago($pdf,$element,$consumo_dif);
+        }else{
+            //primera fila de 
+            $pdf->SetXY(85,64+0*$x);
+            $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
+            $pdf->SetXY(130,64+0*$x);
+            $pdf->Cell(100,10,"$/ 3.56",0,0,'');
+            //segunda fila de 
+            $pdf->SetXY(85,67+1*$x);
+            $pdf->Cell(100,10,"Por IGV (18%)",0,0,'');
+            $pdf->SetXY(130,67+1*$x);
+            $pdf->Cell(100,10,"$/ 0.64",0,0,'');
+        }
         $pdf->SetXY(118,139);
         $pdf->Cell(100,10,"S/ ".$element['monto_pagar'],0,0,'');
         
@@ -159,3 +188,150 @@ if(!$resConsult['res']){
 }
 
 $pdf->Output();
+
+
+    //Funcione que retorna las formas de pago para las distintas categorias de los suministros
+    function modoDePago($pdf,$element,$consumo_dif){
+        $categoria = $element['categoria_suministro'];
+        $x = 2;
+        $val1 = 0; $val2 = 0; $val3 = 0; $resIGV=0;
+        switch ($categoria) {
+            case 'Domestico':
+                # code...
+                if($consumo_dif<=20){
+                    $val1 = 3.56;
+                }else{
+                    $val1 = 3.56;
+                    $consumo_dif-=20;
+                    if($consumo_dif<=20){
+                        $val2 = $consumo_dif * 0.60;                        
+                    }else{
+                        $val2 = 20 * 0.60;
+                        $consumo_dif-=20;
+                        $val3 = $consumo_dif * 0.95;
+                    }
+                }
+                $val1 = round($val1, 2);
+                $val2 = round($val2, 2);
+                $val3 = round($val3, 2);
+
+                $resIGV = ($val1+$val2+$val3)*0.18; $resIGV = round($resIGV, 2);                
+
+                //primera fila de 
+                $pdf->SetXY(85,64+0*$x);
+                $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.18",0,0,'');
+                $pdf->SetXY(130,64+0*$x);
+                $pdf->Cell(100,10,"$/ {$val1}",0,0,'');
+                //segunda fila de 
+                $pdf->SetXY(85,67+1*$x);
+                $pdf->Cell(100,10,"(De 20 a 40)m3 * $/ 0.60",0,0,'');
+                $pdf->SetXY(130,67+1*$x);
+                $pdf->Cell(100,10,"$/ {$val2}",0,0,'');
+                //tercera fila de 
+                $pdf->SetXY(85,70+2*$x);
+                $pdf->Cell(100,10,"(De 40 a mas)m3 * $/ 0.95",0,0,'');
+                $pdf->SetXY(130,70+2*$x);
+                $pdf->Cell(100,10,"$/ {$val3}",0,0,'');
+
+                //IGV
+                $pdf->SetXY(85,73+3*$x);
+                $pdf->Cell(100,10,"IGV (18%)",0,0,'');
+                $pdf->SetXY(130,73+3*$x);
+                $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+
+
+                break;
+            case 'Comercial':
+                # code...    
+                
+                if($consumo_dif<=20){
+                    $val1=20*0.50;
+                }else {
+                    $val1=10;                    
+                    $consumo_dif-=20;
+                    $val2 = $consumo_dif*0.95;
+                }
+                $val1 = round($val1,2);
+                $val2 = round($val2,2);
+
+                $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,2);
+
+                //primera fila de 
+                $pdf->SetXY(85,64+0*$x);
+                $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.50",0,0,'');
+                $pdf->SetXY(130,64+0*$x);
+                $pdf->Cell(100,10,"$/ {$val1}",0,0,'');
+                //segunda fila de 
+                $pdf->SetXY(85,67+1*$x);
+                $pdf->Cell(100,10,"(De 20 a mas)m3 * $/ 0.95",0,0,'');
+                $pdf->SetXY(130,67+1*$x);
+                $pdf->Cell(100,10,"$/ {$val2}",0,0,'');
+                
+                //IGV
+                $pdf->SetXY(85,70+2*$x);
+                $pdf->Cell(100,10,"IGV (18%)",0,0,'');
+                $pdf->SetXY(130,70+2*$x);
+                $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+
+                break;
+            case 'Estatal':
+                # code...
+                if($consumo_dif<=20){
+                    $val1=20*0.60;
+                }else {
+                    $val1=10;                    
+                    $consumo_dif-=20;
+                    $val2 = $consumo_dif*0.95;
+                }
+                $val1 = round($val1,2);
+                $val2 = round($val2,2);
+
+                $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,2);
+
+                //primera fila de 
+                $pdf->SetXY(85,64+0*$x);
+                $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.60",0,0,'');
+                $pdf->SetXY(130,64+0*$x);
+                $pdf->Cell(100,10,"$/ {$val1}",0,0,'');
+                //segunda fila de 
+                $pdf->SetXY(85,67+1*$x);
+                $pdf->Cell(100,10,"(De 20 a mas)m3 * $/ 0.95",0,0,'');
+                $pdf->SetXY(130,67+1*$x);
+                $pdf->Cell(100,10,"$/ {$val2}",0,0,'');
+                
+                //IGV
+                $pdf->SetXY(85,70+2*$x);
+                $pdf->Cell(100,10,"IGV (18%)",0,0,'');
+                $pdf->SetXY(130,70+2*$x);
+                $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+
+                break;
+            case 'Industrial':
+                # code...
+                $val1 = $consumo_dif * 2.00;
+                
+                $val1 = round($val1, 2);
+
+                $resIGV = $val1 * 0.18; $resIGV = round($resIGV, 2);
+
+                //primera fila de 
+                $pdf->SetXY(85,64+0*$x);
+                $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.60",0,0,'');
+                $pdf->SetXY(130,64+0*$x);
+                $pdf->Cell(100,10,"$/ {$val1}",0,0,'');
+
+                //IGV
+                $pdf->SetXY(85,70+2*$x);
+                $pdf->Cell(100,10,"IGV (18%)",0,0,'');
+                $pdf->SetXY(130,70+2*$x);
+                $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        
+    }
+

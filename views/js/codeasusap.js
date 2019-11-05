@@ -374,9 +374,11 @@ function generarMonto(consumo, categoria){
 			else if(categoria == 'Comercial'){
 				if(consumo <= 20){
 					calcMonto = 10.00;
+					calcMonto += calcMonto*igv; 
 				}else{
 					consumo-=20;
 					calcMonto = 10.00;
+					calcMonto += calcMonto*igv; 
 
 					calcPrev = consumo*0.95;
 					calcMonto += calcPrev + calcPrev*igv;
@@ -385,9 +387,11 @@ function generarMonto(consumo, categoria){
 			else if(categoria == 'Estatal'){
 				if(consumo <= 20){
 					calcMonto = 12.00;
+					calcMonto += calcMonto*igv;
 				}else{
 					consumo-=20;
 					calcMonto = 12.00;
+					calcMonto += calcMonto*igv;
 
 					calcPrev = consumo*0.95;
 					calcMonto += calcPrev + calcPrev*igv;
