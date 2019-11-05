@@ -316,7 +316,7 @@ $pdf->Output();
 
                 //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
-                $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.60",0,0,'');
+                $pdf->Cell(100,10,"(De 0 a mas)m3 * $/ 0.60",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
                 $pdf->Cell(100,10,"$/ {$val1}",0,0,'');
 
