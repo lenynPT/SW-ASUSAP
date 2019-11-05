@@ -114,19 +114,52 @@ function agregar(){
     document.getElementById("costTotal").innerHTML=costoTot;
 
 
-    reordenar();
+  //  reordenar();
 }
 
+/*
 function seleccionar(id_fila){
+    var myTable = document.getElementById("tabla");
+    var rowCount = myTable.rows.length;
+
+    let f="fila";
+
     if($('#'+id_fila).hasClass('seleccionada')){
         $('#'+id_fila).removeClass('seleccionada');
     }
     else{
         $('#'+id_fila).addClass('seleccionada');
-    }
-    //2702id_fila_selected=id_fila;
-    id_fila_selected.push(id_fila);
+
+        $('#'+id_fila).remove();
+        console.log(rowCount)
+        reordenar();
+       // var a=$('#tabla tbody tr').length();
+       /!* var a=$('#tabla').not(':first').children().remove();
+         alll=$('#tabla').slice(1).children().remove();
+        al=alll.rows;
+        console.log(a)*!/
+
+       /!* for(var i=1; i<rowCount; i++){
+        //for (var x=rowCount-1; x>0; x--) {
+
+
+            A=$('#'+id_fila[i]).remove();
+                    //myTable.deleteRow(id_fila);
+                    console.log(id_fila+A)
+
+
+
+        }*!/
+
+
+
 }
+    //let s=id_fila_selected.push(id_fila);
+    //console.log(s)
+    //2702id_fila_selected=id_fila;
+
+}
+*/
 
 function eliminar(id_fila){
     cont=0
@@ -166,14 +199,14 @@ function eliminar(id_fila){
     }*/
     reordenar();
 }
-
+/*
 function reordenar(){
     var num=1;
     $('#tabla tbody tr').each(function(){
         $(this).find('td').eq(0).text(num);
         num++;
     });
-}
+}*/
 /*------------------------AL GUARDAR TODO ACTUALIZADO -----------------------------------------------*/
 let num1=0;
 function guardarTodo(){
@@ -277,6 +310,7 @@ function showRow(row) {
 
         $("#add-all").show();
 
+
         swal({
             title: "¿Ejecutar esta acción?",
             text: "seguro??",
@@ -305,10 +339,11 @@ function showRow(row) {
             });
             //Cuando le da aceptar
             console.log("le dio aceptar");
-
+            $("#contTRSSS").hide();
         },function(){
             //si no le da a la opcion de aceptar
             console.log("No le dió aceptar")
+            $("#contTRSSS").show();
         });
 
     //let tot=document.getElementById("codSR").val;
@@ -367,3 +402,57 @@ select.addEventListener('change',
         console.log(selectedOption.value + ': ' + selectedOption.text);
         document.getElementById("NomDes").value=selectedOption.text;
     });
+
+
+ a=Array();
+ to=Array();
+ co=Array();
+function ImprimerRecibo(id_fila) {
+
+
+
+    let idfRSi=document.getElementById("idrs").innerHTML ;
+    //let  nsu = document.getElementById("nombreSR").innerHTML ;
+    //let  asu = document.getElementById("apellSR").innerHTML  ;
+    let codsuI=document.getElementById("codSR").innerHTML  ;
+    let anirs=  document.getElementById("anioRS").innerHTML;
+    let mesrs=document.getElementById("mesRS").innerHTML  ;
+    let costALL=document.getElementById("costTotal").innerHTML  ;
+    let anIRS=document.getElementById("anombre").value;
+
+    document.getElementById("costTotal").innerHTML=costoTot;
+    var myTable = document.getElementById("tabla");
+    var rowCount = myTable.rows.length;
+
+    var d = new Date();
+
+    for (var x=rowCount-1;x>=1;  x--) {
+        /* var p=$('#'+id_fila);
+         var u=p[0].cells[1].innerText;*/
+
+      // g=myTable.cells[1];
+        co[x]=myTable.rows[x].cells[0].innerText;
+        a[x]=myTable.rows[x].cells[1].innerText;
+        to[x]=myTable.rows[x].cells[2].innerText;
+        // h =a[x];
+      // console.log("datos"+h)
+       // a=id_f ila_selected.push(myTable.rows[x].innerText);
+    }
+    cont++;
+ //let bx=co+a;
+     $.ajax({
+            url:"../reportes/imp.php",
+            type:'POST',
+            // data:'ids='+idf+'&monto='+cost,
+            data:'anRSI='+anIRS+'&codSI='+codsuI+'&desNSI='+co+'&descSI='+a+'&desCcSI='+to+'&idfSI='+idfRSi+'&costALLSI='+costALL,
+            success:function (resp) {
+                // alert('respuesta'+resp);
+            }
+
+        });
+
+
+
+    let tot=parseFloat(cost);
+    // console.log(" esta en imprimir" +anirs+mesrs+tot+anrs+"DATOS"+a+to );
+}

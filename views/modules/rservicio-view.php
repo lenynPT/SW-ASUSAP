@@ -8,12 +8,13 @@
 <div class="container-fluid" onload="listar_rs('');">
 
     <div class="container" onload="listar_rs('');">
-          <div class="tab-content">
+
+
+          <div class="tab-content" id="contTRSSS">
             <div class="tab-pane active" id="tab_consultar">
-
-
-                <div class="row form-horizontal">
+                <div class="row form-horizontal" >
                     <div class="panel panel-default">
+
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="col-xs-4  text-right">
@@ -23,10 +24,9 @@
                                     <input  type="text" name="buscar" id="buscarRS" class="form-control" onkeyup="listar_rs(this.value);" placeholder="Ingrese Cod. Suministro o Nombre / Calle"/>
                                 </div>
                             </div>
-                            <div class="form-group" id="datos-result">
+                            <div class="form-group" id="datos-result" style="display: none;">
                                 <div class="card my-4" id="containerRS">
                                 </div>
-                                <div id="listaRS"></div>
                             </div>
 
                         </div>
@@ -54,9 +54,9 @@
                                             <label class="text-danger" name="nameUser">N. servicio <p id="idrs">1</p></label>
                                         </div>
                                         <div class="col-xs-12 col-sm-12">
-                                            <div class="col-xs-12 col-md-4 ">
+                                            <div class="col-xs-12 col-md-6 ">
                                                 <label for="staticEmail2">Servicio:</label>
-                                                <div class="form-group mx-sm-3 mb-2">
+                                                <div class="form-group mx-sm-3 mb-3">
 
                                                     <select class="form-control"  id="servicio" name="servicios" >
                                                         <option  value="">Seleccione:</option>
@@ -66,12 +66,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12 col-md-4 ">
-                                                <label for="staticEmail2">Servicio:</label>
-                                                <div class="form-group mx-sm-3 mb-2">
-                                                    <small id="serviciosele">asss</small>
-                                                </div>
-                                            </div>
+
                                         </div>
                                         <div class="col-xs-12 col-sm-12">
 
@@ -121,7 +116,7 @@
                                                     </div>
                                                     <div class="col-xs-6 col-md-3 form-group label-floating ">
                                                         <label class="control-label">Costo</label>
-                                                        <input class="form-control" type="text" name="Costo" id="Costo" required>
+                                                        <input class="form-control" type="number" name="Costo" id="Costo" required>
                                                     </div>
                                                 </div>
                                                <!-- <ul class="actions" style="text-align: center">
@@ -247,7 +242,7 @@
 
 
                                     <button type="submit"  class="btn btn-info btn-raised btn-sm" id="guardar" onclick="guardarTodo();"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
-                                    <button type="submit"  class="btn btn-danger btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
+                                    <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImprimerRecibo();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
 
                                 </p>
                                 </div>

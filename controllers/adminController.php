@@ -534,7 +534,7 @@
             if (!empty($valorS)) {
 
                 $conexion = mainModel::connect();
-                 $query1="SELECT idfactura_servicio,a_nombre,suministro_cod_suministro,anio,mes,fecha,total_pago FROM factura_servicio WHERE idfactura_servicio like '%" . $valorS . "%' OR a_nombre like '%" . $valorS . "%'";
+                 $query1="SELECT idfactura_servicio,a_nombre,suministro_cod_suministro,anio,mes,fecha,total_pago,mont_restante FROM factura_servicio WHERE idfactura_servicio like '%" . $valorS . "%' OR a_nombre like '%" . $valorS . "%'OR  suministro_cod_suministro like '%" . $valorS . "%'";
                 $results = mainModel::execute_single_query($query1);
 
                 $registroModal = [];
@@ -546,7 +546,8 @@
                         "anio"=>$dataModal['anio'],
                         "mes"=>$dataModal['mes'],
                         "fechars"=>$dataModal['fecha'],
-                        "totalPago"=>$dataModal['total_pago']
+                        "totalPago"=>$dataModal['total_pago'],
+                        "mont_Resta"=>$dataModal['mont_restante']
                     ];
 
                 }
@@ -572,6 +573,9 @@
                 ];
 
                 $res = adminModel::actualizarASR($dataAd);
+
+
+
             }
             return $res;
         }
