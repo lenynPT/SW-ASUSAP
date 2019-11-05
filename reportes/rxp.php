@@ -184,11 +184,11 @@ class PDF extends FPDF
                         $val3 = $consumo_dif * 0.95;
                     }
                 }
-                $val1 = round($val1, 2);
-                $val2 = round($val2, 2);
-                $val3 = round($val3, 2);
+                $val1 = round($val1, 1);
+                $val2 = round($val2, 1);
+                $val3 = round($val3, 1);
 
-                $resIGV = ($val1+$val2+$val3)*0.18; $resIGV = round($resIGV, 2);                
+                $resIGV = ($val1+$val2+$val3)*0.18; $resIGV = round($resIGV, 1);                
 
                 //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
@@ -224,10 +224,10 @@ class PDF extends FPDF
                     $consumo_dif-=20;
                     $val2 = $consumo_dif*0.95;
                 }
-                $val1 = round($val1,2);
-                $val2 = round($val2,2);
+                $val1 = round($val1,1);
+                $val2 = round($val2,1);
 
-                $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,2);
+                $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,1);
 
                 //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
@@ -256,10 +256,10 @@ class PDF extends FPDF
                     $consumo_dif-=20;
                     $val2 = $consumo_dif*0.95;
                 }
-                $val1 = round($val1,2);
-                $val2 = round($val2,2);
+                $val1 = round($val1,1);
+                $val2 = round($val2,1);
 
-                $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,2);
+                $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,1);
 
                 //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
@@ -283,13 +283,13 @@ class PDF extends FPDF
                 # code...
                 $val1 = $consumo_dif * 2.00;
                 
-                $val1 = round($val1, 2);
+                $val1 = round($val1, 1);
 
-                $resIGV = $val1 * 0.18; $resIGV = round($resIGV, 2);
+                $resIGV = $val1 * 0.18; $resIGV = round($resIGV, 1);
 
                 //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
-                $pdf->Cell(100,10,"(De 0 a mas)m3 * $/ 0.60",0,0,'');
+                $pdf->Cell(100,10,"(De 0 a mas)m3 * $/ 2.00",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
                 $pdf->Cell(100,10,"$/ {$val1}",0,0,'');
 
