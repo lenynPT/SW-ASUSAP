@@ -321,9 +321,9 @@ $pdf->Output();
                 $pdf->Cell(100,10,"$/ {$val1}",0,0,'');
 
                 //IGV
-                $pdf->SetXY(85,70+2*$x);
+                $pdf->SetXY(85,67+1*$x);
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
-                $pdf->SetXY(130,70+2*$x);
+                $pdf->SetXY(130,67+1*$x);
                 $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
 
                 break;
