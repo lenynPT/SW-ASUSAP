@@ -94,8 +94,9 @@
 
             else if ($_POST['OPTION'] == 'bscSumxAnio'){
                 $inputBsc = $_POST['inputBsc'];
+                $imprimir = $_POST['chbximprimir']; //bool -> false or true
                 $obj = new adminController();
-                $response = $obj->obtenerSumSnMController($inputBsc);
+                $response = $obj->obtenerSumSnMController($inputBsc,$imprimir);
                 echo json_encode($response);
             }
             

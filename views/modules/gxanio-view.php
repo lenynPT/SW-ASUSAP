@@ -42,8 +42,9 @@
                 <li class="active">
                     <a href="#tab_consultar" data-toggle="tab">
                         Generar Recibos Por Año
-                    </a>                    
+                    </a>                                        
                 </li>                                
+                    
             </ul>
         </div>
         <br>
@@ -56,6 +57,12 @@
                 <input  type="search" name="bscSumxAniok" id="bscSumxAniok" class="form-control" placeholder="Ingrese Cod. Suministro o DNI"/>
             </div>
         </div> 
+
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="chbxImprimir">
+            <label class="custom-control-label" for="chbxImprimir">Imprimir</label>
+        </div>
+
     </div>
 
     <div class="card-body">        
