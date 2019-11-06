@@ -42,6 +42,9 @@
 					<li>
                         <a href="<?php echo SERVERURL; ?>crecibo/"> <i class="zmdi zmdi-money zmdi-hc-fw"></i> Cobros Recibo</a>
 					</li>
+					<li>
+                        <a href="<?php echo SERVERURL; ?>gxanio/"> <i class="zmdi zmdi-money zmdi-hc-fw"></i> Generar x Año</a>
+					</li>
 				</ul>
 			</li>
 			<li>

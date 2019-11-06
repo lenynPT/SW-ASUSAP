@@ -92,5 +92,13 @@
                 echo json_encode($response);                
             }
 
+            else if ($_POST['OPTION'] == 'bscSumxAnio'){
+                $inputBsc = $_POST['inputBsc'];
+                $obj = new adminController();
+                $response = $obj->obtenerSumSnMController($inputBsc);
+                echo json_encode($response);
+            }
+            
+
         }
     }

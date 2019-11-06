@@ -199,7 +199,7 @@ function actualizarTabla_gconsumo(){
  */
 function generarConsumoSinMedidor(){
 	let el = document.querySelector("#btnGenerarCXD");
-	if(el){		
+	if(el){
 		el.addEventListener('click',()=>{
 			let optionData = new FormData();
 			optionData.append("OPTION","GCSnMedi");

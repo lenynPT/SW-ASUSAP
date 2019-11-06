@@ -316,7 +316,10 @@
 			$mes_hoy=$fecha_actual['mes'];
 			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
 			
-			$query = "SELECT cod_suministro FROM suministro WHERE tiene_medidor = 0 AND estado_corte = 0";
+			$query = "SELECT cod_suministro FROM suministro 
+			WHERE tiene_medidor = 0 AND estado_corte = 0
+			AND suministro.cod_suministro NOT IN (SELECT factura_recibo_anio.cod_sum_anio FROM factura_recibo_anio 
+			WHERE factura_recibo_anio.anio = $anio_hoy) LIMIT 0,10";
 			$regSumiSnMed = mainModel::execute_single_query($query);
 
 			$Datos = array(
@@ -945,6 +948,27 @@
 			FROM factura_recibo 
 			WHERE factura_recibo.esta_cancelado=0 AND factura_recibo.suministro_cod_suministro='$cod_sum'";
 
+			$resArr = mainModel::execute_single_query($query);
+			$arrData = [];
+			while($reg = $resArr->fetch(PDO::FETCH_ASSOC)){				
+				$arrData[] = $reg;
+			}
+
+			return $arrData;
+		}
+
+
+		/*================================ GENERAR X ANIOS PARA SUM SIN MEDIDOR ============================================*/ 
+		public function obtenerSumSnMController($inputBsc){
+			//Esta función es para poder generar los consumo por AÑO
+			$fecha_hoy = self::consultar_fecha_actual();
+
+			$query = "SELECT suministro.cod_suministro,suministro.direccion,suministro.categoria_suministro,suministro.contador_deuda, asociado.nombre,asociado.apellido
+			FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni 
+			WHERE suministro.estado_corte=0 AND suministro.tiene_medidor=0 AND suministro.cod_suministro LIKE '%$inputBsc%'
+			AND suministro.cod_suministro NOT IN 
+			(SELECT factura_recibo_anio.cod_sum_anio FROM factura_recibo_anio WHERE factura_recibo_anio.anio={$fecha_hoy['anio']})";
+			
 			$resArr = mainModel::execute_single_query($query);
 			$arrData = [];
 			while($reg = $resArr->fetch(PDO::FETCH_ASSOC)){				
