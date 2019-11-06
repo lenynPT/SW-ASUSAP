@@ -67,6 +67,9 @@ function agregarDB() {
         }
     });
 }*/
+cont=0;
+id_fila_selected=[];
+costoTot=0;
 
 $(document).ready(function(){
     $('#bt_add').click(function(){
@@ -81,9 +84,6 @@ $(document).ready(function(){
 });
 
 /*------------------AGRAGAR ITEMS  DEL RECIBO---------------------------------*/
-let cont=0;
-let id_fila_selected=[];
-let costoTot=0;
 
 function agregar(){
     cont++;
@@ -175,7 +175,7 @@ function reordenar(){
     });
 }
 /*------------------------AL GUARDAR TODO ACTUALIZADO -----------------------------------------------*/
-let num1=0;
+num1=0;
 function guardarTodo(){
     /* Agregando todo los datos */
     let idf=document.getElementById("idrs").innerHTML ;
@@ -360,10 +360,15 @@ function listar_rs(valor) {
 
 }
 
-var select = document.getElementById('servicio');
-select.addEventListener('change',
-    function(){
-        var selectedOption = this.options[select.selectedIndex];
-        console.log(selectedOption.value + ': ' + selectedOption.text);
-        document.getElementById("NomDes").value=selectedOption.text;
-    });
+function serviciosAll(){
+    var select = document.getElementById('servicio');
+    if(select){
+        select.addEventListener('change',
+            function(){
+                var selectedOption = this.options[select.selectedIndex];
+                console.log(selectedOption.value + ': ' + selectedOption.text);
+                document.getElementById("NomDes").value=selectedOption.text;
+            });
+    }
+}
+serviciosAll();
