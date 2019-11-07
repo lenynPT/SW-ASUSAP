@@ -96,10 +96,16 @@
                 $inputBsc = $_POST['inputBsc'];
                 $imprimir = $_POST['chbximprimir']; //bool -> false or true
                 $obj = new adminController();
-                $response = $obj->obtenerSumSnMController($inputBsc,$imprimir);
+                $response = $obj->obtenerSumSnMxAnioController($inputBsc,$imprimir);
                 echo json_encode($response);
             }
-            
+                        
+            else if ($_POST['OPTION'] == 'cobrarXanio'){
+                $obj = new adminController();
+                $response = $obj->cobrarSumSnMxAnioController($_POST);
+                echo json_encode($response);
+            }
+
 
         }
     }

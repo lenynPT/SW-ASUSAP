@@ -959,7 +959,7 @@
 
 
 		/*================================ GENERAR X ANIOS PARA SUM SIN MEDIDOR ============================================*/ 
-		public function obtenerSumSnMController($inputBsc,$imprimir){
+		public function obtenerSumSnMxAnioController($inputBsc,$imprimir){
 			//Esta función es para poder generar los consumo por AÑO
 			$fecha_hoy = self::consultar_fecha_actual();
 
@@ -983,5 +983,27 @@
 
 			return $arrData;
 		}
+		
+		public function cobrarSumSnMxAnioController($data){
+			//insertar datos en la tabla de años
+			$fecha_actual = self::consultar_fecha_actual();
+			$dia_v = 28;
+			$fecha_e = "{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$fecha_actual['dia']}";
+			$hora_e = "{$fecha_actual['hora']}:{$fecha_actual['minuto']}:{$fecha_actual['segundo']}";
+			$fecha_v = "{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$dia_v}";
 
+			$query1 = "INSERT INTO factura_recibo_anio(cod_sum_anio,anio,del_mes,al_mes,monto) 
+			VALUES ('{$data['cod_sum']}',{$data['anio']},{$data['del_mes']},12,{$data['monto']})";
+			$resInsrt1 = mainModel::execute_single_query($query1);
+
+			for ($del_mes=intval($data['del_mes']); $del_mes <=12 ; $del_mes++) { 
+				# code...	
+				$query2 = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
+				VALUES (NULL, {$data['anio']}, {$del_mes}, '{$fecha_e}', '{$hora_e}', '{$fecha_v}', 0, {$data['monto']}, 1, 1, '{$data['cod_sum']}')";
+				$resInsrt2 = mainModel::execute_single_query($query2);
+
+			}
+
+			return "Ready";
+		}
 	}
