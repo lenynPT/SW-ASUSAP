@@ -689,8 +689,9 @@ body, html{
 }
 
 /*--------collapsible---------*/
+/*
 .collapsible {
-	background-color: #777;
+	background-color: #555;
 	color: white;
 	cursor: pointer;
 	padding: 18px;
@@ -723,10 +724,4 @@ body, html{
 	overflow: hidden;
 	transition: max-height 0.2s ease-out;
 	background-color: #f1f1f1;
-}
-
-
-
-.formNewAss{
-	background-color: rgba(255, 221, 111, 0.37);
-}
+}*/

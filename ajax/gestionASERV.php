@@ -50,8 +50,7 @@ if (!empty($mopagr)){
     $MR=$_POST['montRes'];
     $inst = new adminController();
     $r=$inst ->montoPagado($mopagr,$IDS,$MR);
-    //print_r($r);
-  //  echo json_encode($r);
+
 
 }
 

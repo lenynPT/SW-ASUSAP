@@ -154,6 +154,7 @@
 
     /*================================REGISTRAR SERVICIOO============================================*/
 
+
         public  function insertsRS($datosModels){
 
             //insertar Registro de servicio los items
@@ -228,10 +229,63 @@
 
     
 
+		/*
+        //Función que inserta los consumos para los suministros sn medidor. TABLA factura_recibo es llenado
+        protected function insertarConsumoSnMModel($dataModel){
+
+            $codSumi = $dataModel['codigos']['suministro'];
+            $dataAdic = $dataModel['datosAdi'];
+
+            foreach ($codSumi as $codigo) {
+                # code...
+                $query = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
+				VALUES (NULL, :anio, :mes, '{$dataAdic['fecha_e']}', '{$dataAdic['hora_e']}', '{$dataAdic['fecha_v']}', {$dataAdic['consumo']}, {$dataAdic['monto']}, 0, 0, :suministro_cod_suministro)";
+                $stmt = mainModel::connect()->prepare($query);
+                $stmt->bindParam(":anio",$dataAdic['anio']);
+                $stmt->bindParam(":mes",$dataAdic['mes']);
+                $stmt->bindParam(":suministro_cod_suministro",$codigo);
+
+                $stmt->execute();
+
+            }
+
+            //actualiza tabla estado_gonsumo. pone el sin_medidor a 1->1 es por que ya se tiene insertado los consumos para los suminis sin medidor
+            self::actualizarEGsnConsumoModel();
+
+            /*
+            //Otra forma de hacer inserción
+            foreach ($codSumi as $codigo) {
+                $query = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro)
+                VALUES (NULL, {$dataAdic['anio']}, {$dataAdic['mes']}, '{$dataAdic['fecha_e']}', '{$dataAdic['hora_e']}', '{$dataAdic['fecha_v']}', {$dataAdic['consumo']}, {$dataAdic['monto']}, 0, 0, '{$codigo}')";
+                $result = mainModel::execute_single_query($query);
+            }
+            */
+            //return $dataModel['codigos']['suministro'];
+            //return true;
+
+		//}
+		
+		/*
+        protected function insertarCSumCnMModel($dataModel){
+
+            $query = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
+					VALUES (NULL, :anio, :mes, '{$dataModel['fecha_e']}', '{$dataModel['hora_e']}', '{$dataModel['fecha_v']}', {$dataModel['consumo']}, {$dataModel['monto']}, 0, 0, :suministro_cod_suministro)";
+            $stmt = mainModel::connect()->prepare($query);
+            $stmt->bindParam(":anio",$dataModel['anio']);
+            $stmt->bindParam(":mes",$dataModel['mes']);
+            $stmt->bindParam(":suministro_cod_suministro",$dataModel['cod_sum']);
+
+            $stmt->execute();
+
+            return true;
+        }
+		*/
+
+
         public function  guardarRS($datosModels){
             //insertar Registro de servicio los items
-            $stmt=mainModel::connect()->prepare("INSERT INTO factura_servicio (idfactura_servicio,a_nombre ,anio,mes,fecha,monto_pagado,total_pago,esta_cancelado, suministro_cod_suministro)
-												                                 VALUES (:idfs, :a_nombre, :anio,:mes,:fecha,:monto_p,:total_p,:esta_c,:codigo_su)");
+            $stmt=mainModel::connect()->prepare("INSERT INTO factura_servicio (idfactura_servicio,a_nombre ,anio,mes,fecha,monto_pagado,mont_restante,total_pago,esta_cancelado, suministro_cod_suministro)
+												                                 VALUES (:idfs, :a_nombre, :anio,:mes,:fecha,:monto_p,0,:total_p,:esta_c,:codigo_su)");
 
 
             $stmt->bindParam(":idfs",$datosModels["codRS"]);
@@ -289,6 +343,5 @@
             $stmt->execute();
             return $stmt;
         }
-
     }
 

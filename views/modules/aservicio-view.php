@@ -1,3 +1,17 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        (function($) {
+            $('#FiltrarContenido').keyup(function () {
+                var ValorBusqueda = new RegExp($(this).val(), 'i');
+                $('.BusquedaRapida tr').hide();
+                $('.BusquedaRapida tr').filter(function () {
+                    return ValorBusqueda.test($(this).text());
+                }).show();
+            })
+        }(jQuery));
+    });
+</script>
+
 <div class="container-fluid">
     <div class="page-header">
         <h1 class="text-titles">
@@ -6,6 +20,12 @@
     </div>
 <!--    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse voluptas reiciendis tempora voluptatum eius porro ipsa quae voluptates officiis sapiente sunt dolorem, velit quos a qui nobis sed, dignissimos possimus!</p>
 --></div>
+
+<?
+require_once "./controllers/adminController.php";
+$insAdmin=new adminController();
+
+?>
 
 <div class="container-fluid" onload="listar_as('');">
 
@@ -36,6 +56,24 @@
                     </div>
                 </div>
             </div>
+
+
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Buscar</span>
+            </div>
+            <input id="FiltrarContenido" type="text" class="form-control" placeholder="Ingrese Nombre de Alumno" aria-label="Alumno" aria-describedby="basic-addon1">
+        </div>
+        <div class="tab-pane fade active in" >
+            <?php
+            //$insAdmin->actualizarSliderController();
+            $pagina=explode("/",$_GET['views']);
+            echo $insAdmin->vistaAmortizarController($pagina[1],5);
+
+            ?>
+
+
         </div>
         <div id="resultado">valor</div>
     </div>

@@ -687,7 +687,7 @@
         public function agregarRS($ANOM,$ANIO,$AMES,$ACOD){
             $fecha_actual = self::consultar_fecha_actual();
 
-                $fecha=$fecha_actual['anio']+$fecha_actual['mes'];
+            $fecha=$fecha_actual['anio']+$fecha_actual['mes'];
 
             $idRS=self::idRegistroServ();
 
@@ -707,39 +707,6 @@
             );
             $rsptaModel = adminModel::guardarRS($datosController);
 
-          /*
-            if($rsptaModel){
-                //echo "Registro exitoso";
-                echo '<script>
-								swal({
-									title: "¡OK!",
-									text: "¡Usuario ha sido creado correctamente!",
-									type: "success",
-									confirmButtonText: "Cerrar",
-									closeOnConfirm: false
-								},
-								function(isConfirm){
-										if (isConfirm) {	   
-											window.location = "aservicio";
-										} 
-								});
-							</script>';
-            }else{
-                echo '<script>
-								swal({
-									title: "¡OK!",
-									text: "¡Usuario ha sido creado correctamente!",
-									type: "success",
-									confirmButtonText: "Cerrar",
-									closeOnConfirm: false
-								},
-								function(isConfirm){
-										if (isConfirm) {	   
-											window.location = "aservicio";
-										} 
-								});
-							</script>';
-            }*/
 
             $rsptaModel = $idRS['Idcod'];
 
@@ -751,7 +718,7 @@
         public function modificarRS($idFactRS,$CostTotal,$Anombre){
             date_default_timezone_set('America/Lima');
             $created_date = date("Y-m-d H:i:s");
-          //  "ids="+idf+"&cost="+tot+"&cod="+codsu+"&anom="+anrs,
+            //  "ids="+idf+"&cost="+tot+"&cod="+codsu+"&anom="+anrs,
             $res=0;
             if (!empty($idFactRS)){
                 $dataAd = [
@@ -789,6 +756,29 @@
 
         }
 
+        public function mostImpItem($cod_sum){
+
+
+
+            $cod_sum = trim($cod_sum);
+            $query1 ="SELECT descripcion,costo FROM 
+                 suministro   WHERE s.cod_suministro  like '%" . $cod_sum . "%' ";
+            $results = mainModel::execute_single_query($query1);
+
+            $registroModal = [];
+            while($dataModal = $results->fetchAll()){
+                $registroModal[] = [
+                    "desItems"=>$dataModal['descripcion'],
+                    "costItems"=>$dataModal['costo']
+                ];
+
+            }
+
+            return $registroModal;
+        }
+
+
+
         public function eliminarRSI($IDF){
             $res=0;
             if (!empty($IDF)){
@@ -802,47 +792,6 @@
             }
             return $res;
         }
-/*        public function viewsRS(){
-            $tabla="";
-
-            $conexion=mainModel::connect();
-
-            $datos=$conexion->query("
-            SELECT * FROM detalle_servicio ");
-            $datos=$datos->fetchAll();
-
-
-            $tabla.='<div class="table-responsive">
-                                        <table class="table table-bordered  text-center" >
-                                            <thead class="tabla-cabezera">
-                                            <tr>
-                                                <th class="text-center">#</th>
-                                                <th class="text-center">Nombre - Descripcion</th>
-                                                <th class="text-center">Costo</th>
-                                                <th class="text-center">Accion</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="table table-striped" id="table-body">';
-
-            foreach ($datos as $k=>$v){
-
-                $tabla.='<tr class="table-row" id="table-row-">
-                        
-                        <td contenteditable="true" onClick="editRowRS(this);">'.$datos[$k]["factura_servicio_idfactura_servicio"].'</td>
-                        <td contenteditable="true" onClick="editRowRS(this);">'.$datos[$k]["servicio_idservicio"].'</td>
-                        <td contenteditable="true"  onClick="editRowRS(this);">'.$datos[$k]["descripcion"].'</td>
-                        <td><a class="ajax-action-links" >BorrarASS</a></td>
-                        </tr>';
-
-
-           }
-
-            $tabla.=' </tbody>
-                                        </table>
-                                    </div>';
-
-            return $tabla;
-        }*/
 
         /*##########################SELECTORES DEL SERVICIO###############################*/
         public function SelectorS(){
@@ -850,10 +799,9 @@
 
             $conexion=mainModel::connect();
 
-            $datos=$conexion->query("
-            SELECT * FROM servicio");
+            $datos=$conexion->query(" SELECT * FROM servicio");
 
-           $datoss=$datos->fetchAll();
+            $datoss=$datos->fetchAll();
             $groups = array();
 
 
@@ -880,7 +828,7 @@
             if (!empty($valorS)) {
 
                 $conexion = mainModel::connect();
-                 $query1="SELECT idfactura_servicio,a_nombre,suministro_cod_suministro,anio,mes,fecha,total_pago FROM factura_servicio WHERE idfactura_servicio like '%" . $valorS . "%' OR a_nombre like '%" . $valorS . "%'";
+                $query1="SELECT idfactura_servicio,a_nombre,suministro_cod_suministro,anio,mes,fecha,total_pago,mont_restante FROM factura_servicio WHERE idfactura_servicio like '%" . $valorS . "%' OR a_nombre like '%" . $valorS . "%'OR  suministro_cod_suministro like '%" . $valorS . "%'";
                 $results = mainModel::execute_single_query($query1);
 
                 $registroModal = [];
@@ -892,7 +840,8 @@
                         "anio"=>$dataModal['anio'],
                         "mes"=>$dataModal['mes'],
                         "fechars"=>$dataModal['fecha'],
-                        "totalPago"=>$dataModal['total_pago']
+                        "totalPago"=>$dataModal['total_pago'],
+                        "mont_Resta"=>$dataModal['mont_restante']
                     ];
 
                 }
@@ -900,6 +849,142 @@
                 return $registroModal;
 
             }
+        }
+
+
+        /*-------------------------------------*/
+
+        public function vistaAmortizarController($pagina,$registros){
+
+            $tabla="";
+
+            $pagina= (isset($pagina)&&$pagina>0) ?(int)$pagina:1;
+            //------------contador de datos en la base de datos---------------------
+            $inicio=($pagina>0) ?(($pagina*$registros)-$registros) :0;
+
+            $conexion=mainModel::connect();
+
+            $datos=$conexion->query("
+        SELECT SQL_CALC_FOUND_ROWS * FROM factura_servicio WHERE idfactura_servicio!='1'
+         ORDER BY idfactura_servicio DESC LIMIT $inicio,$registros
+        ");
+
+            $datos=$datos->fetchAll();
+
+            $total=$conexion->query("SELECT FOUND_ROWS()");
+            $total=(int)$total->fetchColumn();
+            //total de numeros de paginas
+            $Npaginas=ceil($total/$registros);
+
+            /*-------------------------paginando en una lista---------------------------*/
+            $tabla.='<div class="table-responsive">
+                <table class="table table-hover text-center">
+                    <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">TITULO</th>
+                        <th class="text-center">INTRODUCCION</th>
+
+
+                        <th class="text-center">FECHA</th>
+                        <th class="text-center">ELIMINAR</th>
+                        <th class="text-center">VER</th>
+                        <th class="text-center">ACTUALIZAR</th>
+                    </tr>
+                    </thead>
+                    <tbody  class="BusquedaRapida">
+                    ';
+            if ($total>=1 && $pagina<=$Npaginas){
+                $contador=$inicio+1;
+                foreach ($datos as $rows){
+
+                    // if ($rows['mont_restante'] != 0){
+
+                    $tabla.='<tr>
+                            <td>'.$contador.'</td>
+                            <td>'.$rows['idfactura_servicio'].'</td>
+                            <td>'.$rows['a_nombre'].'</td>
+                            <td>'.$rows['suministro_cod_suministro'].'</td>
+                            <td>'.$rows['anio'].'</td>
+                            <td>'.$rows['mes'].'</td>
+                            <td>'.$rows['fecha'].'</td>
+                            <td>'.$rows['total_pago'].'</td>
+                            <td>'.$rows['mont_restante'].'</td>
+                        </tr>
+                        ';
+                    $contador++;
+                    // }
+
+
+                }
+            }else{
+                /*---------------------para eliminar el mensaje que muestra-----------------------*/
+                if($total>=1){
+                    $tabla.='
+            <tr>
+                <td colspan="5"></td>
+
+            </tr>
+            ';
+                }else{
+                    $tabla.='
+            <tr>
+                <td colspan="5">No hay registros en el sistema</td>
+
+            </tr>
+            ';
+                }
+
+            }
+            $tabla.='</tbody></table></div>';
+
+
+            /*.--------------PAGINADOR--------------------*/
+
+            if ($total>=1 && $pagina<=$Npaginas){
+                $tabla.='<nav class="text-center">
+                        <ul class="pagination pagination-sm">';
+
+                if ($pagina==1){
+                    $tabla.='<li class="disabled"><a ><i class="zmdi zmdi-arrow-left"></i></a></li>';
+                }else{
+                    $tabla.='<li ><a href="'.SERVERURL.'aservicio/'.($pagina-1).'"><i class="zmdi zmdi-arrow-left"></i></a></li>';
+                }
+
+                for ($i=1;$i<=$Npaginas;$i++){
+
+                    if ($pagina==$i){
+                        $tabla.='<li class="active"><a href="'.SERVERURL.'aservicio/'.$i.'">'.$i.'</a></li>';
+                    }
+                    else{
+                        $tabla.='<li ><a href="'.SERVERURL.'aservicio/'.$i.'">'.$i.'</a></li>';
+
+
+                    }
+                }
+
+                if ($pagina==$Npaginas){
+                    $tabla.='<li class="disabled"><a ><i class="zmdi zmdi-arrow-right"></i></a></li>';
+                }else{
+                    $tabla.='<li ><a href="'.SERVERURL.'aservicio/'.($pagina+1).'"><i class="zmdi zmdi-arrow-right"></i></a></li>';
+
+                }
+
+                $tabla.='</ul></nav>';
+            }
+
+
+
+
+
+
+
+
+            return  $tabla;
+
+
+
         }
         /*---------------------------AMORTIZAR-----------------------------------------------*/
         public function datos_AmortizarC($codigo){

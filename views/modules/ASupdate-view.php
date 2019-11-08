@@ -33,7 +33,9 @@
         }else{
            // alert("El parámetro no existe en la URL");
         }*/
-
+function volverA(){
+    window.location="http://localhost/SW-ASUSAP/aservicio/";
+}
 
 
     </script>
@@ -48,6 +50,7 @@
 ?>
     <div class="container-fluid" onload="guardarDB('');" >
 
+        <button type="submit"  class="btn btn-info btn-raised btn-sm" id="volverAmo" onclick="volverA();"><i class="zmdi zmdi-floppy"></i> Volver</button>
 
 
 
@@ -71,17 +74,14 @@
                         <h3 class="tile-titles text-left font-weight-bold" ><b> Cod. Suministro: </b><small id="codAR"><? echo $campos['suministro_cod_suministro']?></small></h3>
                     </div>
                 </div>
+                <!--
                 <div class="col-xs-12 col-sm-12" id="datos-resultAS">
-
-
-                    <button class="collapsible" id="verList" ><input type="hidden"  id="toCoRS" value="<? echo $campos['idfactura_servicio']?>"> Ver tipos de servicios realizados¡</button>
-
+                    <button class="collapsible" id="verList" ><input type="hidden"  id="toCoRS" value="<?/* echo $campos['idfactura_servicio']*/?>"> Ver tipos de servicios realizados¡</button>
                         <div class="card my-4 content" id="reciboA">
                             <p>estas viendo los detalles de servicios realizados</p>
                         </div>
-
                 </div>
-
+-->
 
 
 
@@ -107,7 +107,10 @@
                                 <p style="color: black;">S/ <small id="montP"><? echo $campos['mont_restante']?></small>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-9 ">
+                        <div class="col-xs-12 col-sm-9 " >
+                            <p>PAGO DEL ANTERIOR: <b style="color: red;"> S/ <? echo $campos['monto_pagado']?> </b></p>
+                        </div>
+                        <div class="col-xs-12 col-sm-9 " id="msj">
                             <p>NO puede ingresar numero <b>MAYOR A MONTO TOTAL </b></p>
                             <p>NO puede ingresar numero <b>MENOR A 0 </b></p>
                         </div>
@@ -121,16 +124,21 @@
 
 
                     <button type="submit"  class="btn btn-info btn-raised btn-sm" id="guardarARMOTIZACION" onclick="guardarARMOTIZACION();"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
-                    <button type="submit"  class="btn btn-danger btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
+                    <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImprimerReciboAmotizacion();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
 
+                   <!-- <a href="../reportes/amortizacionServ.php" target="_blank" class="btn btn-info btn-raised btn-xs"  >Imprimir</a>-->
                 </p>
             </div>
 
 
              </div>
 
-
         </div>
+
+
+
+
+
     </div>
 </div>
 
