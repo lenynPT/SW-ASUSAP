@@ -9,11 +9,11 @@ if (isset($_POST["editval"])){
     $editv=$_POST["editval"];
     $idv=$_POST["id"];
     $db_handle->updGConsumo($editv,$idv);
-    /*
-        $queryUpd = "UPDATE factura_recibo SET consumo = $editv WHERE  idfactura_recibo= $idv";
-        $result = $db_handle->consultaAsociado($queryUpd);
-    */
+/*
+    $queryUpd = "UPDATE factura_recibo SET consumo = $editv WHERE  idfactura_recibo= $idv";
+    $result = $db_handle->consultaAsociado($queryUpd);
+*/
 
-   // echo $result;
+    echo $result;
 }
 

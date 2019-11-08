@@ -1,4 +1,5 @@
 <script src="<?php echo SERVERURL;?>views/js/codeasusap.js"></script>
+<script src="<?php echo SERVERURL; ?>views/js/gsumxanio.js"></script>
 <script src="<?php echo SERVERURL; ?>views/js/rs_asusap.js"></script>
 <script src="<?php echo SERVERURL; ?>views/js/as_asusap.js"></script>
 

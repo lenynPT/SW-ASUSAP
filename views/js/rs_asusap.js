@@ -96,7 +96,7 @@ function eliminar(id_fila){
 }
 
 /*------------------------AL GUARDAR TODO ACTUALIZADO -----------------------------------------------*/
-//let num1=0;
+num1=0;
 function guardarTodo(){
     /* Agregando todo los datos */
     let idf=document.getElementById("idrs").innerHTML ;
