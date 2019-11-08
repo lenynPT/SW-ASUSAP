@@ -150,39 +150,6 @@ function listar_as(valor) {
                 success:function (resp) {
 
                     console.log(resp)
-                    /*let valores = JSON.parse(resp);
-                    htmlSumi=`<table class='table table-bordered' ><thead><tr><th>#</th><th>Nombre y descripcion</th><th>Monto.</th></tr></thead><tbody>`;
-                    for(let i=0;i<valores.length;i++){
-
-                        htmlSumi += `
-						<tr>
-							<td>${i+1}</td>
-							<td>${valores[i]["descrRA"]}</td>
-							<td>${valores[i]["costoRA"]}</td>
-
-						</tr>
-					`;
-                    }
-                    htmlSumi+=`</tbody></table>`
-                    $("#reciboA").html(htmlSumi);*/
-                    /*let valores = JSON.parse(resp);
-
-                    htmlSumi=`<table class='table table-bordered' ><thead><tr><th>#</th><th>Nombre y descripcion</th><th>Monto.</th></tr></thead><tbody>`;
-
-                    for(let i=0;i<valores.length;i++){
-
-                        // onclick="rowRecibo(this);"
-                        htmlSumi += `
-						<tr>
-							<td>${i+1}</td>
-							<td >${valores[i]["descrRA"]}</td>
-							<td>${valores[i]["costoRA"]}</td>
-						</tr>
-					`;
-                    }
-                    htmlSumi+=`</tbody></table>`
-
-                    $("#reciboA").html(htmlSumi);*/
 
                 }
 
@@ -210,42 +177,54 @@ function listar_as(valor) {
 
 function guardarDB(editableObj) {
 
+let mRST=$('#MONTRT').val();
 let mt=$('#montAll').val();
 let t=$('#montPa').val();
     let mp=parseInt(mt)-parseInt(t);
 
 if (mp>0 && mp<mt){
    res=mp;
-
+ // alert('pagaste lo correcto')
 }
 else if( mp<mt ) {
     res=0;
+   // alert('pagaste mayot a monto restante total')
+    swal({
+        position: 'top-end',
+        icon: 'faild',
+        title: 'PAGASTE MAYOR AL MONTO RESTANTE',
+        showConfirmButton: true
+       // timer: 2000
+    })
+   htmlmsj=`<b STYLE="color: red;">PAGASTE MAYOR AL MONTO RESTANTE</b>`
 
 }
 else {
-   if (t<0){
+   if (t<0 || t=='-'){
        res=0;
+       swal({
+           position: 'top-end',
+           icon: 'faild',
+           title: 'El numero que ingresaste es Menor a CERO',
+           showConfirmButton: true
+           // timer: 2000
+       })
    }else {
+     //  alert('pagadte mayor a cero')
+
        res=mt;
    }
 
-
+    htmlmsj=`<p>NO puede ingresar numero <b>MAYOR A MONTO TOTAL </b></p>
+                            <p>NO puede ingresar numero <b>MENOR A 0 </b></p>`
 }
+
 htmlSumi=`<b><input type="text" name="montTot" value="`+res+`" disabled ></b>`
 $("#montP").html(htmlSumi);
 
-   // console.log(' has echo en la monto pagar'+t+mt);
+//$("#msj").html(htmlmsj);
 
-//let nh=$('#montP').innerHTML = parseInt(mt);
 
-    /* $.ajax({
-         url: "../ajax/gc.php",
-         type: "POST",
-         data:'editval='+$(editableObj).text()+'&id='+id,
-         success: function(data){
-             $(editableObj).css("background","#00fdeb");
-         }
-     });*/
 }
 function resaltar(){
    //let a=$("#contentAMRS").childNodes;
@@ -312,4 +291,59 @@ function guardarARMOTIZACION() {
 
 
 }
+var report = true;
+function ImprimerReciboAmotizacion() {
+
+    let mpagA=document.getElementById("montPa").value;
+    let mTotal=document.getElementById("montAll").value;
+    let CDS=document.getElementById("codAR").innerHTML;
+  /*  let ids=document.getElementById("idReciboA").innerHTML;
+    let MONTOP=document.getElementById("montP").value;
+    let rest=mTotal-mpag;*/
+
+  let u='<a href="../reportes/amortizacionServ.php" target="_blank" class="btn btn-info btn-raised btn-xs"></a>';
+
+
+    // console.log("monto pagado esta guardandose "+ids+mpag)
+
+        var canal = window.location.pathname;
+  //  let mpagA=document.getElementById("montPa").value;
+    console.log("impsss"+mpagA)
+    window.open(`../reportes/amortizacionServ.php?PM=${mpagA}&cdsi=${CDS}`, '_blank');
+
+/*
+        $.ajax({
+            url: `../reportes/amortizacionServ.php?`+canal,
+            type: 'POST',
+            data: 'mopagr=' + mpagA,
+
+            success: function (resp) {
+               // window.location.href = '../reportes/amortizacionServ.php/';
+                //                 //console.log (resp)
+                //console.log("si ineserto monto pagado"+resp)
+            }
+        });*/
+        //  window.location = "http://localhost/SW-ASUSAP/aservicio/";
+
+
+console.log("estas imprimiendo en la amortizacion"+mpagA)
+
+}
+
+document.body.onload = cargar;
+function cargar(){
+    htmlSumi=`<input type="submit"  onclick="impA();" class="btn btn-info btn-raised btn-xs" value="IMPRIMIR AS">`
+    $("#btnimp").html(htmlSumi);
+}
+function impA() {
+    let mpagA=document.getElementById("montPa").value;
+    console.log("impsss"+mpagA)
+    window.open(`../reportes/amortizacionServ.php?PM=${mpagA}`, '_blank');
+
+
+}
+
+
+
+
 

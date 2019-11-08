@@ -107,10 +107,12 @@ function volverA(){
                                 <p style="color: black;">S/ <small id="montP"><? echo $campos['mont_restante']?></small>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-9 ">
+                        <div class="col-xs-12 col-sm-9 " >
+                            <p>PAGO DEL ANTERIOR: <b style="color: red;"> S/ <? echo $campos['monto_pagado']?> </b></p>
+                        </div>
+                        <div class="col-xs-12 col-sm-9 " id="msj">
                             <p>NO puede ingresar numero <b>MAYOR A MONTO TOTAL </b></p>
                             <p>NO puede ingresar numero <b>MENOR A 0 </b></p>
-                            <p>PAGO DEL ANTERIOR: <b style="color: red;"> S/ <? echo $campos['monto_pagado']?> </b></p>
                         </div>
 
 
@@ -122,16 +124,21 @@ function volverA(){
 
 
                     <button type="submit"  class="btn btn-info btn-raised btn-sm" id="guardarARMOTIZACION" onclick="guardarARMOTIZACION();"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
+                    <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImprimerReciboAmotizacion();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
 
-
+                   <!-- <a href="../reportes/amortizacionServ.php" target="_blank" class="btn btn-info btn-raised btn-xs"  >Imprimir</a>-->
                 </p>
             </div>
 
 
              </div>
 
-
         </div>
+
+
+
+
+
     </div>
 </div>
 
