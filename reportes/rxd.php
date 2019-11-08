@@ -167,14 +167,14 @@ if(!$resConsult['res']){
             modoDePago($pdf,$element,$consumo_dif);
         }else{
             //primera fila de 
-            $pdf->SetXY(85,64+0*$x);
+            $pdf->SetXY(85,64);
             $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
-            $pdf->SetXY(130,64+0*$x);
+            $pdf->SetXY(130,64);
             $pdf->Cell(100,10,"$/ 3.56",0,0,'');
             //segunda fila de 
-            $pdf->SetXY(85,67+1*$x);
+            $pdf->SetXY(85,67);
             $pdf->Cell(100,10,"Por IGV (18%)",0,0,'');
-            $pdf->SetXY(130,67+1*$x);
+            $pdf->SetXY(130,67);
             $pdf->Cell(100,10,"$/ 0.64",0,0,'');
         }
         $pdf->SetXY(118,139);

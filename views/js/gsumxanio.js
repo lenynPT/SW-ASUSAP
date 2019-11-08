@@ -37,7 +37,7 @@ function Listsumxanio($inputBsc,$imprimir){
 				<td>${element.nombre} ${element.apellido}</td>
 				<td>${element.categoria_suministro}</td>
                 <td>${element.direccion}</td>
-                <td class="text-center">${element.contador_deuda==0?"<a href='../reportes/rxp.php?codigoSum="+element.cod_suministro+"' target='_blank' class='btn btn-info btn-raised btn-xs'>G. Recibo</a>":"<span class='text-danger'>---</span>"}</td>
+                <td class="text-center">${element.contador_deuda==0 && $imprimir==true?"<a href='../reportes/rxanio.php?codigoSum="+element.cod_suministro+"' target='_blank' class='btn btn-info btn-raised btn-xs'>G. Recibo</a>":"<span class='text-danger'>---</span>"}</td>
                 <td class="text-center">
                     ${ (element.contador_deuda==0 && $imprimir==false)?
                         `<a href="#" class="btn btn-danger btn-raised btn-xs" id="btnCobrarxAnio" onclick="cobrarXanio(this,'${element.cod_suministro}')">Cobrar</a>` 

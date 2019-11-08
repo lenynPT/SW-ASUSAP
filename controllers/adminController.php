@@ -1006,4 +1006,22 @@
 
 			return "Ready";
 		}
+
+		public function dataReciboXanio($cod_sum){
+			$fecha_hoy = self::consultar_fecha_actual();
+			$query = "SELECT factura_recibo_anio.cod_sum_anio,factura_recibo_anio.anio,factura_recibo_anio.del_mes,factura_recibo_anio.monto,suministro.direccion,suministro.categoria_suministro,asociado.nombre,asociado.apellido,asociado.telefono 
+			FROM factura_recibo_anio INNER JOIN suministro 
+			ON suministro.cod_suministro=factura_recibo_anio.cod_sum_anio INNER JOIN asociado 
+			ON asociado.dni=suministro.asociado_dni 
+			WHERE suministro.cod_suministro='$cod_sum' AND factura_recibo_anio.anio={$fecha_hoy['anio']}";
+			$response = mainModel::execute_single_query($query);
+			if($response->rowCount()){
+				$exist = true;
+				$arrData = $response->fetch(PDO::FETCH_ASSOC);
+			}else {
+				$exist = false;
+				$arrData = [];
+			}			
+			return ['res'=>$exist,'data'=>$arrData];
+		}
 	}
