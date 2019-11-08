@@ -4,8 +4,12 @@ generarSumxAnio();
 
 function generarSumxAnio(){
     let el = document.querySelector("#bscSumxAniok");
-    if(el){
+    if(el){        
         let chbximprimir = document.querySelector('#chbxImprimir');
+        chbximprimir.addEventListener('click',function(){
+            Listsumxanio(el.value,this.checked);
+        })
+
         Listsumxanio('',chbximprimir.checked);
         el.addEventListener('keyup',function(){              
             console.log("lala->",chbximprimir.checked);        
