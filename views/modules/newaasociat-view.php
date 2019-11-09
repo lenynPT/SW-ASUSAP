@@ -38,11 +38,11 @@
 										</div>                                        
                                         <div class="col-md-4 form-group label-floating ">
                                             <label class="control-label">Pasaje</label>
-                                            <input class="form-control" type="text" name="direccionPsjAsoc" required>
+                                            <input class="form-control" type="text" name="direccionPsjAsoc">
                                         </div>
                                         <div class="col-md-4 form-group label-floating ">
                                             <label class="control-label">Nro Dirección </label>
-                                            <input class="form-control" type="number" name="direccionNroAsoc" required>
+                                            <input class="form-control" type="number" name="direccionNroAsoc">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -85,12 +85,12 @@
 
                                         <div class="col-xs-12 col-md-6 form-group label-floating">
                                           <label class="control-label">DNI</label>
-                                          <input class="form-control" type="text" name="dniAsoc" required>
+                                          <input class="form-control" type="number" name="dniAsoc" min="10000000" max="99999999999" onKeyDown="moduloAsociadoValidarDni(this)" required>
                                         </div>
 
                                         <div class="col-xs-12 col-md-6 form-group label-floating">
                                           <label class="control-label">TELEFONO</label>
-                                          <input class="form-control" type="number" name="telefonoAsoc">
+                                          <input class="form-control" type="number" name="telefonoAsoc" min="111111111" max="999999999">
                                         </div>
 
                                     </div>
@@ -225,11 +225,11 @@
                                                     </div> 
                                                     <div class="col-md-8 form-group label-floating ">
                                                         <label class="control-label">Pasaje</label>
-                                                        <input type="text" class="form-control"  id="direccionPsjSumi" name="direccionPsjSumi" required autofocus> 
+                                                        <input type="text" class="form-control"  id="direccionPsjSumi" name="direccionPsjSumi" autofocus> 
                                                     </div>
                                                     <div class="col-md-4 form-group label-floating ">
                                                         <label class="control-label">Nro Dirección </label>
-                                                        <input type="number" class="form-control" id="direccionNroSumi" name="direccionNroSumi" required>
+                                                        <input type="number" class="form-control" id="direccionNroSumi" name="direccionNroSumi">
                                                     </div>                                                            
 
                                                 </div>                                                        
@@ -248,8 +248,7 @@
                                                         <label for="corteSumi" class="col-md-4 control-label">CORTE</label>
                                                         <div class="col-md-12">
                                                             <select class="form-control" id="corteSumi" name="corteSumi">
-                                                                <option value="0">No</option>
-                                                                <option value="1">Si</option>													
+                                                                <option value="0">No</option>                                                                												
                                                             </select>
                                                         </div>											
                                                     </div>
@@ -333,77 +332,12 @@
     </div>
 
 </div>
-<!-- FIN - MODAL PARA LISTAR LOS SUMINISTROS DEL ASOCIADO -->
-
-    <!--TABLA LISTA DE REGISTROS-->
-    <!--
-        <div class="col-xs-12">
-           <div class="tab-pane">
-               <div class="table-responsive">
-                   <table class="table table-hover text-center">
-                       <thead>
-                       <tr>
-                           <th class="text-center">#</th>
-                           <th class="text-center">Nombre</th>
-                           <th class="text-center">Dni/Ruc</th>
-                           <th class="text-center">Telefono</th>
-                           <th class="text-center">Cant. Sumistro</th>
-                           <th class="text-center">Sumistro</th>
-                           <th class="text-center">Actualizar</th>
-                       </tr>
-                       </thead>
-                       <tbody>
-                       <tr>
-                           <td>1</td>
-                           <td>Carlos Alfaro</td>
-                           <td>75123459</td>
-                           <td>952143568</td>
-                           <td>1</td>
-                           <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                           <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                       </tr>
-                       <tr>
-                           <td>2</td>
-                           <td>Claudia Rodriguez</td>
-                           <td>31254578</td>
-                           <td>921453687</td>
-                           <td>1</td>
-                           <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                           <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                       </tr>
-                       <tr>
-                           <td>3</td>
-                           <td>Ana Quispe</td>
-                           <td>32154869</td>
-                           <td>9685412367</td>
-                           <td>1</td>
-                           <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                           <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                       </tr>
-                       <tr>
-                           <td>4</td>
-                           <td>Yuli Vargas</td>
-                           <td>41586452</td>
-                           <td>965412387</td>
-                           <td>2</td>
-                           <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                           <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                       </tr>
-                       </tbody>
-                   </table>
-                   <ul class="pagination pagination-sm">
-                       <li class="disabled"><a href="#!">«</a></li>
-                       <li class="active"><a href="#!">1</a></li>
-                       <li><a href="#!">2</a></li>
-                       <li><a href="#!">3</a></li>
-                       <li><a href="#!">4</a></li>
-                       <li><a href="#!">5</a></li>
-                       <li><a href="#!">»</a></li>
-                   </ul>
-               </div>
-           </div>
-       </div>
-    -->
 
 	</div>
 </div>
+<script>
+
+function moduloAsociadoValidarDni($this){
+    console.log($this)    
+}
+</script>
