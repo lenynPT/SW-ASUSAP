@@ -5,7 +5,7 @@
 	const SERVER="localhost";
 	const DB="dbasusap2";
 	const USER="root";
-	const PASS="kevin123";
+	const PASS="cardenas";
 
 
 	// Solo modificar la siguiente línea en caso el gestor de base de datos no sea MySQL

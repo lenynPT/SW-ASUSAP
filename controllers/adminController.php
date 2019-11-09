@@ -883,14 +883,15 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th class="text-center">ID</th>
-                        <th class="text-center">TITULO</th>
-                        <th class="text-center">INTRODUCCION</th>
+                        <th class="text-center">A nombre</th>
+                        <th class="text-center">SUMINISTRO</th>
 
 
+                        <th class="text-center">AÑO</th>
+                        <th class="text-center">MES</th>
                         <th class="text-center">FECHA</th>
-                        <th class="text-center">ELIMINAR</th>
-                        <th class="text-center">VER</th>
-                        <th class="text-center">ACTUALIZAR</th>
+                        <th class="text-center">TOTAL DE PAGO</th>
+                        <th class="text-center">MONT RESTANTE</th>
                     </tr>
                     </thead>
                     <tbody  class="BusquedaRapida">
@@ -899,7 +900,7 @@
                 $contador=$inicio+1;
                 foreach ($datos as $rows){
 
-                    // if ($rows['mont_restante'] != 0){
+                    if ($rows['mont_restante'] != 0){
 
                     $tabla.='<tr>
                             <td>'.$contador.'</td>
@@ -914,7 +915,7 @@
                         </tr>
                         ';
                     $contador++;
-                    // }
+                    }
 
 
                 }

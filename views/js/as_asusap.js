@@ -180,47 +180,48 @@ function guardarDB(editableObj) {
 let mRST=$('#MONTRT').val();
 let mt=$('#montAll').val();
 let t=$('#montPa').val();
-    let mp=parseInt(mt)-parseInt(t);
+    let mp=parseFloat(mt)-parseFloat(t);
 
-if (mp>0 && mp<mt){
-   res=mp;
- // alert('pagaste lo correcto')
-}
-else if( mp<mt ) {
-    res=0;
-   // alert('pagaste mayot a monto restante total')
-    swal({
-        position: 'top-end',
-        icon: 'faild',
-        title: 'PAGASTE MAYOR AL MONTO RESTANTE',
-        showConfirmButton: true
-       // timer: 2000
-    })
-   htmlmsj=`<b STYLE="color: red;">PAGASTE MAYOR AL MONTO RESTANTE</b>`
 
-}
-else {
-   if (t<0 || t=='-'){
-       res=0;
-       swal({
-           position: 'top-end',
-           icon: 'faild',
-           title: 'El numero que ingresaste es Menor a CERO',
-           showConfirmButton: true
+    if (mp>=0 && mp<mt){
+       res=mp;
+     // alert('pagaste lo correcto')
+    }
+    else if( mp<mt) {
+        res=0;
+       // alert('pagaste mayot a monto restante total')
+        swal({
+            position: 'top-end',
+            icon: 'faild',
+            title: 'PAGASTE MAYOR AL MONTO RESTANTE',
+            showConfirmButton: true
            // timer: 2000
-       })
-   }else {
-     //  alert('pagadte mayor a cero')
+        })
+       htmlmsj=`<b STYLE="color: red;">PAGASTE MAYOR AL MONTO RESTANTE</b>`
 
-       res=mt;
-   }
+    }
+    else {
+       if (t<0 || t=='-'){
+           res=0;
+           swal({
+               position: 'top-end',
+               icon: 'faild',
+               title: 'El numero que ingresaste es Menor a CERO',
+               showConfirmButton: true
+               // timer: 2000
+           })
+       }else {
+         //  alert('pagadte mayor a cero')
 
-    htmlmsj=`<p>NO puede ingresar numero <b>MAYOR A MONTO TOTAL </b></p>
-                            <p>NO puede ingresar numero <b>MENOR A 0 </b></p>`
-}
+           res=mt;
+       }
 
-htmlSumi=`<b><input type="text" name="montTot" value="`+res+`" disabled ></b>`
-$("#montP").html(htmlSumi);
+        htmlmsj=`<p>NO puede ingresar numero <b>MAYOR A MONTO TOTAL </b></p>
+                                <p>NO puede ingresar numero <b>MENOR A 0 </b></p>`
+    }
+
+    htmlSumi=`<b><input type="text" name="montTot" value="`+res+`" disabled ></b>`
+    $("#montP").html(htmlSumi);
 
 //$("#msj").html(htmlmsj);
 
