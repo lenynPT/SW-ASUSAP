@@ -6,6 +6,8 @@
 
     $FechaER = $fecha_hoy['mes']-1;//mes anterior (Emision Recibo - ER)
     $FechLiteral = $fechas->obtenerNombrefecha($fecha_hoy['anio'],$FechaER);    
+    //corriginedo bug fecha cuando sea enero=1 -1=0
+    $FechaER = $FechLiteral['n_mes'];
 ?>
 
 <div class="container-fluid" id="pageXDIREC">
@@ -44,8 +46,8 @@
                         for ($i_mes=1; $i_mes <= $FechaER; $i_mes++) { 
                             # code...
                             if($FechaER == $i_mes)continue;
-
-                            $L_mes = $fechas->obtenerNombrefecha($fecha_hoy['anio'],$i_mes);
+                            //intención solo sacar nombre de los mese. no importa el año como parametro
+                            $L_mes = $fechas->obtenerNombrefecha(123,$i_mes);
                             echo "<option value='{$i_mes}'>{$L_mes['r_mes']}</option>";
                         }
                     ?>

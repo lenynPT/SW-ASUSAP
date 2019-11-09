@@ -115,13 +115,15 @@
 			if($n_mes <= 0){
 				//para controlar los mensajes referidos a la generación de consumo para el mes ya generado(-2 mes), y para el mes que falta generar(-1 mes). 
 				if($n_mes == 0){
+					$n_mes = 12;
 					$r_mes = "Diciembre";
 					$r_anio -=1;
-					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 				}else{ // cuando sea enero y ya e hayan generado todos los consumos.
+					$n_mes = 11;
 					$r_mes = "Noviembre";
 					$r_anio -=1;
-					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 				}
 			}
 			
@@ -163,12 +165,13 @@
 					$r_mes = "Diciembre";
 					break;												
 				default:
-					# code...
+					# code... por defeecto... sn efecto --error:
+					$n_mes=12;
 					$r_mes = "Diciembre";
 					$r_anio -=1;
 					break;
 			}
-			return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+			return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 		}
 
 		public function consultaAsociado($query){
