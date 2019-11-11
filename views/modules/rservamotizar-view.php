@@ -34,30 +34,21 @@
     <br />
     <div class="table-responsive">
         <br />
-        <div class="row">
-            <div class="input-daterange">
-                <div class="col-md-4">
+        <div class="container">
+        <div class="row justify-content-center">
+            <div class="input-daterange ">
+                <div class="col-md-5">
                     <input type="text" name="start_date" id="start_date" class="form-control" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <input type="text" name="end_date" id="end_date" class="form-control" />
                 </div>
             </div>
-            <div class="col-md-4">
-                <input type="button" name="search" id="search" value="Search" class="btn btn-danger btn-raised btn-sm" />
+            <div class="col-md-1">
+                <input type="button" name="search" id="search" value="Search" class="btn btn-success btn-raised btn-sm" />
             </div>
 
-            <div style='text-align:left;margin:20px 0px;'>
-
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        <input type="text" placeholder="Busqueda..."  name='txtBscSumCobro' id='txtBscSumCobro' maxlength='25' class=" form-control form-control-lg form-control-borderless">
-                        <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-                </span>
-                    </div><!-- /input-group -->
-                </div><!-- /.row -->
-            </div>
+        </div>
         </div>
         <br />
         <table id="order_data" class="table table-bordered table-striped">
