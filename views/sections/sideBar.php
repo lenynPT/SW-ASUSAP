@@ -87,7 +87,15 @@
 						<li>
 							<a href="<?php echo SERVERURL; ?>vercorte/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> Con Cortes</a>
 						</li>
+
+                        <li>
+                            <a href="<?php echo SERVERURL; ?>rservamotizar/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver amortizavion</a>
+                        </li>
 					</ul>
+
+
+
+
 				<!--
 					<li>
 						<a href="<?php /*echo SERVERURL; */?>registration/"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Inscripción</a>
