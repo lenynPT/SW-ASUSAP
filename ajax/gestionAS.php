@@ -1,6 +1,6 @@
 <?php
     $AjaxRequest=true;
-
+    
     // insertar un nuevo suministro a la db
     if(isset($_POST['insertSumin'])){
         
@@ -33,6 +33,18 @@
             echo json_encode("TRUE Server UPDfgc ");
         }else {
             echo json_encode("FALSE Server UPDfgc");            
+        }
+    }
+
+    elseif (isset($_POST['OPTION'])) {
+        # code...
+        require_once "../controllers/adminController.php";
+
+        if ($_POST['OPTION'] == "R_USER") {
+            # code...
+            $obj = new adminController();
+            $response = $obj->guardarUsuarioController();            
+            echo json_encode($response);
         }
     }
 

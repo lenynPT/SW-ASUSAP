@@ -32,56 +32,16 @@
 					$rsptaModel = adminModel::guardarUsuario($datosController);
 					if($rsptaModel){
 						//echo "Registro exitoso";
-						echo '<script>
-								swal({
-									title: "¡OK!",
-									text: "¡Usuario ha sido creado correctamente!",
-									type: "success",
-									confirmButtonText: "Cerrar",
-									closeOnConfirm: false
-								},
-								function(isConfirm){
-										if (isConfirm) {	   
-											window.location = "newaasociat";
-										} 
-								});
-							</script>';
+						return ["res" => "success"];
 					}else{
-						echo "No se pudo registrar";
+						//echo "No se pudo registrar";
+						return ["res"=>"error"];
 					}
 					//return true;
 				}else{
-					echo "DNI ya registardo";
-					return false;
+					//echo "DNI ya registardo";
+					return ["res"=>"dniExist"];
 				}
-
-				/*
-                    $datosController = array(
-                        "idsociado" => $code,
-                        "dni" => $_POST["dniUser"],
-                        "direccion" => $_POST["direUser"],
-                        "nombre" => $_POST["nameUser"],
-                        "apellido" => $_POST["apellUser"],
-                        "telefono" => $_POST["telefUser"],
-                        "estado" => $_POST["estadoUser"]
-                    );
-                    $respuesta = adminModel::guardarUsuario($datosController);
-                    echo '<script>
-                    swal({
-                          title: "¡OK!",
-                          text: "¡Usuario ha sido creado correctamente!",
-                          type: "success",
-                          confirmButtonText: "Cerrar",
-                          closeOnConfirm: false
-                    },
-                    function(isConfirm){
-                             if (isConfirm) {	   
-                                window.location = "newaasociat";
-                              } 
-                    });
-					</script>';
-				*/
-
 
             }
 
