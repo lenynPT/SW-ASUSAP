@@ -6,6 +6,8 @@
 
     $FechaER = $fecha_hoy['mes']-1;//mes anterior (Emision Recibo - ER)
     $FechLiteral = $fechas->obtenerNombrefecha($fecha_hoy['anio'],$FechaER);    
+    //corriginedo bug fecha cuando sea enero=1 -1=0
+    $FechaER = $FechLiteral['n_mes'];
 ?>
 
 <div class="container-fluid" id="pageXDIREC">
@@ -44,8 +46,8 @@
                         for ($i_mes=1; $i_mes <= $FechaER; $i_mes++) { 
                             # code...
                             if($FechaER == $i_mes)continue;
-
-                            $L_mes = $fechas->obtenerNombrefecha($fecha_hoy['anio'],$i_mes);
+                            //intención solo sacar nombre de los mese. no importa el año como parametro
+                            $L_mes = $fechas->obtenerNombrefecha(123,$i_mes);
                             echo "<option value='{$i_mes}'>{$L_mes['r_mes']}</option>";
                         }
                     ?>
@@ -182,13 +184,13 @@
 <div class="card mb-3 text-center pb-3">
     <div class="card-body">   
 
-<div class="alert alert-success" role="alert">
-  <h4 class="alert-heading">Importante Recordar!!</h4>
-  <p class="card-text">Recuerda utilizar este apartado exclusivamente para generar recibos de suministros que perdieron su recibo</p>
-  <hr>
-    <img src="../views/assets/img/cara.png" class="mb-3 card-img-top" style="height:50px; margin:0 0 15px 0">    
-  <p class="mb-0"><small class=""><?php echo "{$FechLiteral['r_mes']} {$FechLiteral['r_anio']}";?></small></p>
-</div>
+        <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Importante Recordar!!</h4>
+        <p class="card-text">Recuerda utilizar este apartado exclusivamente para generar recibos de suministros que perdieron su recibo</p>
+        <hr>
+            <img src="../views/assets/img/cara.png" class="mb-3 card-img-top" style="height:50px; margin:0 0 15px 0">    
+        <p class="mb-0"><small class=""><?php echo "{$FechLiteral['r_mes']} {$FechLiteral['r_anio']}";?></small></p>
+        </div>
 
     </div>
 </div>  

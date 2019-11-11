@@ -32,56 +32,16 @@
 					$rsptaModel = adminModel::guardarUsuario($datosController);
 					if($rsptaModel){
 						//echo "Registro exitoso";
-						echo '<script>
-								swal({
-									title: "¡OK!",
-									text: "¡Usuario ha sido creado correctamente!",
-									type: "success",
-									confirmButtonText: "Cerrar",
-									closeOnConfirm: false
-								},
-								function(isConfirm){
-										if (isConfirm) {	   
-											window.location = "newaasociat";
-										} 
-								});
-							</script>';
+						return ["res" => "success"];
 					}else{
-						echo "No se pudo registrar";
+						//echo "No se pudo registrar";
+						return ["res"=>"error"];
 					}
 					//return true;
 				}else{
-					echo "DNI ya registardo";
-					return false;
+					//echo "DNI ya registardo";
+					return ["res"=>"dniExist"];
 				}
-
-				/*
-                    $datosController = array(
-                        "idsociado" => $code,
-                        "dni" => $_POST["dniUser"],
-                        "direccion" => $_POST["direUser"],
-                        "nombre" => $_POST["nameUser"],
-                        "apellido" => $_POST["apellUser"],
-                        "telefono" => $_POST["telefUser"],
-                        "estado" => $_POST["estadoUser"]
-                    );
-                    $respuesta = adminModel::guardarUsuario($datosController);
-                    echo '<script>
-                    swal({
-                          title: "¡OK!",
-                          text: "¡Usuario ha sido creado correctamente!",
-                          type: "success",
-                          confirmButtonText: "Cerrar",
-                          closeOnConfirm: false
-                    },
-                    function(isConfirm){
-                             if (isConfirm) {	   
-                                window.location = "newaasociat";
-                              } 
-                    });
-					</script>';
-				*/
-
 
             }
 
@@ -115,13 +75,15 @@
 			if($n_mes <= 0){
 				//para controlar los mensajes referidos a la generación de consumo para el mes ya generado(-2 mes), y para el mes que falta generar(-1 mes). 
 				if($n_mes == 0){
+					$n_mes = 12;
 					$r_mes = "Diciembre";
 					$r_anio -=1;
-					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 				}else{ // cuando sea enero y ya e hayan generado todos los consumos.
+					$n_mes = 11;
 					$r_mes = "Noviembre";
 					$r_anio -=1;
-					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 				}
 			}
 			
@@ -163,12 +125,13 @@
 					$r_mes = "Diciembre";
 					break;												
 				default:
-					# code...
+					# code... por defeecto... sn efecto --error:
+					$n_mes=12;
 					$r_mes = "Diciembre";
 					$r_anio -=1;
 					break;
 			}
-			return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+			return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 		}
 
 		public function consultaAsociado($query){
