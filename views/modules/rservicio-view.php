@@ -170,63 +170,14 @@
                                     </thead>
                                 </table>
                             </div>
-                            <!--                                        <table class="table table-bordered  text-center" id="tabla_factura" >
-                                                                        <thead class="tabla-cabezera">
-                                                                            <tr>
-                                                                                <th>N</th>
-                                                                                <th>Codigo</th>
-                                                                                <th>Descripción</th>
-                                                                                <th>Cantidad</th>
-                                                                                <th>Precio</th>
-                                                                                <th>Subtotal</th>
-                                                                                <th>Impuesto</th>
-                                                                                <th>Total</th>
-                                                                                <td>Acción</td>
-                                                                            </tr>
-                                                                        </thead>
 
-
-                                                                        <tbody class="table table-striped" id="content_table">
-                                                                        <tr id="all2">
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>Instalacion de tubo</td>
-                                                                            <td >25.2</td>
-                                                                            <td><a class="ajax-action-links" >BorrarASS</a></td>
-                                                                        </tr>-->
-                            <!--            </tbody>
-                                        <tfoot>
-                                        <tr>
-                                            <td colspan="3"></td>
-                                            <td id="total_catidad">0.00</td>
-                                            <td id="total_precio">0.00</td>
-                                            <td id="total_subtotales">0.00</td>
-                                            <td id="total_impuesto">0.00</td>
-                                            <td id="total_total">0.00</td>
-                                            <td></td>
-                                        </tr>
-                                        </tfoot>
-                                    </table>-->
 
                         </div>
 
                     </div>
                     <div class="col-xs-12 col-sm-12">
 
-                        <!--                                    <div class="ajax-action-button" id="add-more" onClick="createNew();">Agregar</div>
-                        -->                                 <!--<button  type="submit"  class="btn btn-danger btn-raised btn-sm  align-items-center  " id="add-more" onClick="crearNuevo();" value="+1" >
-                                       Agregar Item
-                                    </button>-->
+
 
                         <div class="col-xs-12 col-sm-12">
 
@@ -256,55 +207,6 @@
 </div>
 
 
-<!-- <div class="col-xs-12"
-     <div class="tab-pane fade" id="list">
-         <div class="table-responsive">
-             <table class="table table-hover text-center">
-                 <thead>
-                 <tr>
-                     <th class="text-center">#</th>
-                     <th class="text-center">Nombre - Descripcion</th>
-                     <th class="text-center">Costo</th>
-                 </tr>
-                 </thead>
-                 <tbody>
-                 <tr>
-                     <td>1</td>
-                     <td>Servicio de arreglamiento</td>
-                     <td>s/ 15.00</td>
-
-                 </tr>
-                 <tr>
-                     <td>2</td>
-                     <td>Instalacion de agua a domicilio</td>
-                     <td>s/ 20.00</td>
-                 </tr>
-                 </tbody>
-             </table>
-
-         </div>
-
-     </div>
-
-     <div class="col-xs-12 col-sm-12">
-
-         <div class="col-xs-12 col-md-12 align-items-center">
-             <button class="btn btn-success btn-raised btn-xs" name="nameUser">Agregar Item</button>
-         </div>
-
-         <div class="col-xs-12 col-sm-12">
-             <div class="col-xs-12 col-md-3 ">
-                 <h2 class="text-titles"> Total: <small>s/ 35.00</small></h2>
-             </div>
-         </div>
-     </div>
-
-         <p class="text-center">
-             <button type="submit"  class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
-             <button type="submit"  class="btn btn-danger btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
-
-         </p>
- </div>-->
 
 </div>
 

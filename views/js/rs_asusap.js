@@ -296,3 +296,36 @@ function ImprimerRecibo() {
    // let tot=parseFloat(cost);
     console.log(" esta en imprimir" +anirs+mesrs+"DATOS"+a+to );
 }
+
+//------------------------------------------------------REPORTES--------------------------------------------------------------------------------------------
+p=Array();
+v=Array();
+y=0;
+function ImprimerRC(){
+    var myTable = document.getElementById("order_data");
+
+
+    var start_date = $('#start_date').val();
+    var end_date = $('#end_date').val();
+
+    var rowCount = myTable.rows.length;
+
+    for (var x=rowCount-1;x>=1;  x--) {
+
+        // g=myTable.cells[1];
+        p[x]=myTable.rows[x].innerText;
+        y=y+parseFloat(myTable.rows[x].cells[3].innerText);
+       // y=y+v[x];
+        // h =a[x];
+        // console.log("datos"+h)S
+        // a=id_f ila_selected.push(myTable.rows[x].innerText);
+    }
+    window.open(`../reportes/reportesAmortizar.php?inicioDate=${start_date}&finalDate=${end_date}`,'_blank')
+   // window.open(`../reportes/reportesAmortizar?RAS=${p}&codSI=${codsuI}`, '_blank')
+
+
+    //let c=$('#order_data_info').innerHTML;
+    console.log("total de paginas"+start_date+end_date)
+   // console.log("total de paginas"+y+"  LISTA: "+v)
+    //console.log("DATOS"+p)
+}
