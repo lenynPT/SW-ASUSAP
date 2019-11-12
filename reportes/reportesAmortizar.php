@@ -37,6 +37,13 @@ $IRAS=$_GET['RAS'];
 
 date_default_timezone_set('America/Lima');
 $created_date = date("Y-m-d H:i");
+session_start(['name'=>'ASUSAP']);
+$_SESSION['fecha']=$created_date;
+$_SESSION['fechaInicio']=$_GET['inicioDate'];
+$_SESSION['fechaFinal']=$_GET['finalDate'];
+$td=$_GET['finalDate']-$_GET['inicioDate'];
+$_SESSION['diatotal']=$td;
+
 //desNSI=${co}&descSI=${a}&desCcSI=${to}
 
 $ac = count(explode(",", $IRAS));
@@ -53,14 +60,22 @@ class PDF extends FPDF
         //$this->Image('images/logo.png', 5, 5, 30 );
         $this->SetFont('Arial','B',15);
         $this->Cell(30);
-        $this->Cell(120,10, 'Reporte De Estados',0,0,'C');
+        $this->Cell(120,10, 'Reporte De Ingreso de Gastos',0,0,'C');
+        $this->SetFont('Arial','B',10);
+        $this->Cell(10);
+        $this->Cell(20,20,'Fecha: '.$_SESSION['fecha'],0,0,'R');
+        $this->SetFont('Arial','B',15);
+        $this->SetX(50);
+        $this->SetY(15);
+        $this->Cell(185,20,''.$_SESSION['fechaInicio'].'     A      '.$_SESSION['fechaFinal'],0,0,'C');
         $this->Ln(20);// Logo
-        //$this->Image('logo.jpg',10,8,33);
-        //$this->Image('img/sinResultado.jpg',0,0,148,210);
-        // Arial bold 15
-        //$this->SetFont('Arial', 'B', 20);
-        // Movernos a la derecha
-        //$this->SetXY(5, 7);
+        $this->Image('img/agua.jpg',10,6,45);
+        //$this->Image('img/agua.jpg',0,0,10,8);
+       // Arial bold 15
+        //// Movernos a la derecha
+        //$this->Cell(5);
+
+
         // Título
         //$this->Cell(30, 12, 'ASUSAP', 0, 0, 'C');
         // Salto de línea
@@ -88,7 +103,7 @@ $pdf->SetFont('Arial', 'B', 20);
 $pdf->SetXY(5, 7);
 $pdf->SetFont('Arial', 'B', 15);
 $pdf->SetXY(75, 6);*/
-
+$pdf->SetY(35);
 $pdf->SetFillColor(232,232,232);
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(10,6,'#',1,0,'C',1);
