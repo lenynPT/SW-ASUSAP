@@ -47,6 +47,28 @@
 
 		}
 
+	/*================================MODULO SUMINISTRO============================================*/
+	public function dataAsociadoYsuministorUPD($dni_asoc){
+		$queryAsoc = "SELECT asociado.dni,asociado.nombre,asociado.apellido,asociado.telefono FROM asociado WHERE asociado.dni = $dni_asoc";		
+		$resAsoc = mainModel::execute_single_query($queryAsoc);
+		
+		$dataAsoc = []; $dataSumi = [];
+		if($resAsoc->rowCount()>=1){
+			$dataAsoc = $resAsoc->fetch(PDO::FETCH_ASSOC);
+		}
+		
+		$querySumi = "SELECT * FROM suministro WHERE suministro.asociado_dni=$dni_asoc";
+		$resSumi = mainModel::execute_single_query($querySumi);
+		
+		if($resSumi->rowCount()>=1){
+			while($regSumi = $resSumi->fetch(PDO::FETCH_ASSOC)){
+				$dataSumi[] = $regSumi;
+			}
+		}
+
+		return ['dataAsoc'=>$dataAsoc,'dataSumi'=>$dataSumi];
+	}
+
 	/*================================GENERADOR DE SUMINISTRO============================================*/
 		public function pruebaController($msj){
 			return $msj;

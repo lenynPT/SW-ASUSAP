@@ -37,17 +37,30 @@ function busacarAsocBtn(){
 									let datosmodal = datos.modal;
 									
 									let htmlAsoc = `
-										<tr>
-											<td>1</td>
+																	
+										<tr>		
+											<td>1</td>											
 											<td>${datostabla["dni"]}</td>
 											<td>${datostabla["nombre"]}</td>
 											<td>${datostabla["apellido"]}</td>
 											<td>${datostabla["telefono"]}</td>
 											<td>${datostabla["estado"]}</td>
 											<td>${datostabla["cant_suministro"]}</td>
-											<td><a href="#cantSumin" data-toggle="modal" dni="485666" class="cantSumin btn btn-success btn-raised btn-xs" ><i class="zmdi zmdi-refresh"></i></a></td>
-											<td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-										</tr>   				
+											<td>
+												<a href="#cantSumin" data-toggle="modal" dni="485666" class="cantSumin btn btn-success btn-raised btn-xs" >
+													<i class="zmdi zmdi-refresh"></i>
+												</a>
+											</td>
+											<td>
+												<form action="../asocUpdate/" method="post">
+													<input type="hidden" name="dniAsoc" id="" value="${datostabla["dni"]}">												
+													<button type="submit" class="btn btn-success btn-raised btn-xs" id="btnUpdateAsoc">
+														<i class="zmdi zmdi-refresh"></i>
+													</button>												
+												</form>																						
+											</td>
+											</tr>   				
+										
 									`; 
 											//<td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
 									let htmlSumi = ``;
@@ -1043,4 +1056,35 @@ function instantSuministro(){
 		}
 
 	}
+}
+
+
+//ACTUALIZAR SUMINISTROS
+function btnUPDsum($id_cod, $contID){
+	console.log("CLICK BTN ACT", $id_cod);
+	$select = "#SUMI"+$id_cod;
+	$direccion = document.querySelector("#direccion"+$contID);	
+	$pasaje = document.querySelector("#pasaje"+$contID);	
+	$nr_casa = document.querySelector("#nr_casa"+$contID);	
+	$estado = document.querySelector("#estado"+$contID);	
+	$medidor = document.querySelector("#medidor"+$contID);	
+	$categoria = document.querySelector("#categoria"+$contID);	
+	console.log($direccion.value);
+	console.log($pasaje.innerHTML);
+	console.log($nr_casa.innerHTML);
+	console.log($estado.value);
+	console.log($medidor.value);
+	console.log($categoria.value);
+	/*
+	$element = document.querySelector($select);
+	//console.log($element);
+	$td = $element.querySelectorAll("td");
+	console.log($td)
+	val = 0
+	$td.forEach(element=>{
+		
+			console.log(element.innerHTML);
+
+	})
+	*/
 }
