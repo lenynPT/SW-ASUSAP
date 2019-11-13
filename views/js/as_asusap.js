@@ -262,11 +262,11 @@ function guardarARMOTIZACION() {
                 data: 'mopagr=' + mpag + '&idsr=' + ids + '&montRes=' + rest,
                 success: function (resp) {
 
+                    window.location = "http://localhost/SW-ASUSAP/aservicio/";
 
                     //console.log("si ineserto monto pagado"+resp)
                 }
             });
-            window.location = "http://localhost/SW-ASUSAP/aservicio/";
         }else {
 
 
@@ -276,12 +276,12 @@ function guardarARMOTIZACION() {
                 data: 'mopagr=' + mpag + '&idsr=' + ids + '&montRes=' + rest,
                 success: function (resp) {
 
+                    window.location = "http://localhost/SW-ASUSAP/ASupdate/" + ids;
 
                     //console.log("si ineserto monto pagado"+resp)
                 }
             });
 
-            window.location = "http://localhost/SW-ASUSAP/ASupdate/" + ids;
 
         }
     },function(){
