@@ -1,6 +1,6 @@
 <?php
     $AjaxRequest=true;
-
+    
     // insertar un nuevo suministro a la db
     if(isset($_POST['insertSumin'])){
         
@@ -34,6 +34,37 @@
         }else {
             echo json_encode("FALSE Server UPDfgc");            
         }
+    }
+
+    elseif (isset($_POST['OPTION'])) {
+        # code...
+        require_once "../controllers/adminController.php";
+
+        if ($_POST['OPTION'] == "R_USER") {
+            # code...
+            $obj = new adminController();
+            $response = $obj->guardarUsuarioController();            
+            echo json_encode($response);
+        }
+
+        elseif($_POST['OPTION'] == "UPDsuministro"){
+            $obj = new adminController();
+            $response = $obj->actualizarSuministroController($_POST);            
+            echo json_encode($response);
+        }
+
+        elseif($_POST['OPTION'] == 'UPDuser'){
+            $obj = new adminController();
+            $response = $obj->actualizarUsuarioController($_POST);   
+            echo json_encode($response);
+        }
+
+        elseif($_POST['OPTION'] == 'DIRECinst'){
+            $obj = new adminController();
+            $response = $obj->obtenerDireccionCalleController($_POST['keyup']); 
+            echo json_encode($response);
+        }
+
     }
 
     else{

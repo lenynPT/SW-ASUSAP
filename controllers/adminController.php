@@ -32,60 +32,74 @@
 					$rsptaModel = adminModel::guardarUsuario($datosController);
 					if($rsptaModel){
 						//echo "Registro exitoso";
-						echo '<script>
-								swal({
-									title: "¡OK!",
-									text: "¡Usuario ha sido creado correctamente!",
-									type: "success",
-									confirmButtonText: "Cerrar",
-									closeOnConfirm: false
-								},
-								function(isConfirm){
-										if (isConfirm) {	   
-											window.location = "newaasociat";
-										} 
-								});
-							</script>';
+						return ["res" => "success"];
 					}else{
-						echo "No se pudo registrar";
+						//echo "No se pudo registrar";
+						return ["res"=>"error"];
 					}
 					//return true;
 				}else{
-					echo "DNI ya registardo";
-					return false;
+					//echo "DNI ya registardo";
+					return ["res"=>"dniExist"];
 				}
-
-				/*
-                    $datosController = array(
-                        "idsociado" => $code,
-                        "dni" => $_POST["dniUser"],
-                        "direccion" => $_POST["direUser"],
-                        "nombre" => $_POST["nameUser"],
-                        "apellido" => $_POST["apellUser"],
-                        "telefono" => $_POST["telefUser"],
-                        "estado" => $_POST["estadoUser"]
-                    );
-                    $respuesta = adminModel::guardarUsuario($datosController);
-                    echo '<script>
-                    swal({
-                          title: "¡OK!",
-                          text: "¡Usuario ha sido creado correctamente!",
-                          type: "success",
-                          confirmButtonText: "Cerrar",
-                          closeOnConfirm: false
-                    },
-                    function(isConfirm){
-                             if (isConfirm) {	   
-                                window.location = "newaasociat";
-                              } 
-                    });
-					</script>';
-				*/
-
 
             }
 
 		}
+
+	/*================================MODULO SUMINISTRO============================================*/
+	public function dataAsociadoYsuministorUPD($dni_asoc){
+		$queryAsoc = "SELECT asociado.dni,asociado.nombre,asociado.apellido,asociado.telefono FROM asociado WHERE asociado.dni = $dni_asoc";		
+		$resAsoc = mainModel::execute_single_query($queryAsoc);
+		
+		$dataAsoc = []; $dataSumi = [];
+		if($resAsoc->rowCount()>=1){
+			$dataAsoc = $resAsoc->fetch(PDO::FETCH_ASSOC);
+		}
+		
+		$querySumi = "SELECT * FROM suministro WHERE suministro.asociado_dni=$dni_asoc";
+		$resSumi = mainModel::execute_single_query($querySumi);
+		
+		if($resSumi->rowCount()>=1){
+			while($regSumi = $resSumi->fetch(PDO::FETCH_ASSOC)){
+				$dataSumi[] = $regSumi;
+			}
+		}
+
+		return ['dataAsoc'=>$dataAsoc,'dataSumi'=>$dataSumi];
+	}
+
+	public function actualizarSuministroController($data){
+		$query = "UPDATE suministro SET direccion='{$_POST['direccion']}', pasaje='{$_POST['pasaje']}', casa_nro='{$_POST['nr_casa']}', estado_corte={$_POST['estado']}, tiene_medidor={$_POST['medidor']}, categoria_suministro='{$_POST['categoria']}' WHERE suministro.cod_suministro='{$_POST['cod_sumi']}'";				
+		$res = mainModel::execute_single_query($query);
+		if($res->rowCount()>=1){
+			return true;
+		}
+		return false;
+	}
+
+	public function actualizarUsuarioController($data){
+		$query = "	UPDATE asociado 
+					SET nombre='{$_POST['nombre']}', apellido='{$_POST['apellido']}', telefono='{$_POST['telefono']}' 
+					WHERE asociado.dni='{$_POST['dni']}'";				
+		$res = mainModel::execute_single_query($query);
+		if($res->rowCount()>=1){
+			return true;
+		}		
+		return true;
+	}
+
+	public function obtenerDireccionCalleController($keyPress){
+		$query = "SELECT nombre FROM direccion_calle WHERE nombre LIKE '%$keyPress%'";
+		$objRes = mainModel::execute_single_query($query);
+		if($objRes->rowCount()>=1){
+			$arrDirecc = [];
+			while($direcciones = $objRes->fetch(PDO::FETCH_ASSOC)){
+				$arrDirec[] = $direcciones;
+			}
+		} 
+		return $arrDirec;
+	}
 
 	/*================================GENERADOR DE SUMINISTRO============================================*/
 		public function pruebaController($msj){
@@ -115,13 +129,15 @@
 			if($n_mes <= 0){
 				//para controlar los mensajes referidos a la generación de consumo para el mes ya generado(-2 mes), y para el mes que falta generar(-1 mes). 
 				if($n_mes == 0){
+					$n_mes = 12;
 					$r_mes = "Diciembre";
 					$r_anio -=1;
-					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 				}else{ // cuando sea enero y ya e hayan generado todos los consumos.
+					$n_mes = 11;
 					$r_mes = "Noviembre";
 					$r_anio -=1;
-					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+					return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 				}
 			}
 			
@@ -163,12 +179,13 @@
 					$r_mes = "Diciembre";
 					break;												
 				default:
-					# code...
+					# code... por defeecto... sn efecto --error:
+					$n_mes=12;
 					$r_mes = "Diciembre";
 					$r_anio -=1;
 					break;
 			}
-			return ["r_mes"=>$r_mes,"r_anio"=>$r_anio];
+			return ["r_mes"=>$r_mes,"r_anio"=>$r_anio,"n_mes"=>$n_mes];
 		}
 
 		public function consultaAsociado($query){

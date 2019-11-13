@@ -14,83 +14,110 @@ function busacarAsocBtn(){
 			
 			let usuario = $("#txtBuscarAsoc").val();
 			
-			let datos = new FormData();
-			datos.append("codAsoc",usuario);
-			datos.append("btnaccion","buscarAsociado");
-			
-			$.ajax({
-				url:"../ajax/buscarAjax.php",
-				method:"POST",
-				data: datos,
-				cache: false,
-				contentType: false,
-				processData: false,
-				success:function(respuesta){
-					if(respuesta){
+			if(usuario != ""){
+				if(!isNaN(usuario)){
+					if(usuario.length == 8 || usuario.length == 11){
 						
-						let datos = JSON.parse(respuesta);
-						let datostabla = datos.tabla;
-						let datosmodal = datos.modal;
+						let datos = new FormData();
+						datos.append("codAsoc",usuario);
+						datos.append("btnaccion","buscarAsociado");
 						
-						let htmlAsoc = `
-							<tr>
-								<td>1</td>
-								<td>${datostabla["dni"]}</td>
-								<td>${datostabla["nombre"]}</td>
-								<td>${datostabla["apellido"]}</td>
-								<td>${datostabla["telefono"]}</td>
-								<td>${datostabla["estado"]}</td>
-								<td>${datostabla["cant_suministro"]}</td>
-								<td><a href="#cantSumin" data-toggle="modal" dni="485666" class="cantSumin btn btn-success btn-raised btn-xs" ><i class="zmdi zmdi-refresh"></i></a></td>
-								<td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-								<td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
-							</tr>   				
-						`; 
-						let htmlSumi = ``;
-						for (let index = 0; index < datosmodal.length; index++) { //El index tiene que comenzar desde cero. Porque cada uno de los suministros tiene como indice un numeral, y este comienza con el cero.
-							
-							htmlSumi += `
-								<tr>
-									<td>${index+1}</td>
-									<td>${datosmodal[index]["codigo"]}</td>
-									<td>${datosmodal[index]["direccion"]}</td>
-									<td>${datosmodal[index]["categoria"]}</td>
-									<td>${datosmodal[index]["medidor"]}</td>
-									<td>${datosmodal[index]["corte"]}</td>
-								</tr>	
-							`;
-							console.log(htmlSumi);					
-						}
-						
-						//Escribe datos en el modal del suministro. 
-						$(".txtDniAsocModal").val(datostabla["dni"]);
-						$(".txtNombreAsocModal").val(datostabla["nombre"]);
-						
-						//IMPRIME DATOS PARA LOS ASOCIADOS Y SUMINISTROS		
-						$(".responseAsoc").html(htmlAsoc);//Escribe datos en la tabla
-						$(".responseSumi").html(htmlSumi);//Escribe datos en el modal
-						
-						//Limpia el msj de no se encontró nada.
-						$(".infoAsoc").html("");
-						
-						//CONTROL DEL BTN PARA AGREGAR SUMINISTRO
-						$('#btnAddSumiModal').attr("disabled", false)
-						$('#btnAddSumiModal').attr("data-toggle", "modal")							
-						
+						$.ajax({
+							url:"../ajax/buscarAjax.php",
+							method:"POST",
+							data: datos,
+							cache: false,
+							contentType: false,
+							processData: false,
+							success:function(respuesta){
+								if(respuesta){
+									
+									let datos = JSON.parse(respuesta);
+									let datostabla = datos.tabla;
+									let datosmodal = datos.modal;
+									
+									let htmlAsoc = `
+																	
+										<tr>		
+											<td>1</td>											
+											<td>${datostabla["dni"]}</td>
+											<td>${datostabla["nombre"]}</td>
+											<td>${datostabla["apellido"]}</td>
+											<td>${datostabla["telefono"]}</td>
+											<td>${datostabla["estado"]}</td>
+											<td>${datostabla["cant_suministro"]}</td>
+											<td>
+												<a href="#cantSumin" data-toggle="modal" dni="485666" class="cantSumin btn btn-success btn-raised btn-xs" >
+													<i class="zmdi zmdi-refresh"></i>
+												</a>
+											</td>
+											<td>
+												<form action="../asocUpdate/" method="post">
+													<input type="hidden" name="dniAsoc" id="" value="${datostabla["dni"]}">												
+													<button type="submit" class="btn btn-success btn-raised btn-xs" id="btnUpdateAsoc">
+														<i class="zmdi zmdi-refresh"></i>
+													</button>												
+												</form>																						
+											</td>
+											</tr>   				
+										
+									`; 
+											//<td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
+									let htmlSumi = ``;
+									for (let index = 0; index < datosmodal.length; index++) { //El index tiene que comenzar desde cero. Porque cada uno de los suministros tiene como indice un numeral, y este comienza con el cero.
+										
+										htmlSumi += `
+											<tr>
+												<td>${index+1}</td>
+												<td>${datosmodal[index]["codigo"]}</td>
+												<td>${datosmodal[index]["direccion"]}</td>
+												<td>${datosmodal[index]["categoria"]}</td>
+												<td>${datosmodal[index]["medidor"]}</td>
+												<td>${datosmodal[index]["corte"]}</td>
+											</tr>	
+										`;
+										//console.log(htmlSumi);					
+									}
+									
+									//Escribe datos en el modal del suministro. 
+									$(".txtDniAsocModal").val(datostabla["dni"]);
+									$(".txtNombreAsocModal").val(datostabla["nombre"]);
+									
+									//IMPRIME DATOS PARA LOS ASOCIADOS Y SUMINISTROS		
+									$(".responseAsoc").html(htmlAsoc);//Escribe datos en la tabla
+									$(".responseSumi").html(htmlSumi);//Escribe datos en el modal
+									
+									//Limpia el msj de no se encontró nada.
+									$(".infoAsoc").html("");
+									
+									//CONTROL DEL BTN PARA AGREGAR SUMINISTRO
+									$('#btnAddSumiModal').attr("disabled", false)
+									$('#btnAddSumiModal').attr("data-toggle", "modal")							
+									
+								}else{
+									//Limpia la tabla de asociado.
+									$(".responseAsoc").html("");
+									//Imprime msj de error cuando no coincide el dato con los registro de la db
+									$(".infoAsoc").html("<div class='text-danger'>No se encontró asociado...</div>");
+									
+									//CONTROL DEL BTN PARA AGREGAR SUMINISTRO
+									$('#btnAddSumiModal').attr("disabled", true)
+									$('#btnAddSumiModal').attr("data-toggle", "#")
+									
+								}
+								
+							}
+						});
 					}else{
-						//Limpia la tabla de asociado.
-						$(".responseAsoc").html("");
-						//Imprime msj de error cuando no coincide el dato con los registro de la db
-						$(".infoAsoc").html("<div class='text-danger'>No se encontró asociado...</div>");
-						
-						//CONTROL DEL BTN PARA AGREGAR SUMINISTRO
-						$('#btnAddSumiModal').attr("disabled", true)
-						$('#btnAddSumiModal').attr("data-toggle", "#")
-						
+						alert("DNI O RUC DE USUARIO NO VALIDO!!");
 					}
-					
+				}else{
+					alert("EL DNI O RUC ES UN NUMERO")
 				}
-			});
+			}else{
+				alert("INGRESE DNI O RUC")
+			}
+
 			
 		});
 	}
@@ -101,24 +128,24 @@ function InsertarSuministro(){
 
  	let el =  document.getElementById("btnisum")
 	if(el){
-		console.log("funcion insertarSuministro");
+		//console.log("funcion insertarSuministro");
 		el.addEventListener('click',(e)=>{
 			e.preventDefault();
 
-			let dni = $("#txtDniAsocModal").val();
-			//document.getElementById("direccionPsjSumi").focus();
-
+			let dni = $("#txtDniAsocModal").val();			
 			let dt = new FormData(formularioSumi);
 			dt.append('dni',dni);
 			/*
-			console.log(dt.get('dni'));
-			console.log(dt.get('categoriaSumi'));
-			console.log(dt.get('direccionSumi'));		
-			console.log(dt.get('direccionPsjSumi'));		
-			console.log(dt.get('direccionNroSumi'));		
-			console.log(dt.get('medidorSumi'));		
-			console.log(dt.get('corteSumi'));	
+				console.log(dt.get('dni'));
+				console.log(dt.get('categoriaSumi'));
+				console.log(dt.get('direccionSumi'));		
+				console.log(dt.get('direccionPsjSumi'));		
+				console.log(dt.get('direccionNroSumi'));		
+				console.log(dt.get('medidorSumi'));		
+				console.log(dt.get('corteSumi'));	
 			*/
+			let txtVacios=false;
+			let msj = "¿Crear suministro?";
 			//validar que no se dejen valores vacios en el formulario
 			if(dt.get('direccionPsjSumi')=="" || dt.get('direccionNroSumi')==""){			
 				//colocar cursor donde falta rrellenar información					
@@ -128,38 +155,61 @@ function InsertarSuministro(){
 					document.getElementById("direccionNroSumi").focus();
 				}
 				//mensaje de error cuando no se rellenan todos los campos
-				swal({
-					text: "¡Ingrese todos los campos correctamente!",
-					type: "warning",										  		
-					confirmButtonText: 'corregir'			
-				});
-				return false;
+				txtVacios = true;
+				msj = "¡Estás dejando campos vacios!";
 			}
+			swal({
+				text: `${msj}`,
+				type: "warning",										  		
+				confirmButtonColor: '#03A9F4',		  		
+				confirmButtonText: '<i class="zmdi zmdi-run"></i> Adelante',		
+				showCancelButton: true,
+				cancelButtonColor: '#F44336',
+				cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Corregir'			
+			}).then(()=>{
+				//le en ADELANTE
 
-			fetch('../ajax/gestionAS.php',{
-				method: 'POST',
-				body: dt
-			})
-			.then(res => res.json())
-			.then(data=>{
-				console.log(data)
-				//response
+				fetch('../ajax/gestionAS.php',{
+					method: 'POST',
+					body: dt
+				})
+				.then(res => res.json())
+				.then(data=>{					
+					//response
+					swal({
+						title: "¡OK!",
+						text: "El suministro ha sido creado correctamente!",
+						type: "success",				
+						confirmButtonColor: '#03A9F4',		  		
+						confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',				
+					})	
+					//Limpia la tabla de asociado.
+					$(".responseAsoc").html("");
+					//Imprime msj de error cuando no coincide el dato con los registro de la db
+					$(".infoAsoc").html("");					
+					//CONTROL DEL BTN PARA AGREGAR SUMINISTRO
+					$('#btnAddSumiModal').attr("disabled", true)
+					$('#btnAddSumiModal').attr("data-toggle", "#")
+					//desaparece Modal - simulando click :V 
+					$('#btncancelarIS').click();
+				})
+
+			},
+			
+			()=>{
+				//le dio en CORREGIR
 				swal({
 					title: "¡OK!",
-					text: "¡Usuario ha sido creado correctamente!",
-					type: "success",				
+					text: "CORRIJA LOS CAMPOS VACIOS!",
+					type: "info",				
 					confirmButtonColor: '#03A9F4',		  		
 					confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',				
-				}).then(()=>{
-					console.log("le dio aceptar");
-					//Cuando le de la opción de ok
-					location.reload();
-				},function(){
-					console.log("No le dió aceptar")
-					//si no le da a la opcion de aceptar
-					location.reload();
-				});
-			})
+				})	
+											
+			});
+			
+			return false;
+
 		});
 				
 	}
@@ -741,4 +791,517 @@ function NombreMes($n_mes){
 			break;
 	}	
 	return $r_mes;
+}
+
+//validar Usuario
+function instantformUser(){
+	el = document.querySelector("#formUser");
+	if(el){		
+		/********************** */
+		let pasaje, nro, categoria, medidor, nombre, apellido, dni, telefono;	
+		pasaje = document.querySelector("#direccionPsjAsoc");
+		pasaje_error= document.querySelector("#direccionPsjAsocVal");
+		nro = document.querySelector("#direccionNroAsoc");
+		nro_error=document.querySelector("#direccionNroAsocVal");
+	
+		categoria = document.querySelector("#categoriaAsoc");
+		medidor = document.querySelector("#medidorAsoc");
+	
+		nombre = document.querySelector("#nombreAsoc");
+		nombre_error=document.querySelector("#nombreAsocVal");
+		apellido = document.querySelector("#apellidoAsoc");
+		apellido_error=document.querySelector("#apellidoAsocVal");
+	
+		dni = document.querySelector("#dniAsoc");
+		dni_error=document.querySelector("#dniAsocVal");
+		telefono = document.querySelector("#telefonoAsoc"); 
+		telefono_error=document.querySelector("#telefonoAsocVal");
+
+		/********************** */
+
+		nombre.style.textTransform="uppercase";
+		apellido.style.textTransform="uppercase";
+		pasaje.style.textTransform="uppercase";
+
+
+		nombre.addEventListener("keyup",function(){
+			let patt = new RegExp("[0-9]");
+			let res = patt.test(nombre.value);			
+			if(res){
+				//console.log("es numero")
+				nombre_error.classList.add("has-error");
+				alert("LOS NOMBRES NO DEBEN LLEVAR NÚMEROS")
+				nombre.value = "";
+			}
+			
+		})
+
+		categoria.addEventListener("click",function(){
+			if(this.value == "Estatal" && apellido.value != ""){
+				alert("NO HAY APELLIDO PARA CATEGORIA ESTATAL");
+				apellido.value = "";
+			}
+		})
+		apellido.addEventListener("keyup",function(){
+			let patt = new RegExp("[0-9]");
+			let res = patt.test(apellido.value);
+			if(categoria.value != "Estatal" && apellido.value != ""){
+				if(res){
+					//console.log("es numero")
+					apellido_error.classList.add("has-error");
+					alert("LOS APELLIDOS NO DEBEN LLEVAR NÚMEROS")
+					apellido.value = "";
+				}
+			}else{
+				if(categoria.value == "Estatal" && apellido.value != ""){
+					alert("NO HAY APELLIDO PARA CATEGORIA ESTATAL")
+					apellido.value = "";
+				}
+			}		
+		})
+
+		dni.addEventListener("blur",function(){
+			//console.log(this.value,this.value.length)
+			if(this.value != ""){
+				if(!(this.value.length == 8 || this.value.length == 11)){
+					alert("ERROR DE DNI O RUC");
+					dni_error.classList.add("has-error");
+				}				
+			}
+		})
+
+		telefono.addEventListener("blur",function(){
+			if(this.value != ""){
+				if(this.value.length != 9){
+					alert("NUMERO TELEFÓNICO NO VALIDO");
+					this.value = "";
+				}
+			}
+		})
+		
+	}
+}
+instantformUser();
+
+function validarUsuario(){
+	console.log("On submit")
+	let direccion, pasaje, nro, categoria, medidor, nombre, apellido, dni, telefono;
+	direccion = document.querySelector("#direccionAsoc");
+	pasaje = document.querySelector("#direccionPsjAsoc");
+	pasaje_error= document.querySelector("#direccionPsjAsocVal");
+	nro = document.querySelector("#direccionNroAsoc");
+	nro_error=document.querySelector("#direccionNroAsocVal");
+
+	categoria = document.querySelector("#categoriaAsoc");
+	medidor = document.querySelector("#medidorAsoc");
+
+	nombre = document.querySelector("#nombreAsoc");
+	nombre_error=document.querySelector("#nombreAsocVal");
+	apellido = document.querySelector("#apellidoAsoc");
+	apellido_error=document.querySelector("#apellidoAsocVal");
+
+	dni = document.querySelector("#dniAsoc");
+	dni_error=document.querySelector("#dniAsocVal");
+	telefono = document.querySelector("#telefonoAsoc"); 
+	telefono_error=document.querySelector("#telefonoAsocVal");
+
+	//$registrarAsoc = document.querySelector("#registrarAsoc");
+	
+	direccionv=direccion.value; 
+	pasajev = pasaje.value.toUpperCase();
+	nrov=nro.value;
+	categoriav=categoria.value;
+	medidorv=medidor.value;
+	nombrev=nombre.value.toUpperCase();
+	apellidov=apellido.value.toUpperCase();
+	dniv=dni.value;
+	telefonov = telefono.value;
+
+
+	//console.log(direccion, pasaje, nro, categoria, medidor, nombre, apellido, dni, telefono);
+
+	if(direccionv != "" || categoriav != "" || medidorv != "" || nombrev != ""|| dniv != ""){
+	
+		if(categoriav == "Estatal"){
+			if(apellidov != ""){
+				alert("NO HAY APELLIDO PARA CATEGORÍA ESTATAL");
+				apellido.value = "";
+				apellido_error.classList.add("has-error");
+				return false;
+			}
+		}else{
+			//categoriav != "Estatal"
+			if(apellidov == ""){
+				alert("APELLIDO ESTÁ VACIO!!")
+				return false;
+			}
+		}
+
+		if(!(dniv.length == 8 || dniv.length == 11)){
+			alert("DNI O RUC INVALIDO!!");
+			dni.value = "";
+			return false;
+		}
+
+		console.log("Enviar formulario")
+
+		let data = new FormData();
+		data.append("OPTION","R_USER")
+		data.append("registrarAsoc","TRUE")
+
+		data.append('categoriaAsoc',categoriav);
+		data.append('direccionAsoc',direccionv);
+		data.append('direccionPsjAsoc',pasajev);
+		data.append('direccionNroAsoc',nrov);
+		data.append('nombreAsoc',nombrev);
+		data.append('apellidoAsoc',apellidov);
+		data.append('dniAsoc',dniv);
+		data.append('telefonoAsoc',telefonov);
+		data.append('medidorAsoc',medidorv);
+
+		fetch("../ajax/gestionAS.php",{
+			method:"post",
+			body:data
+		}).then(res => res.json())
+		.then(data=>{
+			console.log(data)
+			if(data["res"] == "success"){
+				//alert("USUARIO REGISTRADO");
+				swal({
+					title: "¡OK!",
+					text: "¡Usuario ha sido creado correctamente!",
+					type: "success",
+					confirmButtonText: "Cerrar",
+					closeOnConfirm: false
+				},
+				function(isConfirm){
+						if (isConfirm) {	   
+						} 
+				});
+				nombre.value = "";
+				apellido.value = "";
+				pasaje.value = "";
+				nro.value="";
+				dni.value = "";
+				telefono.value = "";
+
+			}else if(data["res"] == "dniExist"){
+				//alert("EL USUARIO YA EXISTE")
+				swal({
+					title: "¡UPS!",
+					text: "¡EL USUARIO YA EXISTE!",
+					type: "info",
+					cancelButtonColor: '#F44336',
+					cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Modificar',
+					showCancelButton: true,
+					confirmButtonColor: '#03A9F4',		  		
+					confirmButtonText: '<i class="zmdi zmdi-run"></i> De acuerdo'
+				}).then(()=>{
+					//le dió acceptar 
+					nombre.value = "";
+					apellido.value = "";
+					pasaje.value = "";
+					nro.value="";
+					dni.value = "";
+					telefono.value = "";
+				},()=>{
+					//le dio cerrar
+
+				})
+			}else{
+				//error
+				//alert("NO SE PUDO REALIZAR EL RIGISTRO")
+				swal({
+					title: "¡Error!",
+					text: "¡NO SE PUDO REALIZAR EL REGISTRO!",
+					type: "error",
+					confirmButtonText: "Cerrar",
+					closeOnConfirm: false
+				},
+				function(isConfirm){
+						if (isConfirm) {	   
+						} 					
+				});
+			}
+		})
+		
+		return false;	
+		/*
+		probar.borderWidth = "0px 0px 3px 0px";
+		probar.borderColor = "#a94442";
+		probar.borderStyle = "solid";
+		*/
+		
+	}else{
+		direccion_error.classList.add("has-error");
+		categoria_error.classList.add("has-error");
+		medidor_error.classList.add("has-error");
+		nombre_error.classList.add("has-error");
+		
+		console.log("No enviar formulario")
+	
+		return false;
+	}
+
+}
+
+function instantSuministro(){	
+	let el = document.querySelector("#btnBuscarAsoc");
+	if(el){
+
+		let bscAso = document.querySelector("#txtBuscarAsoc"); 
+
+		if(bscAso!=""){
+
+		}
+
+	}
+}
+
+
+//ACTUALIZAR SUMINISTROS
+function btnUPDsum($id_cod, $contID,$deuda){
+	
+	console.log("CLICK BTN ACT", $id_cod);
+	
+	$select = "#SUMI"+$id_cod; //codiog de los registros. ID del tr
+	$direccion = document.querySelector("#direccion"+$contID).value;	
+	$pasaje = document.querySelector("#pasaje"+$contID).innerHTML;	
+	$nr_casa = document.querySelector("#nr_casa"+$contID);	
+	$estado = document.querySelector("#estado"+$contID).value;	
+	$medidor = document.querySelector("#medidor"+$contID).value;	
+	$categoria = document.querySelector("#categoria"+$contID).value;	
+	$nr_casa_v = $nr_casa.innerHTML;
+	
+	$deuda = $deuda ? true:false;
+	//console.log(typeof($deuda),$deuda)
+
+	
+	if($nr_casa_v < 0 && $nr_casa_v != ""){
+		$nr_casa.style.background = "red"
+		return false;
+	}else{
+		$nr_casa.style.background = ""
+	}
+
+	//preguntar si de verdad quiere realizar los cambios
+
+	swal({
+		title: "¿?",
+		text: "¿REALIZAR ACTUALIZACIÓN?",
+		type: "info",
+		cancelButtonColor: '#F44336',
+		cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> CANCELAR',
+		showCancelButton: true,
+		confirmButtonColor: '#03A9F4',		  		
+		confirmButtonText: '<i class="zmdi zmdi-run"></i> ACTUALIZAR'
+	}).then(()=>{
+		//le dió acceptar 
+		//fetch actualzar
+		data = new FormData();
+		data.append('OPTION', 'UPDsuministro');
+		data.append('cod_sumi', $id_cod);
+		data.append('direccion', $direccion);
+		data.append('pasaje', $pasaje);
+		data.append('nr_casa', $nr_casa_v);
+		data.append('estado', $estado);
+		data.append('medidor', $medidor);
+		data.append('categoria', $categoria);
+		
+		fetch('../ajax/gestionAS.php',{
+			method:"post",
+			body:data		
+		}).then(res => res.json())
+		.then(data =>{
+			console.log(data);
+			//mensaje de ok 
+			swal({
+				title: "!OK¡",
+				text: "¡¡ACTUALIZADO!!",
+				type: "success",
+				showCancelButton: true,
+				showConfirmButton: false,
+				cancelButtonColor: "#03a9f4",
+				cancelButtonText:'cerrar'
+			})
+			//indicador de que el registro ya se actualizo una vez
+			document.querySelector($select).style.background = "rgba(255, 255, 0,.2)";
+		})
+
+	},()=>{
+		//le dio cerrar
+		console.log("NO SE REALIZÓ LA ACTUALIZACIÓN")
+	})
+
+
+	return false;
+
+}
+
+function actualizarUsuario(){
+	let el = document.querySelector("#UPDformUser");
+	if(el){
+
+		//acceder a los datos
+		$dni= document.querySelector("#dniAsoc").value;
+		$nombre = document.querySelector("#nombreAsoc").value;
+		$apellido = document.querySelector("#apellidoAsoc").value;
+		$telefono = document.querySelector("#telefonoAsoc").value;
+
+		//validando información
+		if($nombre == ""){
+			alert("El nombre está vacio")
+			return false;
+		}
+
+		if(!isNaN($nombre)){
+			alert("EL NOMBRE O APELLIDO NO DEBEN TENER NÚMEROS")
+			document.querySelector("#nombreAsocVal").classList.add("has-error");
+			return false;
+		}
+
+		if($apellido != "" && !isNaN($apellido)){
+			alert("EL NOMBRE O APELLIDO NO DEBEN TENER NÚMEROS")
+			return false;
+		}
+		
+		
+		if($telefono.length != 9 && $telefono != ""){
+			alert("EL NUMERO NO ES CORRECTO");
+			return false;
+		}
+
+
+		console.log($dni,$nombre,$apellido,$telefono)
+
+		//preguntar si quiere realizar la actualizacion
+		swal({
+			title: "¿ACTUALIZAR?",
+			text: "",
+			type: "info",
+			cancelButtonColor: '#F44336',
+			cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> CANCELAR',
+			showCancelButton: true,
+			confirmButtonColor: '#03A9F4',		  		
+			confirmButtonText: '<i class="zmdi zmdi-run"></i> ACTUALIZAR'
+		}).then(()=>{
+			//le dió acceptar 
+			//enviar un fetch
+			data = new FormData();
+			data.append('OPTION','UPDuser')
+			data.append('dni',$dni)
+			data.append('nombre',$nombre)
+			data.append('apellido',$apellido)
+			data.append('telefono',$telefono)
+	
+			fetch('../ajax/gestionAS.php',{
+				method:"post",
+				body:data		
+			}).then(res => res.json())
+			.then(data=>{
+				console.log(data);
+				if(data){
+					//mensaje de ok 
+					swal({
+						title: "!OK¡",
+						text: "¡¡ACTUALIZADO!!",
+						type: "success",						
+						showConfirmButton: true,
+						confirmButtonColor: "#03a9f4",
+						confirmButtonText:'cerrar'
+					}).then(()=>{
+						location.reload();
+					})
+
+				}
+			})
+		
+		})
+
+
+		
+		console.log("actualizarUsuario");
+	}
+}
+
+function instantUPDuser(){
+	let el = document.querySelector("#UPDformUser");
+	if(el){
+
+		$initApellido = document.querySelector("#apellidoAsoc").value;
+		$initNombre = document.querySelector("#nombreAsoc").value;
+
+		//validar nombre
+		document.querySelector("#nombreAsoc").addEventListener("keyup",function(){										
+			if(!isNaN(this.value)){				
+				document.querySelector("#nombreAsoc").style.background = "rgba(255,0,0,.03)";
+			}else{
+				document.querySelector("#nombreAsoc").style.background = "";
+
+			}
+		});
+		document.querySelector("#nombreAsoc").addEventListener("blur", function(){		
+			if(this.value == ""){
+				this.value = $initNombre;				
+				alert("NOMBRE NO DEBE ESTAR VACIO");
+			}	
+		})	
+
+		//validar instant apellido
+		document.querySelector("#apellidoAsoc").addEventListener("keyup",function(){	
+			this.style.background = "";
+			if( $initApellido == ""){
+				alert("NO HAY UN APELLIDO");
+				this.value = "";
+			}			
+		})	
+		document.querySelector("#apellidoAsoc").addEventListener("blur",function(){	
+			this.style.background = "";
+			if( $initApellido != "" && this.value == ""){
+				alert("EL APELLIDO NO DEBE ESTAR VACIO");
+				this.value = $initApellido;
+				this.style.background = "rgba(255,0,0,.03)";
+				this.classList.add("has-error");
+			}			
+		})		
+
+	}
+}
+instantUPDuser();
+
+function obtenerListDirecciones(event){
+	//console.log("key pressed ",  String.fromCharCode(event.keyCode));
+	let codigo = event.which || event.keyCode;
+	let pressCode = "";
+	/*
+    //console.log("Presionada: " + codigo);     
+	if(codigo === 13){
+      console.log("Tecla ENTER");
+	}	
+	*/
+	if(codigo === 192){		
+		pressCode = "Ñ";
+	}
+    if(codigo >= 65 && codigo <= 90){
+	  //console.log(String.fromCharCode(codigo));
+	  pressCode = String.fromCharCode(codigo);
+	}	
+
+	data = new FormData();
+	data.append('OPTION','DIRECinst')
+	data.append('keyup',pressCode)
+	fetch("../ajax/gestionAS.php",{
+		method:"post",
+		body:data
+	}).then(res=>res.json())
+	.then(data=>{
+		//console.log(data)
+		let htmlSelectDirec = ``;
+		data.forEach(element=>{
+			htmlSelectDirec +=`<option>${element['nombre']}</option>`;
+		})
+		let selectDirecc = document.querySelector("#direccionAsoc");
+		selectDirecc.innerHTML = htmlSelectDirec;	
+	})
+
 }
