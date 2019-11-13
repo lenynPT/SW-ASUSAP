@@ -398,7 +398,7 @@
 			$mes_hoy=$fecha_actual['mes'];
 			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
 
-			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
+			$query = "SELECT DISTINCT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
 					LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro 
 					WHERE suministro.cod_suministro LIKE '%{$codigoSum}%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
@@ -430,10 +430,13 @@
 		public function obtenerConsumoAnterior($cod_sum,$anio,$mes){
 			$resltConsm=0;
 			$FCAnterior = self::obtenerFechasConsumo($anio,$mes);
+			/*
 			$query = "SELECT factura_recibo.consumo FROM factura_recibo 
 				WHERE factura_recibo.suministro_cod_suministro = '{$cod_sum}' 
 				AND factura_recibo.anio = {$FCAnterior['anio_GC']} AND factura_recibo.mes={$FCAnterior['mes_GC']}
-			";
+			";*/
+			$query ="SELECT DISTINCT *FROM factura_recibo 
+				WHERE consumo<>0 AND factura_recibo.suministro_cod_suministro = '{$cod_sum}' ORDER BY anio DESC, mes DESC LIMIT 0,1";
 			$dataConsm = mainModel::execute_single_query($query);
 			if($dataConsm->rowCount()==1){
 				$regConsm = $dataConsm->fetch();
