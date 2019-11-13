@@ -59,6 +59,11 @@
             echo json_encode($response);
         }
 
+        elseif($_POST['OPTION'] == 'DIRECinst'){
+            $obj = new adminController();
+            $response = $obj->obtenerDireccionCalleController($_POST['keyup']); 
+            echo json_encode($response);
+        }
 
     }
 

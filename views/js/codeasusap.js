@@ -966,7 +966,7 @@ function validarUsuario(){
 		.then(data=>{
 			console.log(data)
 			if(data["res"] == "success"){
-				alert("USUARIO REGISTRADO");
+				//alert("USUARIO REGISTRADO");
 				swal({
 					title: "¡OK!",
 					text: "¡Usuario ha sido creado correctamente!",
@@ -1268,3 +1268,40 @@ function instantUPDuser(){
 	}
 }
 instantUPDuser();
+
+function obtenerListDirecciones(event){
+	//console.log("key pressed ",  String.fromCharCode(event.keyCode));
+	let codigo = event.which || event.keyCode;
+	let pressCode = "";
+	/*
+    //console.log("Presionada: " + codigo);     
+	if(codigo === 13){
+      console.log("Tecla ENTER");
+	}	
+	*/
+	if(codigo === 192){		
+		pressCode = "Ñ";
+	}
+    if(codigo >= 65 && codigo <= 90){
+	  //console.log(String.fromCharCode(codigo));
+	  pressCode = String.fromCharCode(codigo);
+	}	
+
+	data = new FormData();
+	data.append('OPTION','DIRECinst')
+	data.append('keyup',pressCode)
+	fetch("../ajax/gestionAS.php",{
+		method:"post",
+		body:data
+	}).then(res=>res.json())
+	.then(data=>{
+		//console.log(data)
+		let htmlSelectDirec = ``;
+		data.forEach(element=>{
+			htmlSelectDirec +=`<option>${element['nombre']}</option>`;
+		})
+		let selectDirecc = document.querySelector("#direccionAsoc");
+		selectDirecc.innerHTML = htmlSelectDirec;	
+	})
+
+}

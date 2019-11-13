@@ -89,6 +89,18 @@
 		return true;
 	}
 
+	public function obtenerDireccionCalleController($keyPress){
+		$query = "SELECT nombre FROM direccion_calle WHERE nombre LIKE '%$keyPress%'";
+		$objRes = mainModel::execute_single_query($query);
+		if($objRes->rowCount()>=1){
+			$arrDirecc = [];
+			while($direcciones = $objRes->fetch(PDO::FETCH_ASSOC)){
+				$arrDirec[] = $direcciones;
+			}
+		} 
+		return $arrDirec;
+	}
+
 	/*================================GENERADOR DE SUMINISTRO============================================*/
 		public function pruebaController($msj){
 			return $msj;

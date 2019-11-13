@@ -1,3 +1,15 @@
+<?php
+    require_once "./controllers/adminController.php";
+    $obj = new adminController();
+    $arrDirec = $obj->obtenerDireccionCalleController("");                        
+    //var_dump($arrDirec);
+    $htmlDirecciones = "";
+    foreach ($arrDirec as $direccion) {
+        # code...
+        $htmlDirecciones .= "<option>{$direccion['nombre']}</option>";
+    }    
+?>
+
 <div class="container-fluid">
 	<div class="page-header">
 	  <h1 class="text-titles"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Nuevo Persona <small>Registration</small></h1>
@@ -28,11 +40,8 @@
 										<div class="col-md-4 form-group row label-floating">
 											<label for="direccionAsoc" class="col-md-4 control-label">DIRECIÓN</label>
 											<div class="col-md-12">
-												<select class="form-control" id="direccionAsoc" name="direccionAsoc" >
-													<option>Jr. los chancas</option>
-													<option>Jr. leoncio</option>
-													<option>Jr. mariano melgar</option>
-													<option>Av. chasqui</option>
+												<select class="form-control" id="direccionAsoc" name="direccionAsoc" onkeydown="obtenerListDirecciones(event)">
+                                                    <?=$htmlDirecciones?>
 												</select>
 											</div>	                                            
 										</div>                                        
@@ -103,19 +112,7 @@
 							</div>
 						</div>
 
-                        <?php
-
-                            //require_once "./controllers/adminController.php";
-                            //$suministro = new adminController();
-                           /* $result = $suministro->guardarUsuarioController();                        
-                            if(isset($result)){
-                                if($result){
-                                    echo "sucess";
-                                }else{
-                                    echo "No success :C";
-                                }
-                            }*/
-                        ?>
+                        <!--AQUÍ HABIA PHP -->                        
 					</div>
 				</div>
 			</div>
@@ -223,10 +220,7 @@
                                                         <label for="listaDireccionSumi" class="col-md-4 control-label">DIRECIÓN</label>
                                                         <div class="col-md-12">
                                                             <select class="form-control" id="listaDireccionSumi" name="direccionSumi" >
-                                                                <option>Jr. los chancas</option>
-                                                                <option>Jr. leoncio</option>
-                                                                <option>Jr. mariano melgar</option>
-                                                                <option>Av. chasqui</option>
+                                                                <?=$htmlDirecciones;?>
                                                             </select>
                                                         </div>	                                            
                                                     </div> 

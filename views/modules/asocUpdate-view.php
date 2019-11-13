@@ -8,7 +8,9 @@
         $dataReg = $objUser->dataAsociadoYsuministorUPD($dniUsuer); 
         $dataUser = $dataReg['dataAsoc'];
         $dataSumi = $dataReg['dataSumi'];
-        //var_dump($dataSumi[0]);
+
+        $arrDirec = $objUser->obtenerDireccionCalleController("");
+        //var_dump($$arrDirec );
 
     }else{
         //en caso de que no exista el POST  
@@ -145,9 +147,12 @@
                                 <td>
                                     <select name="direccion<?=$cont?>" id="direccion<?=$cont?>">
                                         <option><?php echo $suministro['direccion']; ?></option>
-                                        <option>AV. LIBERTADORES</option>
-                                        <option>AV. otro 1</option>
-                                        <option>AV. otro 2</option>
+                                        <?php 
+                                        foreach ($arrDirec as $direccion) {
+                                            # code...
+                                            echo "<option>{$direccion['nombre']}</option>";
+                                        }
+                                        ?>
                                     </select>                                    
                                 </td>
                                 <td contenteditable="true" name="pasaje<?=$cont?>" id="pasaje<?=$cont?>"><?php echo $suministro['pasaje']; ?></td>
