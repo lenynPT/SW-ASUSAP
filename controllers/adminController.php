@@ -883,7 +883,7 @@
 
             $datos=$conexion->query("
         SELECT SQL_CALC_FOUND_ROWS * FROM factura_servicio WHERE idfactura_servicio!='1'
-         ORDER BY idfactura_servicio DESC LIMIT $inicio,$registros
+         ORDER BY fecha DESC LIMIT $inicio,$registros
         ");
 
             $datos=$datos->fetchAll();

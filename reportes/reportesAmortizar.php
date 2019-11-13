@@ -109,8 +109,8 @@ $pdf->SetFont('Arial','B',12);
 $pdf->Cell(10,6,'#',1,0,'C',1);
 $pdf->Cell(30,6,'N. RECIBO',1,0,'C',1);
 $pdf->Cell(30,6,'SUMINISTRO',1,0,'C',1);
-$pdf->Cell(50,6,'A NOMBRE COMPLETO',1,0,'C',1);
-$pdf->Cell(50,6,'FECHA',1,0,'C',1);
+$pdf->Cell(60,6,'A NOMBRE COMPLETO',1,0,'C',1);
+$pdf->Cell(40,6,'FECHA',1,0,'C',1);
 $pdf->Cell(20,6,'MONTO',1,1,'C',1);
 
 
@@ -133,8 +133,8 @@ while($row = $result->fetch()) {
     $pdf->Cell(10,6,$o++,1,0,'C');
     $pdf->Cell(30,6,utf8_decode($row['idfactura_servicio']),1,0,'C');
     $pdf->Cell(30,6,utf8_decode($row['suministro_cod_suministro']),1,0,'C');
-    $pdf->Cell(50,6,$row['a_nombre'],1,0,'C');
-    $pdf->Cell(50,6,$row['fecha'],1,0,'C');
+    $pdf->Cell(60,6,utf8_decode($row['a_nombre']),1,0,'C');
+    $pdf->Cell(40,6,$row['fecha'],1,0,'C');
     $pdf->Cell(20,6,utf8_decode($row['total_pago']),1,1,'C');
     $y=$y+$row['total_pago'];
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
