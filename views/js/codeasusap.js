@@ -1060,31 +1060,211 @@ function instantSuministro(){
 
 
 //ACTUALIZAR SUMINISTROS
-function btnUPDsum($id_cod, $contID){
+function btnUPDsum($id_cod, $contID,$deuda){
+	
 	console.log("CLICK BTN ACT", $id_cod);
-	$select = "#SUMI"+$id_cod;
-	$direccion = document.querySelector("#direccion"+$contID);	
-	$pasaje = document.querySelector("#pasaje"+$contID);	
+	
+	$select = "#SUMI"+$id_cod; //codiog de los registros. ID del tr
+	$direccion = document.querySelector("#direccion"+$contID).value;	
+	$pasaje = document.querySelector("#pasaje"+$contID).innerHTML;	
 	$nr_casa = document.querySelector("#nr_casa"+$contID);	
-	$estado = document.querySelector("#estado"+$contID);	
-	$medidor = document.querySelector("#medidor"+$contID);	
-	$categoria = document.querySelector("#categoria"+$contID);	
-	console.log($direccion.value);
-	console.log($pasaje.innerHTML);
-	console.log($nr_casa.innerHTML);
-	console.log($estado.value);
-	console.log($medidor.value);
-	console.log($categoria.value);
-	/*
-	$element = document.querySelector($select);
-	//console.log($element);
-	$td = $element.querySelectorAll("td");
-	console.log($td)
-	val = 0
-	$td.forEach(element=>{
-		
-			console.log(element.innerHTML);
+	$estado = document.querySelector("#estado"+$contID).value;	
+	$medidor = document.querySelector("#medidor"+$contID).value;	
+	$categoria = document.querySelector("#categoria"+$contID).value;	
+	$nr_casa_v = $nr_casa.innerHTML;
+	
+	$deuda = $deuda ? true:false;
+	//console.log(typeof($deuda),$deuda)
 
+	
+	if($nr_casa_v < 0 && $nr_casa_v != ""){
+		$nr_casa.style.background = "red"
+		return false;
+	}else{
+		$nr_casa.style.background = ""
+	}
+
+	//preguntar si de verdad quiere realizar los cambios
+
+	swal({
+		title: "¿?",
+		text: "¿REALIZAR ACTUALIZACIÓN?",
+		type: "info",
+		cancelButtonColor: '#F44336',
+		cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> CANCELAR',
+		showCancelButton: true,
+		confirmButtonColor: '#03A9F4',		  		
+		confirmButtonText: '<i class="zmdi zmdi-run"></i> ACTUALIZAR'
+	}).then(()=>{
+		//le dió acceptar 
+		//fetch actualzar
+		data = new FormData();
+		data.append('OPTION', 'UPDsuministro');
+		data.append('cod_sumi', $id_cod);
+		data.append('direccion', $direccion);
+		data.append('pasaje', $pasaje);
+		data.append('nr_casa', $nr_casa_v);
+		data.append('estado', $estado);
+		data.append('medidor', $medidor);
+		data.append('categoria', $categoria);
+		
+		fetch('../ajax/gestionAS.php',{
+			method:"post",
+			body:data		
+		}).then(res => res.json())
+		.then(data =>{
+			console.log(data);
+			//mensaje de ok 
+			swal({
+				title: "!OK¡",
+				text: "¡¡ACTUALIZADO!!",
+				type: "success",
+				showCancelButton: true,
+				showConfirmButton: false,
+				cancelButtonColor: "#03a9f4",
+				cancelButtonText:'cerrar'
+			})
+			//indicador de que el registro ya se actualizo una vez
+			document.querySelector($select).style.background = "rgba(255, 255, 0,.2)";
+		})
+
+	},()=>{
+		//le dio cerrar
+		console.log("NO SE REALIZÓ LA ACTUALIZACIÓN")
 	})
-	*/
+
+
+	return false;
+
 }
+
+function actualizarUsuario(){
+	let el = document.querySelector("#UPDformUser");
+	if(el){
+
+		//acceder a los datos
+		$dni= document.querySelector("#dniAsoc").value;
+		$nombre = document.querySelector("#nombreAsoc").value;
+		$apellido = document.querySelector("#apellidoAsoc").value;
+		$telefono = document.querySelector("#telefonoAsoc").value;
+
+		//validando información
+		if($nombre == ""){
+			alert("El nombre está vacio")
+			return false;
+		}
+
+		if(!isNaN($nombre)){
+			alert("EL NOMBRE O APELLIDO NO DEBEN TENER NÚMEROS")
+			document.querySelector("#nombreAsocVal").classList.add("has-error");
+			return false;
+		}
+
+		if($apellido != "" && !isNaN($apellido)){
+			alert("EL NOMBRE O APELLIDO NO DEBEN TENER NÚMEROS")
+			return false;
+		}
+		
+		
+		if($telefono.length != 9 && $telefono != ""){
+			alert("EL NUMERO NO ES CORRECTO");
+			return false;
+		}
+
+
+		console.log($dni,$nombre,$apellido,$telefono)
+
+		//preguntar si quiere realizar la actualizacion
+		swal({
+			title: "¿ACTUALIZAR?",
+			text: "",
+			type: "info",
+			cancelButtonColor: '#F44336',
+			cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> CANCELAR',
+			showCancelButton: true,
+			confirmButtonColor: '#03A9F4',		  		
+			confirmButtonText: '<i class="zmdi zmdi-run"></i> ACTUALIZAR'
+		}).then(()=>{
+			//le dió acceptar 
+			//enviar un fetch
+			data = new FormData();
+			data.append('OPTION','UPDuser')
+			data.append('dni',$dni)
+			data.append('nombre',$nombre)
+			data.append('apellido',$apellido)
+			data.append('telefono',$telefono)
+	
+			fetch('../ajax/gestionAS.php',{
+				method:"post",
+				body:data		
+			}).then(res => res.json())
+			.then(data=>{
+				console.log(data);
+				if(data){
+					//mensaje de ok 
+					swal({
+						title: "!OK¡",
+						text: "¡¡ACTUALIZADO!!",
+						type: "success",						
+						showConfirmButton: true,
+						confirmButtonColor: "#03a9f4",
+						confirmButtonText:'cerrar'
+					}).then(()=>{
+						location.reload();
+					})
+
+				}
+			})
+		
+		})
+
+
+		
+		console.log("actualizarUsuario");
+	}
+}
+
+function instantUPDuser(){
+	let el = document.querySelector("#UPDformUser");
+	if(el){
+
+		$initApellido = document.querySelector("#apellidoAsoc").value;
+		$initNombre = document.querySelector("#nombreAsoc").value;
+
+		//validar nombre
+		document.querySelector("#nombreAsoc").addEventListener("keyup",function(){										
+			if(!isNaN(this.value)){				
+				document.querySelector("#nombreAsoc").style.background = "rgba(255,0,0,.03)";
+			}else{
+				document.querySelector("#nombreAsoc").style.background = "";
+
+			}
+		});
+		document.querySelector("#nombreAsoc").addEventListener("blur", function(){		
+			if(this.value == ""){
+				this.value = $initNombre;				
+				alert("NOMBRE NO DEBE ESTAR VACIO");
+			}	
+		})	
+
+		//validar instant apellido
+		document.querySelector("#apellidoAsoc").addEventListener("keyup",function(){	
+			this.style.background = "";
+			if( $initApellido == ""){
+				alert("NO HAY UN APELLIDO");
+				this.value = "";
+			}			
+		})	
+		document.querySelector("#apellidoAsoc").addEventListener("blur",function(){	
+			this.style.background = "";
+			if( $initApellido != "" && this.value == ""){
+				alert("EL APELLIDO NO DEBE ESTAR VACIO");
+				this.value = $initApellido;
+				this.style.background = "rgba(255,0,0,.03)";
+				this.classList.add("has-error");
+			}			
+		})		
+
+	}
+}
+instantUPDuser();

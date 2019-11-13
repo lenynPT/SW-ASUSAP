@@ -46,6 +46,20 @@
             $response = $obj->guardarUsuarioController();            
             echo json_encode($response);
         }
+
+        elseif($_POST['OPTION'] == "UPDsuministro"){
+            $obj = new adminController();
+            $response = $obj->actualizarSuministroController($_POST);            
+            echo json_encode($response);
+        }
+
+        elseif($_POST['OPTION'] == 'UPDuser'){
+            $obj = new adminController();
+            $response = $obj->actualizarUsuarioController($_POST);   
+            echo json_encode($response);
+        }
+
+
     }
 
     else{

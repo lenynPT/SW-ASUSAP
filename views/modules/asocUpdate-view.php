@@ -46,7 +46,7 @@
 						<div class="row">
 
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
-							    <form action="" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return UPDvalidarUsuario()" id="UPDformUser">
+							    <form action="" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return false" id="UPDformUser">
                                 
                                     <div class="col-xs-12 col-sm-12">                                        
                                         <div id="nombreAsocVal" class="col-xs-6 col-md-6 form-group label-floating ">
@@ -75,7 +75,7 @@
                                     </div>
 
 								    <p class="text-center">
-								    	<button type="submit" class="btn btn-success btn-raised btn-lg" name="updateAsoc" id="updateAsoc"><i class="zmdi zmdi-floppy"></i> ACTUALIZAR </button>
+								    	<button type="submit" class="btn btn-success btn-raised btn-lg" name="updateAsoc" id="updateAsoc" onclick="actualizarUsuario()"><i class="zmdi zmdi-floppy"></i> ACTUALIZAR </button>
 								    </p>
 							    </form>
 							</div>
@@ -131,7 +131,7 @@
                             $cont = 0;
                             $con_deudas=false;
                             foreach ($dataSumi as $suministro) {
-                                # code...   
+                                # code...                                   
                                 $con_deudas = $suministro['contador_deuda']>=1?true:false;    
                                 $styleDeuda = "background:rgba(100,240,190,.1)";                 
                                 if ($con_deudas) $styleDeuda = "background:rgba(100,0,0,.1)";                                    
@@ -139,7 +139,9 @@
                             <!--SUMINISTROS -->
                             <tr id="SUMI<?=$suministro['cod_suministro']?>">
                                 <td><?php echo ++$cont; ?></td>
-                                <td style=<?=$styleDeuda?>><?php echo $suministro['cod_suministro']; ?></td>
+                                <td style=<?=$styleDeuda?>> 
+                                    <?php echo $suministro['cod_suministro']; ?>
+                                </td>
                                 <td>
                                     <select name="direccion<?=$cont?>" id="direccion<?=$cont?>">
                                         <option><?php echo $suministro['direccion']; ?></option>
@@ -205,7 +207,11 @@
                                         ?>
                                     </select>
                                 </td>
-                                <td><a href="#!" class="btn btn-success btn-raised btn-xs" onclick="btnUPDsum('<?=$suministro['cod_suministro']?>',<?=$cont?>)" ><i class="zmdi zmdi-refresh"></i></a></td>                                
+                                <td>
+                                    <a href="#!" class="btn btn-success btn-raised btn-xs" onclick="btnUPDsum('<?=$suministro['cod_suministro']?>',<?=$cont?>,'<?=$con_deudas?>')" >
+                                        <i class="zmdi zmdi-refresh"></i>
+                                    </a>
+                                </td>                                
                             </tr>	
                             <?php
                             }

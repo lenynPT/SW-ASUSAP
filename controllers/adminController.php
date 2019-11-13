@@ -69,6 +69,26 @@
 		return ['dataAsoc'=>$dataAsoc,'dataSumi'=>$dataSumi];
 	}
 
+	public function actualizarSuministroController($data){
+		$query = "UPDATE suministro SET direccion='{$_POST['direccion']}', pasaje='{$_POST['pasaje']}', casa_nro='{$_POST['nr_casa']}', estado_corte={$_POST['estado']}, tiene_medidor={$_POST['medidor']}, categoria_suministro='{$_POST['categoria']}' WHERE suministro.cod_suministro='{$_POST['cod_sumi']}'";				
+		$res = mainModel::execute_single_query($query);
+		if($res->rowCount()>=1){
+			return true;
+		}
+		return false;
+	}
+
+	public function actualizarUsuarioController($data){
+		$query = "	UPDATE asociado 
+					SET nombre='{$_POST['nombre']}', apellido='{$_POST['apellido']}', telefono='{$_POST['telefono']}' 
+					WHERE asociado.dni='{$_POST['dni']}'";				
+		$res = mainModel::execute_single_query($query);
+		if($res->rowCount()>=1){
+			return true;
+		}		
+		return true;
+	}
+
 	/*================================GENERADOR DE SUMINISTRO============================================*/
 		public function pruebaController($msj){
 			return $msj;
