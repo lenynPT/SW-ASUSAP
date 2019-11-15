@@ -45,13 +45,13 @@
 												</select>
 											</div>	                                            
 										</div>                                        
-                                        <div id="direccionPsjAsocVal" class="col-md-4 form-group label-floating ">
-                                            <label class="control-label">Pasaje</label>
-                                            <input class="form-control" type="text" name="direccionPsjAsoc" id="direccionPsjAsoc">
-                                        </div>
                                         <div id="direccionNroAsocVal" class="col-md-4 form-group label-floating ">
                                             <label class="control-label">Nro Dirección </label>
                                             <input class="form-control" type="number" name="direccionNroAsoc" id="direccionNroAsoc">
+                                        </div>
+                                        <div id="direccionPsjAsocVal" class="col-md-4 form-group label-floating ">
+                                            <!--<label class="control-label">Pasaje</label>-->
+                                            <input class="form-control" type="hidden" name="direccionPsjAsoc" id="direccionPsjAsoc">
                                         </div>
                                     </div>
                                     
