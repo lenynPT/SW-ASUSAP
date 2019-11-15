@@ -224,18 +224,10 @@
                                                             </select>
                                                         </div>	                                            
                                                     </div> 
-                                                    <div class="col-md-8 form-group label-floating ">
-                                                        <label class="control-label">Pasaje</label>
-                                                        <input type="text" class="form-control"  id="direccionPsjSumi" name="direccionPsjSumi"> 
-                                                    </div>
-                                                    <div class="col-md-4 form-group label-floating ">
+                                                    <div class="col-md-6 form-group label-floating ">
                                                         <label class="control-label">Nro Dirección </label>
                                                         <input type="number" class="form-control" id="direccionNroSumi" name="direccionNroSumi">
                                                     </div>                                                            
-
-                                                </div>                                                        
-                                                
-                                                <div class="col-md-12">
                                                     <div class="col-md-6 form-group label-floating">
                                                         <label for="medidorSumi" class="col-md-4 control-label">MEDIDOR</label>
                                                         <div class="col-md-12">
@@ -245,14 +237,15 @@
                                                             </select>
                                                         </div>											
                                                     </div>
-                                                    <div class="col-md-6 form-group label-floating">
-                                                        <label for="corteSumi" class="col-md-4 control-label">CORTE</label>
-                                                        <div class="col-md-12">
-                                                            <select class="form-control" id="corteSumi" name="corteSumi">
-                                                                <option value="0">No</option>                                                                												
-                                                            </select>
-                                                        </div>											
+
+                                                </div>                                                        
+                                                
+                                                <div class="col-md-12">
+                                                    <div class="col-md-8 form-group label-floating ">
+                                                        <!--<label class="control-label">Pasaje</label>-->
+                                                        <input type="hidden" class="form-control"  id="direccionPsjSumi" name="direccionPsjSumi" value="NINGUNO"> 
                                                     </div>
+                                                    
                                                     <!--Validar en el ajax para procesar la petición-->
                                                     <input type="hidden" name="insertSumin" value="true">
                                                 </div>
