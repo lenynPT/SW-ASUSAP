@@ -35,7 +35,7 @@ class PDF extends FPDF
 }
 
     //pdf
-    $pdf = new PDF('P','mm','A5');
+    $pdf = new PDF('P','mm',Array(148, 218.01));
 
     if(!$arrData['res']){
         $pdf->AddPage();    
@@ -53,9 +53,9 @@ class PDF extends FPDF
 
         while($element = $dataQuery->fetch(PDO::FETCH_ASSOC)){   
 
-            $esta_cancelado = $element['esta_cancelado']?'RECIBO CANCELADO':'FALTA PAGAR RECIBO';                    
-            //verifica que sea una institución para solo imprimir el nombre        
-            $_POST['urlimg'] = $element['estado_corte']?'img/corte.jpg':'img/reciboAgua.jpg';
+            $esta_cancelado = $element['esta_cancelado']?'RECIBO CANCELADO':'FALTA CANCELAR';                    
+            //verifica que sea una institución para solo imprimir el nombre            
+            $_POST['urlimg'] = $element['estado_corte'] || $element['contador_deuda']>=2?'img/corte.jpg':'img/reciboAgua.jpg';
 
             //recuperar los meses de las deudas anteriores
             $deudasMes = $dataObj->consultaDeudasMes($element['cod_suministro']);
@@ -63,7 +63,10 @@ class PDF extends FPDF
             $medidor = $element['tiene_medidor']?'Si':'No';    
             $cortado = $element['estado_corte']?'Si':'No';
             $nombre_completo = $element['categoria_suministro']=='Estatal'?utf8_decode($element['nombre']):utf8_decode($element['apellido']." ".$element['nombre']); 
-            $msjCorte = ($element['contador_deuda']>=3)?'EN CORTE':'no está en corte';
+                        
+            //MESAJE DE CORTE O NO CORTE
+            $msjCorte = ($element['contador_deuda']>=2)?'PRÓXIMO MES EN CORTE!!':'NO ESTÁ EN CORTE';
+            $msjCorte = ($element['contador_deuda']>=3)?'EN CORTE':$msjCorte;
 
             //Operacion de importe total
             $lectura_ant="#";
@@ -88,81 +91,115 @@ class PDF extends FPDF
             $pdf->SetFont('Arial','B',7);  
 
             //PRIMERA COLUMNA - INFORMACIÓN GENERAL ****************************************************
-            $pdf->SetXY(21,35);
+            $pdf->SetXY(24,35.5);
             $pdf->Cell(50,5,$nombre_completo ,0,0,'');  //nombre de tituar
-            $pdf->SetXY(24,40.5);
+            $pdf->SetXY(27,40.8);
             $pdf->Cell(50,5,$element['direccion'],0,0,'');    //direccion del titular 
-            $pdf->SetXY(8,43);
+            $pdf->SetXY(9,43.5);
             $pdf->Cell(100,10,utf8_decode("SAN JERÓNIMO"),0,0,''); //distrito
-            $pdf->SetXY(11,48.3);
+            $pdf->SetXY(11,48.8);
             $pdf->Cell(100,10,$element['categoria_suministro'],0,0,''); //categoria del suministro
 
             //SEGUNDA COLUMNA - INFORMACIÓN DE PAGO ****************************************************
-            $pdf->SetXY(118,35);
+            $pdf->SetXY(119,35.5);
             $pdf->Cell(50,5,"{$mesLit} del {$anio}",0,0,''); //mes facturado 
-            $pdf->SetXY(129,40.3);
-            $pdf->Cell(50,5,"mes",0,0,''); //frecuencia de facturación
-            $pdf->SetXY(121,45.5);
+            $pdf->SetXY(130.5,40.7);
+            $pdf->Cell(50,5,"MENSUAL",0,0,''); //frecuencia de facturación
+            $pdf->SetXY(121.8,46);
             $pdf->Cell(50,5,$element['fecha_emision'],0,0,''); //fecha emision
-            $pdf->SetXY(125,50.7);
+            $pdf->SetXY(127,51.2);
             $pdf->Cell(50,5,$element['fecha_vencimiento'],0,0,''); //fecha vencimiento
 
 
             //REGISTROS DEL MEDIDOR ****************************************************
-            $pdf->SetXY(7,62);
-            $pdf->Cell(100,10,$medidor,0,0,''); // Tiene medidor??
+            $pdf->SetXY(0,63);
+            $pdf->Cell(18,9,$medidor,0,0,'C'); // Tiene medidor??
             $pdf->SetXY(18,63);
-            $pdf->Cell(19,8,$lectura_ant." m3",1,0,'C'); // lectura anterior
+            $pdf->Cell(19,9,$lectura_ant." m3",0,0,'C'); // lectura anterior
             $pdf->SetXY(37,63);
-            $pdf->Cell(19,8,$lectura_act." m3",1,0,'C'); // lectura Actual
+            $pdf->Cell(19,9,$lectura_act." m3",0,0,'C'); // lectura Actual
             $pdf->SetXY(56,63);
-            $pdf->Cell(19,8,$consumo_dif." m3",1,0,'C'); // consumo
+            $pdf->Cell(19,9,$consumo_dif." m3",0,0,'C'); // consumo
 
 
             //INFORMACIÓN COMPLEMENTARIA ****************************************************              
-            $pdf->SetXY(10,75);
-            $pdf->Cell(100,10,$esta_cancelado,0,0,''); // Está cancelado el recibo ??
             
             $pdf->SetXY(10,82);
             $pdf->Cell(100,5,"Cantidad deudas: {$element['contador_deuda']}",0,0,'');   
             
+            $pdf->SetXY(10,115);
+            $pdf->Cell(46,10,$esta_cancelado,1,0,'C'); // Está cancelado el recibo ??
+
             //Imprime los meses endeudados
             $pdf->SetXY(10,87);   
-            $total_suma_deudas=0;     
+            $total_suma_deudas=0;  
+            $enum = 0;   
             foreach ($deudasMes as $value) {
                 # code...
+                $enum++;
                 $total_suma_deudas += $value['monto_pagar'];
                 $nombreMes =  $dataObj->obtenerNombrefecha($value['anio'],$value['mes']);
                 $pdf->SetX(10);
-                $pdf->Cell(40,3,$nombreMes['r_mes']." del ".$nombreMes['r_anio']."->".$value['monto_pagar'],1,0,'');
+                $pdf->Cell(46,4,$enum.".- ".$nombreMes['r_mes']." del ".$nombreMes['r_anio']." -> S/. ".$value['monto_pagar'],1,0,'');
                 $pdf->ln();
             }  
             
             //DETALLE DE LA FACTURACIÓN ****************************************************
             if($medidor=="Si"){
-                modoDePago($pdf,$element,$consumo_dif);
+                $subT = modoDePago($pdf,$element,$consumo_dif);
+                //nueva seccion igv y subtotal***************************************************
+                //Sub total
+                $pdf->SetXY(130,103.5);
+                $pdf->Cell(100,10,"/S. ".$subT['subt'],0,0,'');
+                //IGV Total
+                $pdf->SetXY(130,107);
+                $pdf->Cell(100,10,"/S. ".$subT['igvt'],0,0,'');
             }else{
                 //primera fila de 
                 $pdf->SetXY(85,64);
                 $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
                 $pdf->SetXY(130,64);
-                $pdf->Cell(100,10,"$/ 3.56",0,0,'');
+                $pdf->Cell(100,10,"$/. 3.56",0,0,'');
                 //segunda fila de 
                 $pdf->SetXY(85,67);
                 $pdf->Cell(100,10,"Por IGV (18%)",0,0,'');
                 $pdf->SetXY(130,67);
-                $pdf->Cell(100,10,"$/ 0.64",0,0,'');
+                $pdf->Cell(100,10,"$/. 0.64",0,0,'');
+                //nueva seccion igv y subtotal***************************************************
+                //Sub total
+                $pdf->SetXY(130,103.5);
+                $pdf->Cell(100,10,"/S. 3.56",0,0,'');
+                //IGV Total
+                $pdf->SetXY(130,107);
+                $pdf->Cell(100,10,"/S. 0.64",0,0,'');
             }
-            $pdf->SetXY(85,130);
-            $pdf->Cell(100,10,"Deuda mes actual",0,0,'');
-            $pdf->SetXY(118,130);
-            $pdf->Cell(11,8,"S/ ".$element['monto_pagar'],1,0,'C');
-            $pdf->SetXY(118,139);
-            $pdf->Cell(100,10,"S/ ".$total_suma_deudas,0,0,'');
+            $pdf->SetXY(74.3,111);
+            $pdf->Cell(100,10,"Deuda Mes Actual",0,0,'');
+            $pdf->SetXY(125,111);
+            $pdf->Cell(20,10,"S/. ".$element['monto_pagar'],0,0,'C');
+
+            $pdf->SetFont('Arial','B',10);  
+            $pdf->SetXY(118,140.5);
+            $pdf->Cell(100,10,"S/. ".$total_suma_deudas,0,0,'');
 
             //MENSAJE DE CORTE
             $pdf->SetXY(10,150);
             $pdf->Cell(0,10,utf8_decode($msjCorte),0,0,'');
+
+            //SECCIÓN RECORTAR -**********************************
+            $pdf->SetFont('Arial','B',7); 
+            $pdf->SetXY(21.5, 182.5);
+            $pdf->Cell(100,10,$nombre_completo ,0,0,'');
+            
+            $pdf->SetXY(118, 182.5);
+            $pdf->Cell(100,10,"{$mesLit} del {$anio}",0,0,'');
+
+            $pdf->SetXY(24, 188);
+            $pdf->Cell(100,10,$element['direccion'] ,0,0,'');
+            
+            $pdf->SetFont('Arial','B',10); 
+            $pdf->SetXY(117.2, 187.5);
+            $pdf->Cell(100,10,"S/. ".$total_suma_deudas,0,0,'');
 
         }        
     }
@@ -311,5 +348,7 @@ class PDF extends FPDF
                 # code...
                 break;
         }
+        $subT = ($val1+$val2+$val3);
+        return ['subt'=>$subT,'igvt'=>$resIGV];
         
     }

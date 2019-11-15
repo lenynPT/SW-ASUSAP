@@ -825,13 +825,16 @@ function instantformUser(){
 
 		nombre.addEventListener("keyup",function(){
 			let patt = new RegExp("[0-9]");
-			let res = patt.test(nombre.value);			
-			if(res){
-				//console.log("es numero")
-				nombre_error.classList.add("has-error");
-				alert("LOS NOMBRES NO DEBEN LLEVAR NÚMEROS")
-				nombre.value = "";
-			}
+			let res = patt.test(nombre.value);	
+			console.log(categoria.value);
+			if(categoria.value != "Estatal"){
+				if(res){
+					//console.log("es numero")
+					nombre_error.classList.add("has-error");
+					alert("LOS NOMBRES NO DEBEN LLEVAR NÚMEROS")
+					nombre.value = "";
+				}
+			}		
 			
 		})
 
@@ -920,7 +923,7 @@ function validarUsuario(){
 	//console.log(direccion, pasaje, nro, categoria, medidor, nombre, apellido, dni, telefono);
 
 	if(direccionv != "" || categoriav != "" || medidorv != "" || nombrev != ""|| dniv != ""){
-	
+			
 		if(categoriav == "Estatal"){
 			if(apellidov != ""){
 				alert("NO HAY APELLIDO PARA CATEGORÍA ESTATAL");
@@ -930,6 +933,14 @@ function validarUsuario(){
 			}
 		}else{
 			//categoriav != "Estatal"
+			let patt = new RegExp("[0-9]");
+			let res = patt.test(nombrev);
+			if(res){
+				alert("EL NOMBRE CONTIENE NÚMEROS!!")
+				nombre.value = "";
+				return false;
+			}
+
 			if(apellidov == ""){
 				alert("APELLIDO ESTÁ VACIO!!")
 				return false;

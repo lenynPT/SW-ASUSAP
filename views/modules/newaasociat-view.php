@@ -95,7 +95,7 @@
 
                                         <div id="dniAsocVal" class="col-xs-12 col-md-6 form-group label-floating">
                                           <label class="control-label">DNI</label>
-                                          <input class="form-control" type="number" name="dniAsoc" id="dniAsoc" min="10000000" max="99999999999" required>
+                                          <input class="form-control" type="number" name="dniAsoc" id="dniAsoc" min="100" max="99999999999" required>
                                         </div>
 
                                         <div id="telefonoAsocVal" class="col-xs-12 col-md-6 form-group label-floating">
