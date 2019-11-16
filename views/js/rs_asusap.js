@@ -329,3 +329,12 @@ function ImprimerRC(){
    // console.log("total de paginas"+y+"  LISTA: "+v)
     //console.log("DATOS"+p)
 }
+//------------------------------------REPORTE DE ASOCIADOS-------------------------------------------------
+function ImpAso() {
+
+    var start_date = document.querySelector("#direccionAsoc").value;
+
+    window.open(`../reportes/reporteAsociados.php?ADIR=${start_date}`,'_blank')
+    console.log("total de paginas"+start_date)
+    
+}

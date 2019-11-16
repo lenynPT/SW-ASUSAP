@@ -336,6 +336,8 @@ function cargar(){
     htmlSumi=`<input type="submit"  onclick="impA();" class="btn btn-info btn-raised btn-xs" value="IMPRIMIR AS">`
     $("#btnimp").html(htmlSumi);
 }
+
+//-----------------------------------REPORTES----------------------------------------
 function impA() {
     let mpagA=document.getElementById("montPa").value;
     console.log("impsss"+mpagA)
@@ -343,6 +345,10 @@ function impA() {
 
 
 }
+
+
+
+
 
 
 
