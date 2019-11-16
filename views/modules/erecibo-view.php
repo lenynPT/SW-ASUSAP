@@ -42,7 +42,7 @@
                 <select name="fecha_mes" id="fecha_mes" class="form-control fechas-meses">
                     <option value="<?php echo $FechaER;?>"><?php echo $FechLiteral["r_mes"];?></option>
                     <?php 
-                        //Gnerea los nombres de los meses
+                      /*  //Gnerea los nombres de los meses
                         for ($i_mes=1; $i_mes <= $FechaER; $i_mes++) { 
                             # code...
                             if($FechaER == $i_mes)continue;
@@ -50,15 +50,13 @@
                             $L_mes = $fechas->obtenerNombrefecha(123,$i_mes);
                             echo "<option value='{$i_mes}'>{$L_mes['r_mes']}</option>";
                         }
+                        */
                     ?>
                 </select>              
             </div>
             <div class="col-xs-12 col-md-3 form-group ">
                 <select name="fecha_anio" id="fecha_anio" class="form-control">
-                    <option value="<?php echo $FechLiteral["r_anio"];?>"><?php echo $FechLiteral["r_anio"];?></option>
-                    <option value="<?php echo $FechLiteral["r_anio"]-1;?>"><?php echo $FechLiteral["r_anio"]-1;?></option>
-                    <option value="<?php echo $FechLiteral["r_anio"]-2;?>"><?php echo $FechLiteral["r_anio"]-2;?></option>
-                    <option value="<?php echo $FechLiteral["r_anio"]-3;?>"><?php echo $FechLiteral["r_anio"]-3;?></option>                    
+                    <option value="<?php echo $FechLiteral["r_anio"];?>"><?php echo $FechLiteral["r_anio"];?></option>                                       
                 </select>              
             </div>
         </div>

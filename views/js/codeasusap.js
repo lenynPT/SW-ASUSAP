@@ -535,7 +535,7 @@ function generarmeses($selectmese, $selectanio){
 		})
 	}
 }
-generarmeses(".fechas-meses","#fecha_anio");
+//generarmeses(".fechas-meses","#fecha_anio");
 generarmeses("#fecha_mesXsumi","#fecha_anioXsumi");
 
 function GRbuscarXdireccion(){
@@ -547,6 +547,7 @@ function GRbuscarXdireccion(){
 		$option_mes = document.querySelector('#fecha_mes');
 		
 		//Linpiando tabla y buscador
+		/*
 		{
 			$option_anio.addEventListener('click',()=>{
 				el.value = '';
@@ -557,13 +558,11 @@ function GRbuscarXdireccion(){
 				document.querySelector("#resTablaRD").innerHTML = '';
 			})
 		}
+		*/
 		
 		actualizarTblGRDireccion("",$option_anio.value,$option_mes.value);
 		console.log(el);		
 		el.addEventListener("keyup",function(){
-			//console.log("keyup",this.value);
-			console.log($option_anio.value);
-			console.log($option_mes.value);
 
 			let nombreDireccion = this.value;
 
@@ -826,13 +825,16 @@ function instantformUser(){
 
 		nombre.addEventListener("keyup",function(){
 			let patt = new RegExp("[0-9]");
-			let res = patt.test(nombre.value);			
-			if(res){
-				//console.log("es numero")
-				nombre_error.classList.add("has-error");
-				alert("LOS NOMBRES NO DEBEN LLEVAR NÚMEROS")
-				nombre.value = "";
-			}
+			let res = patt.test(nombre.value);	
+			console.log(categoria.value);
+			if(categoria.value != "Estatal"){
+				if(res){
+					//console.log("es numero")
+					nombre_error.classList.add("has-error");
+					alert("LOS NOMBRES NO DEBEN LLEVAR NÚMEROS")
+					nombre.value = "";
+				}
+			}		
 			
 		})
 
@@ -921,7 +923,7 @@ function validarUsuario(){
 	//console.log(direccion, pasaje, nro, categoria, medidor, nombre, apellido, dni, telefono);
 
 	if(direccionv != "" || categoriav != "" || medidorv != "" || nombrev != ""|| dniv != ""){
-	
+			
 		if(categoriav == "Estatal"){
 			if(apellidov != ""){
 				alert("NO HAY APELLIDO PARA CATEGORÍA ESTATAL");
@@ -931,6 +933,14 @@ function validarUsuario(){
 			}
 		}else{
 			//categoriav != "Estatal"
+			let patt = new RegExp("[0-9]");
+			let res = patt.test(nombrev);
+			if(res){
+				alert("EL NOMBRE CONTIENE NÚMEROS!!")
+				nombre.value = "";
+				return false;
+			}
+
 			if(apellidov == ""){
 				alert("APELLIDO ESTÁ VACIO!!")
 				return false;
