@@ -477,7 +477,7 @@ function generarMonto($consumo, categoria){
 				default:
 					break;
 			}
-			return {res:true, valor:$montTotal};
+			return {res:true, valor:Number($montTotal.toFixed(1))};
 		}else{
 			return {res:false, option:'negativo'};
 		}
