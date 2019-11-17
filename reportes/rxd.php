@@ -44,11 +44,11 @@ class PDF extends FPDF
     function Footer()
     {
         // Posición: a 1,5 cm del final
-        $this->SetY(-15);
+        //$this->SetY(-15);
         // Arial italic 8
-        $this->SetFont('Arial','I',8);
+        //$this->SetFont('Arial','I',8);
         // Número de página
-        $this->Cell(0,10,'Pag '.$this->PageNo(),0,0,'C');
+        //$this->Cell(0,10,'Pag '.$this->PageNo(),0,0,'C');
     }
 
 }
@@ -206,7 +206,7 @@ if(!$resConsult['res']){
         
         $pdf->SetFont('Arial','B',10);  
         $pdf->SetXY(118,140.5);
-        $pdf->Cell(100,10,"S/. ".$total_suma_deudas,0,0,'');
+        $pdf->Cell(100,10,"S/. ".number_format($total_suma_deudas,2),0,0,'');
         
         //mensaje de corte
         $pdf->SetXY(10,150);
@@ -226,7 +226,7 @@ if(!$resConsult['res']){
         
         $pdf->SetFont('Arial','B',10); 
         $pdf->SetXY(117.2, 187.5);
-        $pdf->Cell(100,10,"S/. ".$total_suma_deudas,0,0,'');
+        $pdf->Cell(100,10,"S/. ".number_format($total_suma_deudas,2),0,0,'');
     }
     
 }
