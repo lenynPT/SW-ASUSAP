@@ -1,6 +1,6 @@
-id_fila_selected=[];
-conts=0;
- costoTot=0;
+    id_fila_selected=[];
+    conts=0;
+    costoTot=0;
  seleccionServicio();
  function seleccionServicio() {
      var select = document.getElementById('servicio');
@@ -44,10 +44,19 @@ function agregar(){
     console.log("agregaste"+nomd+cost)
 if (nomd != "" || cost != ""){
     if(cost == ""){
-        conts++;
-        alert("El costo esta vacio")
+
+        swal({
+            title: "El campo esta vacio",
+
+            type: "info",
+            confirmButtonColor: '#03A9F4',
+            confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',
+
+            cancelButtonColor: '#F44336'
+        })
         return false;
     }
+    conts++;
     //alert("FALTA AGREGAR ITEMS")
     $.ajax({
         url:"../ajax/agregarRS.php",

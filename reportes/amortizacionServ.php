@@ -2,35 +2,56 @@
 //Permite incluir los archivos necesarios para las funciones de consulta.
 $AjaxRequest=true;
 
+require_once "../core/configSite.php";
+
 require_once "../controllers/adminController.php";
+
+$inst = new adminController();
+
 require "fpdf/fpdf.php";
+
+//$idate=$_GET['inicioDate'];
+date_default_timezone_set('America/Lima');
+$created_date = date("Y-m-d H:i");
+$idate=$_GET['cdsi'];
+
+$query = "SELECT f.a_nombre,f.mont_restante,f.fecha,s.direccion FROM factura_servicio f INNER JOIN suministro s ON  s.cod_suministro=f.suministro_cod_suministro WHERE ";
+$query .= 'suministro_cod_suministro = "'.$idate.'"';
+
+//$query .= 'direccion = "'.$idate.'"';
+//$query .= 'ORDER BY apellido ASC ';
+$filesA = $inst->consultaAsociado( $query );
 
 
 //Permite incluir los archivos necesarios para las funciones de consulta.
 
 
 
-$MP=$_POST['mopagr'];
-$MPa=$_GET['montP'];
+//$MP=$_POST['mopagr'];
+//$MPa=$_GET['montP'];
 $MP=$_GET['PM'];
+$_SESSION['cost']=$MP;
+$anm=$_GET['anom'];
+$fechae=$_GET['fechae'];
 
+if($filesA->rowCount()) {
+    $campos = $filesA->fetch();
+    /*
+    //Recepcionando datos por GET
+    $selectDireccion = $_GET['direccion'];//$_GET['direccion'] || 'Jr. los chancas'
+    $selectAnio = $_GET['anio'];
+    $selectMes = $_GET['mes'];
 
-/*
-//Recepcionando datos por GET
-$selectDireccion = $_GET['direccion'];//$_GET['direccion'] || 'Jr. los chancas'
-$selectAnio = $_GET['anio'];
-$selectMes = $_GET['mes'];
-
-//Inicializando objeto de consultas
-$objDirec = new adminController();
-//devuelve los registros por dirección
-$resConsult = $objDirec->recibosObtenerDataSumXdirec($selectDireccion,$selectAnio,$selectMes);
-//devuelve el mes en forma literal
-$fechaL = $objDirec->obtenerNombrefecha($selectAnio,$selectMes);
-$mesLit = $fechaL['r_mes'];
-//Asigna el fondo para el recibo
-$_POST['urlimg'] = $resConsult['res']?'img/reciboAgua.jpg':'img/sinResultado.jpg';*/
-$_POST['urlimg'] = 'img/boletaAGua.jpg';
+    //Inicializando objeto de consultas
+    $objDirec = new adminController();
+    //devuelve los registros por dirección
+    $resConsult = $objDirec->recibosObtenerDataSumXdirec($selectDireccion,$selectAnio,$selectMes);
+    //devuelve el mes en forma literal
+    $fechaL = $objDirec->obtenerNombrefecha($selectAnio,$selectMes);
+    $mesLit = $fechaL['r_mes'];
+    //Asigna el fondo para el recibo
+    $_POST['urlimg'] = $resConsult['res']?'img/reciboAgua.jpg':'img/sinResultado.jpg';*/
+    $_POST['urlimg'] = 'img/boletaAGua.jpg';
 
 
     class PDF extends FPDF
@@ -58,9 +79,11 @@ $_POST['urlimg'] = 'img/boletaAGua.jpg';
             // Posición: a 1,5 cm del final
             $this->SetY(-15);
             // Arial italic 8
-            $this->SetFont('Arial', 'I', 8);
+            $this->SetFont('Arial', 'B', 12);
+            $this->SetX(110);
+            $this->Cell(10, 17, "S/ ".$_SESSION['cost'], 0, 0, 'L');
             // Número de página
-          //  $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+            //  $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
         }
     }
 
@@ -68,15 +91,44 @@ $_POST['urlimg'] = 'img/boletaAGua.jpg';
 
 //cUANDO NO HAY REGISTRO
     $pdf->AddPage();
-    $pdf->Image($_POST['urlimg'] ,1,.5,146.5,240);
-//$pdf->Image($_POST['urlimg'] ,0,0,148,210);
-
+    $pdf->Image($_POST['urlimg'], 1, .5, 146.5, 240);
+    //$pdf->Image($_POST['urlimg'] ,0,0,148,210);
     $pdf->SetFont('Arial', 'B', 20);
     $pdf->SetXY(5, 7);
-   // $pdf->Cell(30, 12, 'ASUSAP', 0, 0, 'C');
+    // $pdf->Cell(30, 12, 'ASUSAP', 0, 0, 'C');
 
     $pdf->SetFont('Arial', 'B', 15);
     $pdf->SetXY(75, 6);
     $pdf->Cell(100, 10, $_GET["cdsi"], 0, 0, 'C');
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->SetXY(125, 22);
+    // $pdf->Cell(20, 10, $idfsI, 0, 0, 'L');
+    $pdf->SetFont('Arial', 'B', 8);
+    $pdf->SetXY(22, 38);
+    $pdf->Cell(90, 10, utf8_decode($campos['a_nombre']), 0, 0, 'L');
+    $pdf->SetXY(110, 44);
+    $pdf->Cell(90, 10, $fechae, 0, 0, 'L');
+    $pdf->SetXY(110, 50);
+    $pdf->Cell(90, 10, $created_date, 0, 0, 'L');
+    $pdf->SetXY(20, 50);
+    $pdf->Cell(90, 10, utf8_decode($anm), 0, 0, 'L');
+    $pdf->SetXY(0, 56);
+   // $pdf->Cell(90, 10, utf8_decode($campos['direccion']), 0, 0, 'C');
+    $pdf->SetXY(0, 44);
+      $pdf->Cell(90, 10, utf8_decode($campos['direccion']), 0, 0, 'C');
+    //PARA LOS SERVICIOS
+    $textypos += 35;
+    $off = $textypos+35;
+
+    $pdf->SetFont('Arial','',12);
+
+        $pdf->setX(2);
+        $pdf->Cell(5,$off,utf8_decode("Monto Amortizado "));
+        $pdf->setX(6);
+        $pdf->setX(50);
+        $pdf->Cell(11,$off,  '                                                            S/ '.$MP,2,".","," ,0,0,"R");
+        $off+=12;
+        //$pdf->Cell(100, 10, $_GET["cdsi"], 0, 0, 'C');
+}
     $pdf->Output();
 

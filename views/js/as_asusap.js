@@ -185,19 +185,24 @@ let t=$('#montPa').val();
 
     if (mp>=0 && mp<mt){
        res=mp;
+
      // alert('pagaste lo correcto')
     }
     else if( mp<mt) {
         res=0;
-       // alert('pagaste mayot a monto restante total')
+      // alert('pagaste mayot a monto restante total')
+        document.getElementById("montPa").value="";
         swal({
             position: 'top-end',
             icon: 'faild',
             title: 'PAGASTE MAYOR AL MONTO RESTANTE',
-            showConfirmButton: true
+            showConfirmButton: true,
            // timer: 2000
+
         })
-       htmlmsj=`<b STYLE="color: red;">PAGASTE MAYOR AL MONTO RESTANTE</b>`
+
+        htmlmsj=`<b STYLE="color: red;">PAGASTE MAYOR AL MONTO RESTANTE</b>`
+
 
     }
     else {
@@ -210,6 +215,7 @@ let t=$('#montPa').val();
                showConfirmButton: true
                // timer: 2000
            })
+           document.getElementById("montPa").value="";
        }else {
          //  alert('pagadte mayor a cero')
 
@@ -298,19 +304,21 @@ function ImprimerReciboAmotizacion() {
     let mpagA=document.getElementById("montPa").value;
     let mTotal=document.getElementById("montAll").value;
     let CDS=document.getElementById("codAR").innerHTML;
+    let anomb=document.getElementById("nombreAR").innerHTML;
+    let fechae=document.getElementById("fechaAS").innerHTML;
   /*  let ids=document.getElementById("idReciboA").innerHTML;
     let MONTOP=document.getElementById("montP").value;
     let rest=mTotal-mpag;*/
 
-  let u='<a href="../reportes/amortizacionServ.php" target="_blank" class="btn btn-info btn-raised btn-xs"></a>';
+ // let u='<a href="../reportes/amortizacionServ.php" target="_blank" class="btn btn-info btn-raised btn-xs"></a>';
 
 
     // console.log("monto pagado esta guardandose "+ids+mpag)
 
         var canal = window.location.pathname;
   //  let mpagA=document.getElementById("montPa").value;
-    console.log("impsss"+mpagA)
-    window.open(`../reportes/amortizacionServ.php?PM=${mpagA}&cdsi=${CDS}`, '_blank');
+    console.log("impsss"+mpagA+anomb)
+    window.open(`../reportes/amortizacionServ.php?PM=${mpagA}&cdsi=${CDS}&anom=${anomb}&fechae=${fechae}`, '_blank');
 
 /*
         $.ajax({
