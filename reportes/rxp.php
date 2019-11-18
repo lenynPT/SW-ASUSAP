@@ -131,16 +131,20 @@ class PDF extends FPDF
             $pdf->Cell(46,10,$esta_cancelado,1,0,'C'); // Está cancelado el recibo ??
 
             //Imprime los meses endeudados
-            $pdf->SetXY(10,87);   
+            $pdf->SetXY(90,125);   
             $total_suma_deudas=0;  
             $enum = 0;   
             foreach ($deudasMes as $value) {
                 # code...
-                $enum++;
-                $total_suma_deudas += $value['monto_pagar'];
-                $nombreMes =  $dataObj->obtenerNombrefecha($value['anio'],$value['mes']);
-                $pdf->SetX(10);
-                $pdf->Cell(46,4,$enum.".- ".$nombreMes['r_mes']." del ".$nombreMes['r_anio']." -> S/. ".$value['monto_pagar'],1,0,'');
+            $total_suma_deudas += $value['monto_pagar'];
+            if($value['mes'] == $mes)
+                continue;
+            $enum++;
+            $nombreMes =  $dataObj->obtenerNombrefecha($value['anio'],$value['mes']);
+            $pdf->SetX(90);
+            $pdf->Cell(50,4,$enum.".- ".$nombreMes['r_mes']." del ".$nombreMes['r_anio'],0,0,'');
+            $pdf->SetX(130);
+            $pdf->Cell(50,4,"S/. ".$value['monto_pagar'],0,0,'');                
                 $pdf->ln();
             }  
             
@@ -155,7 +159,7 @@ class PDF extends FPDF
                 $pdf->SetXY(130,107);
                 $pdf->Cell(100,10,"/S. ".$subT['igvt'],0,0,'');
             }else{
-                //primera fila de 
+               /* //primera fila de 
                 $pdf->SetXY(85,64);
                 $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
                 $pdf->SetXY(130,64);
@@ -165,6 +169,7 @@ class PDF extends FPDF
                 $pdf->Cell(100,10,"Por IGV (18%)",0,0,'');
                 $pdf->SetXY(130,67);
                 $pdf->Cell(100,10,"$/. 0.64",0,0,'');
+                */
                 //nueva seccion igv y subtotal***************************************************
                 //Sub total
                 $pdf->SetXY(130,103.5);
@@ -233,7 +238,7 @@ class PDF extends FPDF
 
                 $resIGV = ($val1+$val2+$val3)*0.18; $resIGV = round($resIGV, 1);                
 
-                //primera fila de 
+                /*//primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.18",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -254,6 +259,7 @@ class PDF extends FPDF
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
                 $pdf->SetXY(130,73+3*$x);
                 $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+                */
 
 
                 break;
@@ -272,7 +278,7 @@ class PDF extends FPDF
 
                 $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,1);
 
-                //primera fila de 
+                /*//primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.50",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -288,6 +294,7 @@ class PDF extends FPDF
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
                 $pdf->SetXY(130,70+2*$x);
                 $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+                */
 
                 break;
             case 'Estatal':
@@ -304,7 +311,7 @@ class PDF extends FPDF
 
                 $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,1);
 
-                //primera fila de 
+                /*//primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.60",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -320,6 +327,7 @@ class PDF extends FPDF
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
                 $pdf->SetXY(130,70+2*$x);
                 $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+                */
 
                 break;
             case 'Industrial':
@@ -330,7 +338,7 @@ class PDF extends FPDF
 
                 $resIGV = $val1 * 0.18; $resIGV = round($resIGV, 1);
 
-                //primera fila de 
+               /* //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a mas)m3 * $/ 2.00",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -341,6 +349,7 @@ class PDF extends FPDF
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
                 $pdf->SetXY(130,67+1*$x);
                 $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+                */
 
                 break;
             
