@@ -34,14 +34,21 @@ conts=0;
 
 
 function agregar(){
-    conts++;
+
     // let codsu=document.getElementById("codSR").innerHTML  ;
     let idrs=document.getElementById("idrs").innerHTML
 
     var nomd=$("#NomDes").val();
     var cost=$("#Costo").val();
     // console.log(nomd+cost+idrs)
-
+    console.log("agregaste"+nomd+cost)
+if (nomd != "" || cost != ""){
+    if(cost == ""){
+        conts++;
+        alert("El costo esta vacio")
+        return false;
+    }
+    //alert("FALTA AGREGAR ITEMS")
     $.ajax({
         url:"../ajax/agregarRS.php",
         type:'POST',
@@ -52,6 +59,10 @@ function agregar(){
         }
 
     });
+}
+
+
+
 
     //console.log("has echo click"+cont+nomd)
     var fila='<tr class="selected" id="fila'+conts+'" ><td>'+conts+'</td><td>'+nomd+'</td><td>'+cost+'</td></tr>';
@@ -118,7 +129,6 @@ function guardarTodo(){
     var i=0
     var tabla = document.getElementById("tabla");
     var total=tabla.rows.length
-
 
 
     $.ajax({
@@ -328,4 +338,13 @@ function ImprimerRC(){
     console.log("total de paginas"+start_date+end_date)
    // console.log("total de paginas"+y+"  LISTA: "+v)
     //console.log("DATOS"+p)
+}
+//------------------------------------REPORTE DE ASOCIADOS-------------------------------------------------
+function ImpAso() {
+
+    var start_date = document.querySelector("#direccionAsoc").value;
+
+    window.open(`../reportes/reporteAsociados.php?ADIR=${start_date}`,'_blank')
+    console.log("total de paginas"+start_date)
+    
 }

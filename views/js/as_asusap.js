@@ -262,11 +262,11 @@ function guardarARMOTIZACION() {
                 data: 'mopagr=' + mpag + '&idsr=' + ids + '&montRes=' + rest,
                 success: function (resp) {
 
+                    window.location = "http://localhost/SW-ASUSAP/aservicio/";
 
                     //console.log("si ineserto monto pagado"+resp)
                 }
             });
-            window.location = "http://localhost/SW-ASUSAP/aservicio/";
         }else {
 
 
@@ -276,12 +276,12 @@ function guardarARMOTIZACION() {
                 data: 'mopagr=' + mpag + '&idsr=' + ids + '&montRes=' + rest,
                 success: function (resp) {
 
+                    window.location = "http://localhost/SW-ASUSAP/ASupdate/" + ids;
 
                     //console.log("si ineserto monto pagado"+resp)
                 }
             });
 
-            window.location = "http://localhost/SW-ASUSAP/ASupdate/" + ids;
 
         }
     },function(){
@@ -336,6 +336,8 @@ function cargar(){
     htmlSumi=`<input type="submit"  onclick="impA();" class="btn btn-info btn-raised btn-xs" value="IMPRIMIR AS">`
     $("#btnimp").html(htmlSumi);
 }
+
+//-----------------------------------REPORTES----------------------------------------
 function impA() {
     let mpagA=document.getElementById("montPa").value;
     console.log("impsss"+mpagA)
@@ -343,6 +345,10 @@ function impA() {
 
 
 }
+
+
+
+
 
 
 

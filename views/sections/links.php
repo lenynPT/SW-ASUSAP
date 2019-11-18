@@ -10,3 +10,17 @@
 <script src="<?php echo SERVERURL; ?>views/js/main.js"></script>
 <script src="<?php echo SERVERURL; ?>views/js/gc_asusap.js"></script>
 <script src="<?php echo SERVERURL; ?>views/js/rs_asusap.js"></script>
+
+
+<script src="<?php echo SERVERURL; ?>views/modules/view/jquery.dataTables.min.js"></script>
+<script src="<?php echo SERVERURL; ?>views/modules/view/dataTables.bootstrap.min.js"></script>
+<link rel="stylesheet" href="<?php echo SERVERURL; ?>views/modules/view/bootstrap-datepicker.css" />
+<script src="<?php echo SERVERURL; ?>views/modules/view/bootstrap-datepicker.js"></script>
+
+
+<!--
+<link rel="stylesheet" href="<?php /*echo SERVERURL; */?>views/css/bootstrap-datepicker.css">
+
+<script src="<?php /*echo SERVERURL; */?>views/js/bootstrap-datepicker.js"></script>
+<script src="<?php /*echo SERVERURL; */?>views/js/dataTables.bootstrap.min.js"></script>
+-->

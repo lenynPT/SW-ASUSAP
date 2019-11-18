@@ -87,6 +87,9 @@
 						<li>
 							<a href="<?php echo SERVERURL; ?>vercorte/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> Con Cortes</a>
 						</li>
+                        <li>
+							<a href="<?php echo SERVERURL; ?>rrecibo/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> Pago Recibos</a>
+						</li>
 
                         <li>
                             <a href="<?php echo SERVERURL; ?>rservamotizar/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver amortizavion</a>

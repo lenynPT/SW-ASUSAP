@@ -1,9 +1,16 @@
-<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
-<style>
 
+
+<style>
+    <?php
+                       require_once "./controllers/adminController.php";
+                       $obj = new adminController();
+                       $arrDirec = $obj->obtenerDireccionCalleController("");
+                       $htmlDirecciones = "";
+                       foreach ($arrDirec as $direccion) {
+                           # code...
+                           $htmlDirecciones .= "<option>{$direccion['nombre']}</option>";
+                       }
+                       ?>
     .box
     {
         width:1270px;
@@ -12,6 +19,9 @@
         border:1px solid #ccc;
         border-radius:5px;
         margin-top:25px;
+    }
+    .dataTables_info{
+        display: none;
     }
 </style>
 
@@ -28,7 +38,7 @@
 
     <div class="justify-content-between ">
         <p class="text-right text-al justify-content-between align-items-center">
-            <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImprimerRC();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
+            <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImpAso();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
         </p>
     </div>
     <br />
@@ -36,19 +46,38 @@
         <br />
         <div class="container">
         <div class="row justify-content-center">
-            <div class="input-daterange ">
-                <div class="col-md-5">
-                    <input type="text" name="start_date" id="start_date" class="form-control" />
+            <div class="col-md-12">
+                <div class="col-md-4 form-group row label-floating">
+                    <div class="col-md-12">
+                        <label for="direccionAsoc" class="col-md-4 control-label">DIRECIÓN</label>
+                        <select class="form-control" id="direccionAsoc" name="direccionAsoc" ">
+                            <option>TODOS</option>
+                            <?=$htmlDirecciones?>
+                        </select>
+                    </div>
+
                 </div>
                 <div class="col-md-5">
-                    <input type="text" name="end_date" id="end_date" class="form-control" />
+                    <input type="button" name="search" id="search" value="Search" class="btn btn-success btn-raised btn-sm" />
+                </div>
+            </div>
+          <!--  <div class="input-daterange ">
+                <label for="direccionAsoc" class="col-md-4 control-label">DIRECIÓN</label>
+                <div class="col-md-5">
+                    <select class="form-control" id="direccionAsoc" name="direccionAsoc" ">
+                        <?/*=$htmlDirecciones*/?>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name="start_date" id="start_date"   class="form-control" />
                 </div>
             </div>
             <div class="col-md-1">
                 <input type="button" name="search" id="search" value="Search" class="btn btn-success btn-raised btn-sm" />
-            </div>
+            </div>-->
 
         </div>
+
         </div>
         <br />
         <table id="order_data" class="table table-bordered table-striped">
@@ -74,15 +103,15 @@
 <script type="text/javascript" language="javascript" >
     $(document).ready(function(){
 
-        $('.input-daterange').datepicker({
+       /* $('.input-daterange').datepicker({
             todayBtn:'linked',
             format: "yyyy-mm-dd",
             autoclose: true
-        });
+        });*/
 
         fetch_data('no');
 
-        function fetch_data(is_date_search, start_date='', end_date='')
+        function fetch_data(is_date_search, start_date='')
         {
             var dataTable = $('#order_data').DataTable({
                 "language":{
@@ -91,8 +120,9 @@
                   "info": "Total de _MAX_ registros",
                   //"info": "Mostrando página _PAGE_ de _PAGES_ filtrados de un total de _MAX_ registros",
                     "infoEmpty": "No hay registros aún.",
-                    "infoFiltered": "(filtrados de un total de _MAX_ registros)",
-                  //  "search" : "Búsqueda",
+                    "infoFiltered": "( _MAX_ registros)",
+                    //"infoFiltered": "(filtrados de un total de _MAX_ registros)",
+                    "search" : "Búsqueda",
                     "LoadingRecords": "Cargando ...",
                     "Processing": "Procesando...",
                    // "SearchPlaceholder": "Comience a teclear...",
@@ -106,22 +136,26 @@
                 "serverSide" : true,
                 "order" : [],
                 "ajax" : {
-                    url:"../ajax/reportesAmortizacion.php",
+                    url:"../ajax/reportesAsociados.php",
                     type:"POST",
                     data:{
-                        is_date_search:is_date_search, start_date:start_date, end_date:end_date
+                        is_date_search:is_date_search , start_date:start_date
                     }
                 }
             });
         }
 
         $('#search').click(function(){
-            var start_date = $('#start_date').val();
-            var end_date = $('#end_date').val();
-            if(start_date != '' && end_date !='')
+            //var start_date = $('#start_date').val();
+
+            var start_date = document.querySelector("#direccionAsoc").value;
+          //  console.log('la direccion'+direccion);
+
+          //  var end_date = $('#end_date').val();
+            if(start_date != '')
             {
                 $('#order_data').DataTable().destroy();
-                fetch_data('yes', start_date, end_date);
+               fetch_data('yes', start_date);
             }
             else
             {
