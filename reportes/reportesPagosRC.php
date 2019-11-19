@@ -13,11 +13,11 @@ require "fpdf/fpdf.php";
 $idate=$_GET['inicioDate'];
 $fdate=$_GET['finalDate'];
 
-$query = "SELECT * FROM factura_servicio WHERE ";
+$query = "SELECT * FROM factura_recibo WHERE ";
 
 
-$query .= 'fecha BETWEEN "'.$idate.'" AND "'.$fdate.'" ';
-$query .= 'ORDER BY fecha DESC ';
+$query .= 'fecha_cobro BETWEEN "'.$idate.'" AND "'.$fdate.'" ';
+$query .= 'ORDER BY fecha_cobro DESC ';
 $result = $inst->consultaAsociado( $query );
 //Permite incluir los archivos necesarios para las funciones de consulta.
 
@@ -60,10 +60,10 @@ class PDF extends FPDF
         //$this->Image('images/logo.png', 5, 5, 30 );
         $this->SetFont('Arial','B',15);
         $this->Cell(30);
-        $this->Cell(135,10, 'Reporte De Ingreso (Ricibos de Servicio)',0,0,'C');
+        $this->Cell(120,10, 'Reporte De Pagos de Ricibo',0,0,'C');
         $this->SetFont('Arial','B',10);
         $this->Cell(10);
-        $this->Cell(15,20,'Fecha: '.$_SESSION['fecha'],0,0,'R');
+        $this->Cell(20,20,'Fecha: '.$_SESSION['fecha'],0,0,'R');
         $this->SetFont('Arial','B',15);
         $this->SetX(50);
         $this->SetY(15);
@@ -71,7 +71,7 @@ class PDF extends FPDF
         $this->Ln(20);// Logo
         $this->Image('img/agua.jpg',10,6,45);
         //$this->Image('img/agua.jpg',0,0,10,8);
-       // Arial bold 15
+        // Arial bold 15
         //// Movernos a la derecha
         //$this->Cell(5);
 
@@ -79,7 +79,7 @@ class PDF extends FPDF
         // Título
         //$this->Cell(30, 12, 'ASUSAP', 0, 0, 'C');
         // Salto de línea
-       // $this->Ln(20);
+        // $this->Ln(20);
     }
 
     // Pie de página
@@ -105,16 +105,16 @@ $pdf->SetFont('Arial', 'B', 15);
 $pdf->SetXY(75, 6);*/
 $pdf->SetY(35);
 $pdf->SetFillColor(232,232,232);
-$pdf->SetFont('Arial','B',10);
-$pdf->Cell(6,6,'#',1,0,'C',1);
-$pdf->Cell(25,6,'N. RECIBO',1,0,'C',1);
-$pdf->Cell(25,6,'SUMINISTRO',1,0,'C',1);
-$pdf->Cell(85,6,'A NOMBRE COMPLETO',1,0,'C',1);
-$pdf->Cell(30,6,'FECHA',1,0,'C',1);
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(10,6,'#',1,0,'C',1);
+$pdf->Cell(30,6,'SUMINISTRO',1,0,'C',1);
+$pdf->Cell(40,6,'F. EMISION',1,0,'C',1);
+$pdf->Cell(50,6,'CONSUMO',1,0,'C',1);
+$pdf->Cell(40,6,'F. CANCELACION',1,0,'C',1);
 $pdf->Cell(20,6,'MONTO',1,1,'C',1);
 
 
-$pdf->SetFont('Arial','',8);
+$pdf->SetFont('Arial','',10);
 //PARA LOS SERVICIOS
 /*$textypos+=25;
 $off = $textypos+25;
@@ -128,19 +128,21 @@ $off = $textypos+25;
 $o=1;
 $y=0;
 while($row = $result->fetch()) {
+    if ($row['esta_cancelado']!=0){
 
     $pdf->SetFillColor(232,232,232);
-    $pdf->Cell(6,6,$o++,1,0,'C');
-    $pdf->Cell(25,6,utf8_decode($row['idfactura_servicio']),1,0,'C');
-    $pdf->Cell(25,6,utf8_decode($row['suministro_cod_suministro']),1,0,'C');
-    $pdf->Cell(85,6,utf8_decode($row['a_nombre']),1,0,'L');
-    $pdf->Cell(30,6,$row['fecha'],1,0,'C');
-    $pdf->Cell(20,6,utf8_decode($row['total_pago']),1,1,'L');
-    $y=$y+$row['total_pago'];
+    $pdf->Cell(10,6,$o++,1,0,'C');
+    $pdf->Cell(30,6,utf8_decode($row['suministro_cod_suministro']),1,0,'C');
+    $pdf->Cell(40,6,utf8_decode($row['fecha_emision']),1,0,'C');
+    $pdf->Cell(50,6,utf8_decode($row['consumo']." m³"),1,0,'L');
+    $pdf->Cell(40,6,$row['fecha_cobro'],1,0,'C');
+    $pdf->Cell(20,6,utf8_decode($row['monto_pagar']),1,1,'L');
+    $y=$y+$row['monto_pagar'];
+    }
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
 
-   /* $pdf->Cell(11,$off,2,".","," ,0,0,"R");
-    $off+=12;*/
+    /* $pdf->Cell(11,$off,2,".","," ,0,0,"R");
+     $off+=12;*/
 
 
 }

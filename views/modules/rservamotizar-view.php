@@ -21,7 +21,7 @@
 
 
 <div class="container box">
-    <h1 align="center">REPORTES CUANTO DE GASTO SE REALIZO</h1>
+    <h1 align="center">REPORTE DE CUANTO INGRESO DE RICIBOS DE SERVICIO </h1>
 
     <div class="justify-content-between ">
         <p class="text-right text-al justify-content-between align-items-center">

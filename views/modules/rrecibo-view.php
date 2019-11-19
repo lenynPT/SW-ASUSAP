@@ -21,11 +21,11 @@
 
 
 <div class="container box">
-    <h1 align="center">REPORTES CUANTO DE GASTO SE REALIZO</h1>
+    <h1 align="center">REPORTE DE PAGOS DE RICIBOS DE CONSUMO</h1>
 
     <div class="justify-content-between ">
         <p class="text-right text-al justify-content-between align-items-center">
-            <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImprimerRC();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
+            <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImprimerRPR();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
         </p>
     </div>
     <br />
@@ -54,9 +54,9 @@
                 <th>#</th>
                 <th>SUMINISTRO</th>
                 <th>F. EMISION</th>
-                <th>A NOMBRE COMPLETO</th>
+                <th>CONSUMO</th>
                 <th>MONTO</th>
-                <th>FECHAs</th>
+                <th>FECHA DE PAGO</th>
             </tr>
             </thead>
         </table>
