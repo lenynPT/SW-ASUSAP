@@ -57,8 +57,8 @@ class PDF extends FPDF
 //}
 //mainClass();
 
-//pdf --A5 en mm Array(148, 210) 
-$pdf = new PDF('P','mm',Array(148, 218.01) );
+//pdf --A5 en mm Array(148, 210) / (148, 218.01)
+$pdf = new PDF('P','mm',Array(148, 223) );
 
 if(!$resConsult['res']){
     //cUANDO NO HAY REGISTRO
@@ -185,12 +185,13 @@ if(!$resConsult['res']){
             $pdf->SetXY(130,107);
             $pdf->Cell(100,10,"/S. ".$subT['igvt'],0,0,'');
         }else{
-            /*//primera fila de 
+            //primera fila de 
             $pdf->SetXY(85,64);
             $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
             $pdf->SetXY(130,64);
             $pdf->Cell(100,10,"$/. 3.56",0,0,'');
             //segunda fila de 
+            /*
             $pdf->SetXY(85,67);
             $pdf->Cell(100,10,"Por IGV (18%)",0,0,'');
             $pdf->SetXY(130,67);
@@ -232,6 +233,11 @@ if(!$resConsult['res']){
         $pdf->SetFont('Arial','B',10); 
         $pdf->SetXY(117.2, 187.5);
         $pdf->Cell(100,10,"S/. ".number_format($total_suma_deudas,2),0,0,'');
+
+        $pdf->SetFont('Arial','B',9); 
+        $pdf->SetXY(0, 192.5);
+        $pdf->Cell(100,10,"COD-SUMINISTRO: ".$element['cod_suministro'],0,0,'');
+        
     }
     
 }
@@ -266,7 +272,7 @@ $pdf->Output();
 
                 $resIGV = ($val1+$val2+$val3)*0.18; $resIGV = round($resIGV, 1);                
 
-                /*//primera fila de 
+                //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.18",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -281,7 +287,8 @@ $pdf->Output();
                 $pdf->Cell(100,10,"(De 40 a mas)m3 * $/ 0.95",0,0,'');
                 $pdf->SetXY(130,70+2*$x);
                 $pdf->Cell(100,10,"$/. {$val3}",0,0,'');
-
+                
+                /*
                 //IGV
                 $pdf->SetXY(85,73+3*$x);
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
@@ -305,7 +312,7 @@ $pdf->Output();
 
                 $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,1);
 
-                /*//primera fila de 
+                //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/. 0.50",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -316,6 +323,7 @@ $pdf->Output();
                 $pdf->SetXY(130,67+1*$x);
                 $pdf->Cell(100,10,"$/. {$val2}",0,0,'');
                 
+                /*
                 //IGV
                 $pdf->SetXY(85,70+2*$x);
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
@@ -338,7 +346,7 @@ $pdf->Output();
 
                 $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,1);
 
-                /*//primera fila de 
+                //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/. 0.60",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -349,6 +357,7 @@ $pdf->Output();
                 $pdf->SetXY(130,67+1*$x);
                 $pdf->Cell(100,10,"$/. {$val2}",0,0,'');
                 
+                /*
                 //IGV
                 $pdf->SetXY(85,70+2*$x);
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
@@ -365,12 +374,13 @@ $pdf->Output();
 
                 $resIGV = $val1 * 0.18; $resIGV = round($resIGV, 1);
 
-                /*//primera fila de 
+                //primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a mas)m3 * $/. 2.00",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
                 $pdf->Cell(100,10,"$/. {$val1}",0,0,'');
-
+                
+                /*
                 //IGV
                 $pdf->SetXY(85,67+1*$x);
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');

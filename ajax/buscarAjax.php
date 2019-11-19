@@ -21,6 +21,7 @@
             
             $medidor = $dataModal['tiene_medidor']?"Si":"No";
             $corte = $dataModal['estado_corte']?"Si":"No";
+            $corte = $dataModal['estado_corte']==2?"Inactivo":$corte;
 
             $registroModal[] = [
                 "codigo"=>$dataModal['cod_suministro'],
