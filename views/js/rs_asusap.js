@@ -149,21 +149,23 @@ function guardarTodo(){
     var tabla = document.getElementById("tabla");
     var total=tabla.rows.length
 
+    if (tot!=0){
+        $.ajax({
+            url:"../ajax/agregarRS.php",
+            type:'POST',
+            // data:'ids='+idf+'&monto='+cost,
+            data: "ids="+idf+"&cost="+tot+"&anom="+anrs,
+            success:function (resp) {
 
-    $.ajax({
-        url:"../ajax/agregarRS.php",
-        type:'POST',
-        // data:'ids='+idf+'&monto='+cost,
-        data: "ids="+idf+"&cost="+tot+"&anom="+anrs,
-        success:function (resp) {
 
+                // $('#add-all').hide();
+            }
 
-            // $('#add-all').hide();
-        }
+        });
 
-    });
+        window.location="http://localhost/SW-ASUSAP/aservicio/";
+    }
 
-    window.location="http://localhost/SW-ASUSAP/aservicio/";
 
 }
 /*----------------cuando seleccionas de id  EN LA BUSQUEDA---------------------------------------*/
