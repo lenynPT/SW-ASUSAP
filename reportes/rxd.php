@@ -44,11 +44,11 @@ class PDF extends FPDF
     function Footer()
     {
         // Posición: a 1,5 cm del final
-        $this->SetY(-15);
+        //$this->SetY(-15);
         // Arial italic 8
-        $this->SetFont('Arial','I',8);
+        //$this->SetFont('Arial','I',8);
         // Número de página
-        $this->Cell(0,10,'Pag '.$this->PageNo(),0,0,'C');
+        //$this->Cell(0,10,'Pag '.$this->PageNo(),0,0,'C');
     }
 
 }
@@ -157,16 +157,20 @@ if(!$resConsult['res']){
         //$pdf->Cell(46,10,$esta_cancelado,1,0,'C'); // Está cancelado el recibo ??
 
         //Imprime los meses endeudados
-        $pdf->SetXY(10,87);
+        $pdf->SetXY(90,125);
         $total_suma_deudas=0; 
         $enum = 0;         
         for ($i=0; $i < count($deudasMes); $i++) { 
             # code...
-            $enum++;
             $total_suma_deudas += $deudasMes[$i]['monto_pagar'];
+            if($deudasMes[$i]['mes'] == $selectMes)
+                continue;
+            $enum++;
             $nombreMes =  $objDirec->obtenerNombrefecha($deudasMes[$i]['anio'],$deudasMes[$i]['mes']);
-            $pdf->SetX(10);
-            $pdf->Cell(46,4,$enum.".- ".$nombreMes['r_mes']." del ".$nombreMes['r_anio'] . " -> S/. ".$deudasMes[$i]['monto_pagar'],1,0,'');
+            $pdf->SetX(90);
+            $pdf->Cell(50,4,$enum.".- ".$nombreMes['r_mes']." del ".$nombreMes['r_anio'],0,0,'');
+            $pdf->SetX(130);
+            $pdf->Cell(50,4,"S/. ".$deudasMes[$i]['monto_pagar'],0,0,'');
             $pdf->ln();
         }
         
@@ -181,7 +185,7 @@ if(!$resConsult['res']){
             $pdf->SetXY(130,107);
             $pdf->Cell(100,10,"/S. ".$subT['igvt'],0,0,'');
         }else{
-            //primera fila de 
+            /*//primera fila de 
             $pdf->SetXY(85,64);
             $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
             $pdf->SetXY(130,64);
@@ -191,6 +195,7 @@ if(!$resConsult['res']){
             $pdf->Cell(100,10,"Por IGV (18%)",0,0,'');
             $pdf->SetXY(130,67);
             $pdf->Cell(100,10,"$/. 0.64",0,0,'');
+            */
             //nueva seccion igv y subtotal***************************************************
             //Sub total
             $pdf->SetXY(130,103.5);
@@ -206,7 +211,7 @@ if(!$resConsult['res']){
         
         $pdf->SetFont('Arial','B',10);  
         $pdf->SetXY(118,140.5);
-        $pdf->Cell(100,10,"S/. ".$total_suma_deudas,0,0,'');
+        $pdf->Cell(100,10,"S/. ".number_format($total_suma_deudas,2),0,0,'');
         
         //mensaje de corte
         $pdf->SetXY(10,150);
@@ -226,7 +231,7 @@ if(!$resConsult['res']){
         
         $pdf->SetFont('Arial','B',10); 
         $pdf->SetXY(117.2, 187.5);
-        $pdf->Cell(100,10,"S/. ".$total_suma_deudas,0,0,'');
+        $pdf->Cell(100,10,"S/. ".number_format($total_suma_deudas,2),0,0,'');
     }
     
 }
@@ -261,7 +266,7 @@ $pdf->Output();
 
                 $resIGV = ($val1+$val2+$val3)*0.18; $resIGV = round($resIGV, 1);                
 
-                //primera fila de 
+                /*//primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.18",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -282,7 +287,7 @@ $pdf->Output();
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
                 $pdf->SetXY(130,73+3*$x);
                 $pdf->Cell(100,10,"$/. {$resIGV}",0,0,'');
-
+                */
 
                 break;
             case 'Comercial':
@@ -300,7 +305,7 @@ $pdf->Output();
 
                 $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,1);
 
-                //primera fila de 
+                /*//primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/. 0.50",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -316,6 +321,7 @@ $pdf->Output();
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
                 $pdf->SetXY(130,70+2*$x);
                 $pdf->Cell(100,10,"$/. {$resIGV}",0,0,'');
+                */
 
                 break;
             case 'Estatal':
@@ -332,7 +338,7 @@ $pdf->Output();
 
                 $resIGV = ($val1+$val2)*0.18; $resIGV = round($resIGV,1);
 
-                //primera fila de 
+                /*//primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/. 0.60",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -348,6 +354,7 @@ $pdf->Output();
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
                 $pdf->SetXY(130,70+2*$x);
                 $pdf->Cell(100,10,"$/. {$resIGV}",0,0,'');
+                */
 
                 break;
             case 'Industrial':
@@ -358,7 +365,7 @@ $pdf->Output();
 
                 $resIGV = $val1 * 0.18; $resIGV = round($resIGV, 1);
 
-                //primera fila de 
+                /*//primera fila de 
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a mas)m3 * $/. 2.00",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
@@ -369,6 +376,7 @@ $pdf->Output();
                 $pdf->Cell(100,10,"IGV (18%)",0,0,'');
                 $pdf->SetXY(130,67+1*$x);
                 $pdf->Cell(100,10,"$/. {$resIGV}",0,0,'');
+                */
 
                 break;
             

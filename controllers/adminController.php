@@ -640,7 +640,7 @@
 
 		public function cobrarRecibo($cod_sum,$anio,$mes){
 			//$query = "SELECT * FROM suministro WHERE suministro.estado_corte=1 AND suministro.contador_deuda=0";
-			$query = "UPDATE factura_recibo SET esta_cancelado = 1, esta_impreso = 1
+			$query = "UPDATE factura_recibo SET esta_cancelado = 1, esta_impreso = 1, fecha_cobro=now()
 					WHERE factura_recibo.suministro_cod_suministro = '$cod_sum' AND factura_recibo.anio = $anio AND factura_recibo.mes = $mes";
 			$arrData = mainModel::execute_single_query($query);
 			if($arrData){

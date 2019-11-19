@@ -398,62 +398,86 @@ function cogerConsumo(value, cons_ant, cod_sum, categoria){
 }
 
 //escribir algoritmo para generar el monto con respecto al consumo ingresado
-function generarMonto(consumo, categoria){
-	//validando que sea un efectivamente un número valido. 
-	if(!isNaN(parseFloat(consumo)) && isFinite(consumo)){
-		if(consumo>=0){
-			let calcMonto = 0, calcPrev = 0, igv = 0.18;
-			if(categoria == 'Domestico'){
-				consumo-=20;
-				calcMonto += 4.20;
-				if(consumo > 0){
-					if(consumo <= 20){
-						sumaMonto = consumo*0.60;
-						calcMonto += sumaMonto + sumaMonto*igv;						
+function generarMonto($consumo, categoria){
+	if(!isNaN(parseFloat($consumo)) && isFinite($consumo)){
+		let $val1,$val2,$val3,$resIGV;
+		$val1=0; $val2 =0; $val3=0; $resIGV=0, $montTotal=0;
+		if($consumo >= 0){		
+			switch (categoria) {
+				case 'Domestico':
+					if($consumo<=20){
+						$val1 = 3.56;
 					}else{
-						consumo -= 20;
-						calcPrev = 20*0.60;
-						calcMonto += calcPrev + calcPrev*igv;
-
-						sumaMonto = consumo*0.95;
-						calcMonto += sumaMonto+sumaMonto*igv;
+						$val1 = 3.56;
+						$consumo-=20;
+						if($consumo<=20){
+							$val2 = $consumo * 0.60;                        
+						}else{
+							$val2 = 20 * 0.60;
+							$consumo-=20;
+							$val3 = $consumo * 0.95;
+						}
 					}
-				}
+					$val1 = Number($val1.toFixed(1));									
+					$val2 = Number($val2.toFixed(1));									
+					$val3 = Number($val3.toFixed(1));
+					$sum = $val1+$val2+$val3;									
 
-			}
-			else if(categoria == 'Comercial'){
-				if(consumo <= 20){
-					calcMonto = 10.00;
-					calcMonto += calcMonto*igv; 
-				}else{
-					consumo-=20;
-					calcMonto = 10.00;
-					calcMonto += calcMonto*igv; 
+					$resIGV = $sum*0.18; 
+					$resIGV = Number($resIGV.toFixed(1));
 
-					calcPrev = consumo*0.95;
-					calcMonto += calcPrev + calcPrev*igv;
-				}
-			}
-			else if(categoria == 'Estatal'){
-				if(consumo <= 20){
-					calcMonto = 12.00;
-					calcMonto += calcMonto*igv;
-				}else{
-					consumo-=20;
-					calcMonto = 12.00;
-					calcMonto += calcMonto*igv;
+					$montTotal = $sum + $resIGV;								
+					break;
+				case 'Comercial':
+					if($consumo<=20){
+						$val1=20*0.50;
+					}else {
+						$val1=10;                    
+						$consumo-=20;
+						$val2 = $consumo*0.95;
+					}
+					$val1 = Number($val1.toFixed(1));									
+					$val2 = Number($val2.toFixed(1));	
+					$sum = $val1+$val2;									
 
-					calcPrev = consumo*0.95;
-					calcMonto += calcPrev + calcPrev*igv;
-				}
-			}
-			else if(categoria == 'Industrial'){
-				calcPrev = consumo*2.00;
-				calcMonto = calcPrev + calcPrev*igv;
-			}
-			calcMonto = Number(calcMonto.toFixed(1));
-			return {res:true, valor:calcMonto};
+					$resIGV = $sum*0.18; 
+					$resIGV = Number($resIGV.toFixed(1));
 
+					$montTotal = $sum + $resIGV;					
+					break;
+
+				case 'Estatal':
+					if($consumo<=20){
+						$val1=20*0.60;
+					}else {
+						$val1=10;                    
+						$consumo-=20;
+						$val2 = $consumo*0.95;
+					}
+					$val1 = Number($val1.toFixed(1));									
+					$val2 = Number($val2.toFixed(1));	
+					$sum = $val1+$val2;									
+
+					$resIGV = $sum*0.18; 
+					$resIGV = Number($resIGV.toFixed(1));
+
+					$montTotal = $sum + $resIGV;					
+					break
+				case 'Industrial':
+					$val1 = $consumo * 2.00;
+			
+					$val1 = Number($val1.toFixed(1));
+					$sum=$val1;		
+
+					$resIGV = $sum*0.18; 
+					$resIGV = Number($resIGV.toFixed(1));
+
+					$montTotal = $sum + $resIGV;					
+		
+				default:
+					break;
+			}
+			return {res:true, valor:Number($montTotal.toFixed(1))};
 		}else{
 			return {res:false, option:'negativo'};
 		}

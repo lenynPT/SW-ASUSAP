@@ -18,9 +18,10 @@
         }
         function Footer()
         {
-            $this->SetY(-10);
+           /* $this->SetY(-10);
             $this->SetFont('Arial','I',8);
             $this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
+            */
         }
     }
 
@@ -39,8 +40,9 @@
 
     $_POST['urlimg'] = $arrData['res']?'img/reciboAgua.jpg':'img/sinResultado.jpg';
 
+    $mensajeAlPublico="Aquí el aviso para los suministros";
     //pdf
-    $pdf = new PDF('P','mm','A5');
+    $pdf = new PDF('P','mm',Array(148, 218.01));
 
     if($arrData['res']==false){
         $pdf->AddPage();    
@@ -67,44 +69,45 @@
         //CONFIGURANDO EL TAMAÑO Y TIPO DE LETRA
         $pdf->SetFont('Arial','B',7);  
         //PRIMERA COLUMNA - INFORMACIÓN GENERAL ****************************************************
-        $pdf->SetXY(21,35);
+        $pdf->SetXY(24,35.5);
         $pdf->Cell(50,5,$nombre_completo ,0,0,'');  //nombre de tituar
-        $pdf->SetXY(24,40.5);
+        $pdf->SetXY(27,40.8);
         $pdf->Cell(50,5,utf8_decode($registro['direccion']),0,0,'');    //direccion del titular 
-        $pdf->SetXY(8,43);
+        $pdf->SetXY(9,43.5);
         $pdf->Cell(100,10,utf8_decode("SAN JERÓNIMO"),0,0,''); //distrito
-        $pdf->SetXY(11,48.3);
+        $pdf->SetXY(11,48.8);
         $pdf->Cell(100,10,$registro['categoria_suministro'],0,0,''); //categoria del suministro
 
         //SEGUNDA COLUMNA - INFORMACIÓN DE PAGO ****************************************************
-        $pdf->SetXY(118,35);
+        $pdf->SetXY(119,35.5);
         $pdf->Cell(50,5,"{$mesLit} - Dic.",0,0,''); //mes facturado 
-        $pdf->SetXY(129,40.3);
+        $pdf->SetXY(130.5,40.7);
         $pdf->Cell(50,5,utf8_decode("Año"),0,0,''); //frecuencia de facturación
-        $pdf->SetXY(121,45.5);
+        $pdf->SetXY(121.8,46);
         $pdf->Cell(50,5,$fecha_e,0,0,''); //fecha emision
-        $pdf->SetXY(125,50.7);
+        $pdf->SetXY(127,51.2);
         $pdf->Cell(50,5,utf8_decode('Mismo día'),0,0,''); //fecha vencimiento
 
         //REGISTROS DEL MEDIDOR ****************************************************
-        $pdf->SetXY(7,62);
-        $pdf->Cell(100,10,'No',0,0,''); // Tiene medidor??
+        $pdf->SetXY(0,63);
+        $pdf->Cell(18,9,'No',0,0,'C'); // Tiene medidor??
         $pdf->SetXY(18,63);
-        $pdf->Cell(19,8,"# m3",0,0,'C'); // lectura anterior
+        $pdf->Cell(19,9,"# m3",0,0,'C'); // lectura anterior
         $pdf->SetXY(37,63);
-        $pdf->Cell(19,8,"# m3",0,0,'C'); // lectura Actual
+        $pdf->Cell(19,9,"# m3",0,0,'C'); // lectura Actual
         $pdf->SetXY(56,63);
-        $pdf->Cell(19,8,"# m3",0,0,'C'); // consumo
+        $pdf->Cell(19,9,"# m3",0,0,'C'); // consumo
 
         //INFORMACIÓN COMPLEMENTARIA ****************************************************              
         $pdf->SetXY(10,75);
-        $pdf->Cell(100,10,'RECIBO CANCELADO',0,0,''); // Está cancelado el recibo ??
-        
-        $pdf->SetXY(10,82);
-        $pdf->Cell(100,5,"",0,0,'');  
+        $pdf->Cell(100,10,'',0,0,''); // Está cancelado el recibo ??
+
+        //MENSAJE DE CORTE        
+        $pdf->SetXY(10,150);
+        $pdf->Cell(0,10,utf8_decode($mensajeAlPublico),0,0,'');
 
         //DETALLE DE LA FACTURACIÓN ****************************************************
-            //primera fila de 
+           /* //primera fila de 
             $pdf->SetXY(85,64);
             $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
             $pdf->SetXY(130,64);
@@ -114,11 +117,33 @@
             $pdf->Cell(100,10,"Por IGV (18%)",0,0,'');
             $pdf->SetXY(130,67);
             $pdf->Cell(100,10,"$/ 0.64",0,0,'');
-            
-            imprimirXmes($pdf,$registro['del_mes'],$dataObj);
+        */
+        
+        $infPag = imprimirXmes($pdf,$registro['del_mes'],$dataObj);
 
-        $pdf->SetXY(118,139);
-        $pdf->Cell(100,10,"S/ ".$registro['monto'],0,0,'');
+        $pdf->SetXY(130,103);
+        $pdf->Cell(100,10,"S/. ".$infPag['subTotal'],0,0,''); 
+        $pdf->SetXY(130,107);
+        $pdf->Cell(100,10,"S/. ".$infPag['igvTotal'],0,0,''); 
+
+        $pdf->SetFont('Arial','B',10); 
+        $pdf->SetXY(118,140);
+        $pdf->Cell(100,10,"S/. ".$registro['monto'],0,0,'');
+
+         //SECCIÓN RECORTAR -**********************************
+         $pdf->SetFont('Arial','B',7); 
+         $pdf->SetXY(21.5, 182.5);
+         $pdf->Cell(100,10,$nombre_completo ,0,0,'');
+         
+         $pdf->SetXY(118, 182.5);
+         $pdf->Cell(100,10,"{$mesLit} - Dic.",0,0,'');
+
+         $pdf->SetXY(24, 188);
+         $pdf->Cell(100,10,$registro['direccion'] ,0,0,'');
+         
+         $pdf->SetFont('Arial','B',10); 
+         $pdf->SetXY(117.2, 187.5);
+         $pdf->Cell(100,10,"S/. ".$registro['monto'],0,0,'');
     
     }
 
@@ -129,10 +154,11 @@
     function imprimirXmes($pdf,$del_mes,$dataObj){
 
         $y = 6;
-
+        $subTotal = 0;
         for ($mes=$del_mes; $mes <= 12; $mes++) { 
             # code...
             //Imprimiendo los meses
+            /*
             $mesName = $dataObj->obtenerNombrefecha(2019,$mes);
 
             $pdf->SetXY(85,67+$y);
@@ -141,5 +167,10 @@
             $pdf->Cell(100,10,"$/ 4.20",0,0,'');
 
             $y+=3;
+            */
+            $subTotal += 3.6;
+            $igvTotal += 0.6;
         }
+        //$igvTotal = $subTotal * 0.18;
+        return ['subTotal'=>$subTotal,'igvTotal'=>$igvTotal];
     }
