@@ -75,7 +75,7 @@ $insAdmin=new adminController();
 
 
         </div>
-        <div id="resultado">valor</div>
+
     </div>
 </div>
 

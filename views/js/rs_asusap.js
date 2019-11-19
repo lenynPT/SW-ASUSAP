@@ -1,6 +1,7 @@
     id_fila_selected=[];
     conts=0;
     costoTot=0;
+    costoTot1=0;
  seleccionServicio();
  function seleccionServicio() {
      var select = document.getElementById('servicio');
@@ -39,36 +40,37 @@ function agregar(){
     let idrs=document.getElementById("idrs").innerHTML
 
     var nomd=$("#NomDes").val();
-    var cost=$("#Costo").val();
+    var cost1=$("#Costo").val();
+    let cost= Number.parseFloat(cost1).toFixed(2);
     // console.log(nomd+cost+idrs)
     console.log("agregaste"+nomd+cost)
-if (nomd != "" || cost != ""){
-    if(cost == ""){
+    if (nomd != "" || cost != ""){
+        if(cost == ""){
 
-        swal({
-            title: "El campo esta vacio",
+            swal({
+                title: "El campo esta vacio",
 
-            type: "info",
-            confirmButtonColor: '#03A9F4',
-            confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',
+                type: "info",
+                confirmButtonColor: '#03A9F4',
+                confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',
 
-            cancelButtonColor: '#F44336'
-        })
-        return false;
-    }
-    conts++;
-    //alert("FALTA AGREGAR ITEMS")
-    $.ajax({
-        url:"../ajax/agregarRS.php",
-        type:'POST',
-        // data:'ids='+idf+'&monto='+cost,
-        data:'NomD='+nomd+'&costD='+cost+'&CodRS='+idrs,
-        success:function (resp) {
-            // alert('respuesta'+resp);
+                cancelButtonColor: '#F44336'
+            })
+            return false;
         }
+        conts++;
+        //alert("FALTA AGREGAR ITEMS")
+        $.ajax({
+            url:"../ajax/agregarRS.php",
+            type:'POST',
+            // data:'ids='+idf+'&monto='+cost,
+            data:'NomD='+nomd+'&costD='+cost+'&CodRS='+idrs,
+            success:function (resp) {
+                // alert('respuesta'+resp);
+            }
 
-    });
-}
+        });
+    }
 
 
 
@@ -78,8 +80,12 @@ if (nomd != "" || cost != ""){
     $('#tabla').append(fila);
 
 
-    costoTot=parseFloat(costoTot)+parseFloat(cost);
-    document.getElementById("costTotal").innerHTML=costoTot;
+    costoTot=costoTot+parseFloat(cost);
+
+
+     costoTot1= Number.parseFloat(costoTot).toFixed(2);
+
+    document.getElementById("costTotal").innerHTML=costoTot1;
 
 
     //  reordenar();
@@ -127,8 +133,12 @@ function guardarTodo(){
     let mesrs=document.getElementById("mesRS").innerHTML  ;
     let cost=document.getElementById("costTotal").innerHTML  ;
     let anrs=document.getElementById("anombre").value;
+    //$cost1 = Number(cost.toFixed(1));
+   // cost = cost.replace(",",".");
+   // precioto = Number(cost.toFixed(2));// determinanod la cantidad de decimales.
+   // let tot= precioto ;
+    tot= Number.parseFloat(cost).toFixed(2);
 
-    let tot=parseFloat(cost);
     console.log("Has echo click en guardar"+tot+"a nombre"+anrs)
 
     /*############fin###############*/
@@ -201,11 +211,11 @@ function showRow(row) {
 
         });
         //Cuando le da aceptar
-        console.log("le dio aceptar");
+      //  console.log("le dio aceptar");
         $("#contTRSSS").hide();
     },function(){
         //si no le da a la opcion de aceptar
-        console.log("No le dió aceptar")
+      //  console.log("No le dió aceptar")
         $("#contTRSSS").show();
     });
 
@@ -279,7 +289,9 @@ function ImprimerRecibo() {
     let anIRS=document.getElementById("anombre").value;
     let servIRS=document.getElementById("servS").value;
 
-    document.getElementById("costTotal").innerHTML=costoTot;
+
+
+   // document.getElementById("costTotal").innerHTML=costoTot;
     var myTable = document.getElementById("tabla");
     var rowCount = myTable.rows.length;
 
@@ -347,6 +359,17 @@ function ImprimerRC(){
     console.log("total de paginas"+start_date+end_date)
    // console.log("total de paginas"+y+"  LISTA: "+v)
     //console.log("DATOS"+p)
+}
+function ImprimerRPR(){
+
+    var start_date = $('#start_date').val();
+    var end_date = $('#end_date').val();
+
+    window.open(`../reportes/reportesPagosRC.php?inicioDate=${start_date}&finalDate=${end_date}`,'_blank')
+   // window.open(`../reportes/reportesAmortizar?RAS=${p}&codSI=${codsuI}`, '_blank')
+
+    console.log("total de paginas"+start_date+end_date)
+
 }
 //------------------------------------REPORTE DE ASOCIADOS-------------------------------------------------
 function ImpAso() {

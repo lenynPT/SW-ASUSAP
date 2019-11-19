@@ -15,7 +15,7 @@ $query = "SELECT * FROM factura_recibo WHERE ";
 
 if($_POST["is_date_search"] == "yes")
 {
-    $query .= 'fecha BETWEEN "'.$_POST["start_date"].'" AND "'.$_POST["end_date"].'" AND ';
+    $query .= 'fecha_cobro BETWEEN "'.$_POST["start_date"].'" AND "'.$_POST["end_date"].'" AND ';
 }
 
 if(isset($_POST["search"]["value"]))
@@ -35,7 +35,7 @@ if(isset($_POST["order"]))
 }
 else
 {
-    $query .= 'ORDER BY fecha_emision DESC ';
+    $query .= 'ORDER BY fecha_cobro DESC ';
 }
 
 $query1 = '';
@@ -64,12 +64,12 @@ while($row = $result->fetch())
         $sub_array[] =$row["fecha_emision"];
 
        /// if ($row["consumo"]!=0){
-            $sub_array[] = $row["consumo"];
+            $sub_array[] = $row["consumo"]." m³";
         //}
 
         // $sub_array[] = $row["mes"];
         $sub_array[] = $row["monto_pagar"];
-        $sub_array[] = $row["mes"];
+        $sub_array[] = $row["fecha_cobro"];
         $data[] = $sub_array;
     }
 

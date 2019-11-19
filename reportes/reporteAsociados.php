@@ -16,12 +16,12 @@ $idate=$_GET['ADIR'];
 //$query = "SELECT * FROM suministro WHERE ";
 if ($idate=="TODOS"){
 
-    $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni FROM (suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni)";
+    $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM (suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni)";
     //$query .= 'direccion = "'.$idate.'"';
 
 }else{
 
-    $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni FROM suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni WHERE ";
+    $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni WHERE ";
     $query .= 'direccion = "'.$idate.'"';
 }
 
@@ -68,7 +68,7 @@ class PDF extends FPDF
         //$this->Image('images/logo.png', 5, 5, 30 );
         $this->SetFont('Arial','B',15);
         $this->Cell(30);
-        $this->Cell(120,10, 'Reporte De Ingreso de Gastos',0,0,'C');
+        $this->Cell(120,10, 'Reporte De Suministro',0,0,'C');
         $this->SetFont('Arial','B',10);
         $this->Cell(10);
         $this->Cell(20,20,'Fecha: '.$_SESSION['fecha'],0,0,'R');
@@ -118,8 +118,8 @@ $pdf->Cell(10,6,'#',1,0,'C',1);
 $pdf->Cell(30,6,'SUMINISTRO',1,0,'C',1);
 $pdf->Cell(100,6,'NOMBRE Y APELLIDO',1,0,'C',1);
 $pdf->Cell(25,6,'DNI',1,0,'C',1);
-$pdf->Cell(10,6,'M',1,0,'C',1);
-$pdf->Cell(20,6,'MONTO',1,1,'C',1);
+$pdf->Cell(5,6,'M',1,0,'C',1);
+$pdf->Cell(20,6,'C. Smt',1,1,'C',1);
 
 
 $pdf->SetFont('Arial','',10);
@@ -143,8 +143,8 @@ while($row = $result->fetch()) {
     $pdf->Cell(30,6,utf8_decode($row['cod_suministro']),1,0,'C');
     $pdf->Cell(100,6,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
     $pdf->Cell(25,6,utf8_decode($row['asociado_dni']),1,0,'C');
-    $pdf->Cell(10,6,$row['tiene_medidor'],1,0,'C');
-    $pdf->Cell(20,6,utf8_decode($row['asociado_dni']),1,1,'C');
+    $pdf->Cell(5,6,$row['tiene_medidor'],1,0,'C');
+    $pdf->Cell(20,6,utf8_decode($row['categoria_suministro']),1,1,'C');
   //  $y=$y+$row['contador_deuda'];
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
 
