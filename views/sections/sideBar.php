@@ -95,7 +95,10 @@
                             <a href="<?php echo SERVERURL; ?>rservamotizar/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver amortizavion</a>
                         </li>
                         <li>
-                            <a href="<?php echo SERVERURL; ?>rasociadoSM/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver asociados</a>
+                            <a href="<?php echo SERVERURL; ?>rasociadoSM/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver Suministro</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo SERVERURL; ?>rasociadosTotal/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver Asociado</a>
                         </li>
 					</ul>
 
