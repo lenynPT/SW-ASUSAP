@@ -127,13 +127,13 @@
         
 
         $pdf->SetXY(130,103);
-        $pdf->Cell(100,10,"S/. ".$infPag['subTotal'],0,0,''); 
+        $pdf->Cell(100,10,"S/. ".number_format($infPag['subTotal'],2),0,0,''); 
         $pdf->SetXY(130,107);
-        $pdf->Cell(100,10,"S/. ".$infPag['igvTotal'],0,0,''); 
+        $pdf->Cell(100,10,"S/. ".number_format($infPag['igvTotal'],2),0,0,''); 
 
         $pdf->SetFont('Arial','B',10); 
         $pdf->SetXY(118,140);
-        $pdf->Cell(100,10,"S/. ".$registro['monto'],0,0,'');
+        $pdf->Cell(100,10,"S/. ".number_format($registro['monto'],2),0,0,'');
 
          //SECCIÓN RECORTAR -**********************************
          $pdf->SetFont('Arial','B',7); 
@@ -148,7 +148,7 @@
          
          $pdf->SetFont('Arial','B',10); 
          $pdf->SetXY(117.2, 187.5);
-         $pdf->Cell(100,10,"S/. ".$registro['monto'],0,0,'');
+         $pdf->Cell(100,10,"S/. ".number_format($registro['monto'],2),0,0,'');
     
     }
 
