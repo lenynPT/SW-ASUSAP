@@ -106,6 +106,11 @@
                 echo json_encode($response);
             }
 
+            else if ($_POST['OPTION' == "msjRcb"]){
+                echo "server ";
+                //echo json_encode("hola");
+            }
+
 
         }
     }

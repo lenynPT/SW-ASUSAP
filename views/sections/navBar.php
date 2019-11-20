@@ -5,6 +5,12 @@
 		</li>
 
 		<li>
+			<a href="#!" class="btn-msjRcb" onclick="mensajeParaRecibo()">
+				<i class="zmdi zmdi-comment-alt-text"></i>
+			</a>
+		</li>
+
+		<li>
 			<a href="#!" class="btn-search">
 				<i class="zmdi zmdi-search"></i>
 			</a>
