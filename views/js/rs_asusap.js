@@ -377,8 +377,10 @@ function ImprimerRPR(){
 function ImpAso() {
 
     var start_date = document.querySelector("#direccionAsoc").value;
+    var estad = document.querySelector("#ESTADO").value;
+    var catA = document.querySelector("#categoriaAsoc").value;
 
-    window.open(`../reportes/reporteAsociados.php?ADIR=${start_date}`,'_blank')
-    console.log("total de paginas"+start_date)
+    window.open(`../reportes/reporteAsociados.php?ADIR=${start_date}&AEST=${estad}&ACAT=${catA}`,'_blank')
+    console.log("Direccion:"+start_date+" Estado:"+estad+" Cat:"+catA)
     
 }

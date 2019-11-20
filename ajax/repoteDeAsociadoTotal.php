@@ -10,44 +10,31 @@ require_once "../controllers/adminController.php";
 $inst = new adminController();
 
 //$connect = mysqli_connect("localhost", "root", "cardenas", "dbasusap2");
-$columns = array('cod_suministro', 'direccion', 'tiene_medidor', 'nombre', 'asociado_dni');
+$columns = array('dni', 'nombre', 'apellido', 'telefono', 'cant_suministro');
 // $query= "SELECT a.idfactura_recibo,f.nombre,s.cod_suministro,s.direccion,a.consumo,a.monto_pagar,a.anio,a.mes,a.fecha_emision,a.hora_emision,a.fecha_vencimiento,a.consumo,a.monto_pagar, s.cod_suministro
 //                            FROM ((factura_recibo a INNER JOIN suministro s ON a.suministro_cod_suministro = s.cod_suministro)
 //                            INNER JOIN asociado f ON f.dni = s.asociado_dni) WHERE a.suministro_cod_suministro  like '%" . $valor . "%' OR f.nombre  like '%" . $valor . "%' OR s.direccion  like '%" . $valor . "%'";
 //
-$query = "SELECT s.cod_suministro,s.direccion,S.casa_nro, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni WHERE ";
+$query = "SELECT DISTINCT   s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro/*,s.estado_corte*/ FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni   WHERE ";
 
 if($_POST["is_date_search"] == "yes")
 {
     $all=$_POST["start_date"] ;
-   $esta=$_POST["estad"] ;
-   $catA=$_POST["catA"] ;
-   // if ($all=="TODOS"){
+    $esta=$_POST["estad"] ;
+   // $catA=$_POST["catA"] ;
+    // if ($all=="TODOS"){
     //-----------------------DIRECCION  ------------------------------------------------------------
-    if ( $all==="TODOS" && $esta==3 && $catA=="Todos"){
-      // $query .= 'direccion BETWEEN "'.$_POST["start_date"].'" AND ';
+   if ( $all==="TODOS" && $esta==3 ){
+        // $query .= 'direccion BETWEEN "'.$_POST["start_date"].'" AND ';
         $query .= 'direccion BETWEEN "'.$_POST["start_date"].'" AND ';
     }
     else if ($all=="TODOS" && $esta==0){
-        if ($catA=="Domestico"){
 
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
-        }
-        if ($catA=="Comercial"){
-
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
-        }
-        if ($catA=="Estatal"){
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
-        }
-        if ($catA=="Industrial"){
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
-        }
 
         $query .= ' estado_corte="'.$_POST["estad"].'" AND ';
     }
     else if ($all=="TODOS" && $esta==2){
-        if ($catA=="Domestico"){
+        /*if ($catA=="Domestico"){
 
             $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
@@ -60,11 +47,12 @@ if($_POST["is_date_search"] == "yes")
         }
         if ($catA=="Industrial"){
             $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
-        }
-         $query .= ' estado_corte="'.$_POST["estad"].'" AND ';
+        }*/
+
+        $query .= ' estado_corte="'.$_POST["estad"].'" AND ';
     }
 //-----------------------------TIPO DE ESTADO DE DIVERSOS DIRECCIONES--------------------------------------------
-    else if ($all!="TODOS" && $esta==3){
+  /*  else if ($all!="TODOS" && $esta==3){
         if ($catA=="Domestico"){
 
             $query .= ' direccion ="'.$_POST["start_date"].'" AND categoria_suministro="'.$_POST["catA"] .'" AND';
@@ -140,7 +128,7 @@ if($_POST["is_date_search"] == "yes")
 
         $query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
         //$query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
-    }
+    }*/
     //-----------------------
 
 }
@@ -149,10 +137,10 @@ if($_POST["is_date_search"] == "yes")
 if(isset($_POST["search"]["value"]))
 {
     $query .= '
-  ( cod_suministro LIKE "%'.$_POST["search"]["value"].'%" 
-  OR direccion  LIKE "%'.$_POST["search"]["value"].'%" 
-  OR tiene_medidor LIKE "%'.$_POST["search"]["value"].'%" 
-  OR asociado_dni LIKE "%'.$_POST["search"]["value"].'%")
+  ( dni LIKE "%'.$_POST["search"]["value"].'%" 
+  OR  nombre LIKE "%'.$_POST["search"]["value"].'%" 
+  OR apellido LIKE "%'.$_POST["search"]["value"].'%" 
+  OR telefono LIKE "%'.$_POST["search"]["value"].'%")
  ';
 }
 
@@ -163,7 +151,7 @@ if(isset($_POST["order"]))
 }
 else
 {
-    $query .= 'ORDER BY direccion DESC ';
+    $query .= 'ORDER BY apellido ASC ';
 }
 $query1 = '';
 
@@ -184,47 +172,33 @@ $s = 1;
 //$columns = array('cod_suministro', 'direccion', 'tiene_medidor', 'categoria_suministro', 'asociado_dni');
 
 
+while ($row = $result->fetch()) {
 
-    while ($row = $result->fetch()) {
 
-
+   // if ($row["dni"]<=1){
 
         $sub_array = array();
         $sub_array[] = $s++;
-        $sub_array[] = $row["cod_suministro"];
-        $sub_array[] = $row["apellido"] . " " . $row["nombre"];
         $sub_array[] = $row["asociado_dni"];
-        $sub_array[] = $row["direccion"]."  N° #".$row["casa_nro"];
-        $sub_array[] = $row["categoria_suministro"];
-        // $sub_array[] = $row["mes"];
-        $data[] = $sub_array;
+        $sub_array[] = $row["apellido"] . " " . $row["nombre"];
+        $sub_array[] = $row["telefono"];
+        $sub_array[] = $row["cant_suministro"];
+//    }
+
+    //  $sub_array[] = $row["categoria_suministro"];
+    // $sub_array[] = $row["mes"];
+    $data[] = $sub_array;
 
 
 
 
 }
-/*
-while($row = mysqli_fetch_array($result))
-{
-    if ($row["fecha"]!=0){
-        $sub_array = array();
 
-        $sub_array[] =$s++;
-        $sub_array[] =$row["idfactura_servicio"];
-        $sub_array[] =$row["suministro_cod_suministro"];
-        $sub_array[] = $row["a_nombre"];
-       // $sub_array[] = $row["mes"];
-        $sub_array[] = $row["total_pago"];
-        $sub_array[] = $row["fecha"];
-        $data[] = $sub_array;
-    }
-
-}*/
 
 function get_all_data($connect)
 {
     $insts = new adminController();
-    $query = "SELECT * FROM suministro";
+    $query = "SELECT * FROM asociado";
     $result = $insts->consultaAsociado($query);
     // $result = mysqli_query($connect, $query);
     return $result->rowCount($result);
