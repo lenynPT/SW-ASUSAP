@@ -47,7 +47,7 @@
         <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="col-md-4 form-group row label-floating">
+                <div class="col-md-3 form-group row label-floating">
                     <div class="col-md-12">
                         <label for="direccionAsoc" class="col-md-4 control-label">DIRECIÓN</label>
                         <select class="form-control" id="direccionAsoc" name="direccionAsoc" ">
@@ -57,24 +57,47 @@
                     </div>
 
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3 form-group row label-floating">
+                    <div class="col-md-12">
+                        <label for="direccionAsoc" class="col-md-4 control-label">ESTADO</label>
+                        <?php
+                       // $indexEstado = $suministro['estado_corte'];
+                        $arrEstado = [0=>'ACTIVO',2=>'INACTIVO',3=>'TODOS'];
+                        ?>
+                        <select class="" id="ESTADO">
+                            <?php
+                            //echo "<option value='TODOS' selected>TODOS</option>";
+                            foreach ($arrEstado as $key => $value) {
+                                # code...
+                                //   if($key == $indexEstado){
+                                    echo "<option value='{$key}' selected>{$value}</option>";
+                                    continue;
+                              //  }
+                                //echo "<option value='{$key}'>{$value}</option>";
+                            }
+                            ?>
+
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-3 form-group label-floating">
+                    <label for="categoriaAsoc" class="col-md-4 control-label">CATEGORIA</label>
+                    <div class="col-md-12">
+                        <select class="form-control" id="categoriaAsoc" name="categoriaAsoc">
+                            <option>Todos</option>
+                            <option>Domestico</option>
+                            <option>Comercial</option>
+                            <option>Estatal</option>
+                            <option>Industrial</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
                     <input type="button" name="search" id="search" value="Search" class="btn btn-success btn-raised btn-sm" />
                 </div>
             </div>
-          <!--  <div class="input-daterange ">
-                <label for="direccionAsoc" class="col-md-4 control-label">DIRECIÓN</label>
-                <div class="col-md-5">
-                    <select class="form-control" id="direccionAsoc" name="direccionAsoc" ">
-                        <?/*=$htmlDirecciones*/?>
-                    </select>
-                </div>
-                <div class="col-md-5">
-                    <input type="text" name="start_date" id="start_date"   class="form-control" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <input type="button" name="search" id="search" value="Search" class="btn btn-success btn-raised btn-sm" />
-            </div>-->
+
 
         </div>
 
@@ -84,11 +107,11 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>N° RECIBO</th>
                 <th>SUMINISTRO</th>
-                <th>A NOMBRE COMPLETO</th>
-                <th>MONTO</th>
-                <th>FECHAs</th>
+                <th>APELLIDO Y NOMBRE</th>
+                <th>DNI</th>
+                <th>DIRECCION</th>
+                <th>C. SUMINISTRO</th>
             </tr>
             </thead>
         </table>
@@ -111,7 +134,7 @@
 
         fetch_data('no');
 
-        function fetch_data(is_date_search, start_date='')
+        function fetch_data(is_date_search, start_date='',estad,catA)
         {
             var dataTable = $('#order_data').DataTable({
                 "language":{
@@ -139,7 +162,7 @@
                     url:"../ajax/reportesAsociados.php",
                     type:"POST",
                     data:{
-                        is_date_search:is_date_search , start_date:start_date
+                        is_date_search:is_date_search , start_date:start_date ,estad:estad,catA:catA
                     }
                 }
             });
@@ -149,13 +172,17 @@
             //var start_date = $('#start_date').val();
 
             var start_date = document.querySelector("#direccionAsoc").value;
+            var estad = document.querySelector("#ESTADO").value;
+            var catA = document.querySelector("#categoriaAsoc").value;
+
+            console.log("estddo: "+estad+" la categoria es:"+catA)
           //  console.log('la direccion'+direccion);
 
           //  var end_date = $('#end_date').val();
             if(start_date != '')
             {
                 $('#order_data').DataTable().destroy();
-               fetch_data('yes', start_date);
+               fetch_data('yes', start_date,estad,catA);
             }
             else
             {

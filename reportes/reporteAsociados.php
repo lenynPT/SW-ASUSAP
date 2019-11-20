@@ -10,45 +10,155 @@ $inst = new adminController();
 
 require "fpdf/fpdf.php";
 
-//$idate=$_GET['inicioDate'];
-$idate=$_GET['ADIR'];
+//$idate=$_GET['inicioDate']  ;
+//ADIR=${start_date}&AEST=${estad}&ACAT=${catA}
+$aDirc=$_GET['ADIR'];
+$aEstd=$_GET['AEST'];
+$aCatg=$_GET['ACAT'];
 
-//$query = "SELECT * FROM suministro WHERE ";
-if ($idate=="TODOS"){
+
+if ($aDirc=="TODOS" && $aEstd==3 && $aCatg=="Todos"){
 
     $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM (suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni)";
-    //$query .= 'direccion = "'.$idate.'"';
+    //$query .= 'direccion = "'.$aDirc.'"';
 
 }else{
 
     $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni WHERE ";
-    $query .= 'direccion = "'.$idate.'"';
+
+    if ($aDirc == "TODOS" && $aEstd == 0) {
+
+        if ($aCatg=="Domestico"){
+
+            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Comercial"){
+
+            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'] .'" AND';
+        }
+        if ($aCatg=="Estatal"){
+            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Industrial"){
+            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+
+        $query .= ' estado_corte="' . $_GET['AEST']. '" ';
+    }
+    else if ($aDirc == "TODOS" && $aEstd == 2) {
+
+        if ($aCatg=="Domestico"){
+
+            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Comercial"){
+
+            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'] .'" AND';
+        }
+        if ($aCatg=="Estatal"){
+            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Industrial"){
+            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+
+        $query .= ' estado_corte="' . $_GET['AEST']. '" ';
+    }
+
+    //-----------------------------TIPO DE ESTADO DE DiVARSAS DIRECCIONES--------------------------------------------
+    else if ($aDirc!="TODOS" && $aEstd==3){
+        if ($aCatg=="Domestico"){
+
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Comercial"){
+
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Estatal"){
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND  categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Industrial"){
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND  categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+
+        $query .= ' direccion ="'.$_GET['ADIR'].'"';
+    }
+    else if ($aDirc!="TODOS" && $aEstd==2){
+        if ($aCatg=="Domestico"){
+
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Comercial"){
+
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Estatal"){
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND  categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Industrial"){
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND  categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+
+        $query .= ' direccion ="'.$_GET['ADIR'].'" AND estado_corte ="'.$_GET['AEST'].'"';
+    }
+    else if ($aDirc!="TODOS" && $aEstd==0){
+        if ($aCatg=="Domestico"){
+
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Comercial"){
+
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Estatal"){
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+        if ($aCatg=="Industrial"){
+            $query .= ' direccion ="'.$_GET['ADIR'].'" AND estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
+        }
+
+        $query .= ' direccion ="'.$_GET['ADIR'].'" AND estado_corte ="'.$_GET['AEST'].'"';
+    }
+
+    //-------------------------CATEGORIA DE SUMINISTRO-------------------------------------
+
+    else if ($aDirc=="TODOS" && $aEstd==3 && $aCatg=="Domestico"){
+
+        $query .= 'categoria_suministro="'.$_GET['ACAT'].'"';
+    }
+    else if ($aDirc=="TODOS" && $aEstd==3 && $aCatg=="Comercial"){
+
+        $query .= 'categoria_suministro="'.$_GET['ACAT'].'"';
+    }
+    else if ($aDirc=="TODOS" && $aEstd==3 && $aCatg=="Estatal"){
+
+        $query .= 'categoria_suministro="'.$_GET['ACAT'].'"';
+    }
+    else if ($aDirc=="TODOS" && $aEstd==3 && $aCatg=="Industrial"){
+
+        $query .= 'categoria_suministro="'.$_GET['ACAT'].'"';
+    }
+
 }
 
-//$query .= 'direccion = "'.$idate.'"';
+//$query .= 'direccion = "'.$aDirc.'"';
 $query .= 'ORDER BY apellido ASC ';
 $result = $inst->consultaAsociado( $query );
 //Permite incluir los archivos necesarios para las funciones de consulta.
 
 $_POST['urlimg'] = 'img/boletaAGua.jpg';
-//anRSI=${anIRS}&codSI=${codsuI}&desNSI=${co},
-//$codSRSI=$_POST['CodRS']  tto;
-//window.open(`../reportes/reportesAmortizar.php?inicioDate=${start_date}&finalDate=${end_date}`,'_blank')
+
 
 $IRAS=$_GET['RAS'];
-//$idate=$_GET['inicioDate'];
-//$fdate=$_GET['finalDate'];
 
-
-//session_start(['name'=>'ASUSAP']);
-//$_SESSION['cost']=$_GET['cosTSI'];
 
 
 date_default_timezone_set('America/Lima');
 $created_date = date("Y-m-d H:i");
 session_start(['name'=>'ASUSAP']);
 $_SESSION['fecha']=$created_date;
-$_SESSION['asDIR']=$idate;
+$_SESSION['asDIR']=$aDirc;
 //$_SESSION['fechaFinal']=$_GET['finalDate'];
 $_SESSION['diatotal']=$td;
 
