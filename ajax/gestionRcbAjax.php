@@ -42,7 +42,7 @@
 
                 //actualizar contador_deuda + 1
                 if($response){
-                    //Tambien pone en CORTE si tiene una 3ra deuda
+                    //Tambien pone en CORTE si tiene una 3ra deuda y agrega cargo por reconexión
                     $ok = $respInsert->actualizarContadorDeudaController($arrData['cod_sum']);
                 }
 

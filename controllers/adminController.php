@@ -224,6 +224,7 @@
 				"hora" 	=> date("H"),
 				"minuto" 	=> date("i"),
 				"segundo" 	=> date("s"),
+				"date_complete" => date("Y-m-d H:i:s")
 			];
 			return $fecha_hoy;
 		}
@@ -519,6 +520,8 @@
 			if($cont_deuda >= 3){
 				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
 				$resqr3 = mainModel::execute_single_query($query3);
+				//Agrgando pagaré por servicio de reconexión
+				$query4 = self::generarMontoXCorteServicio($cod_sum);
 			}
 			return $cont_deuda;
 		}
@@ -1162,4 +1165,45 @@
 			}			
 			return ['res'=>$exist,'data'=>$arrData];
 		}
+
+		//Regitrar servicio de reconexion por corte
+		public function generarMontoXCorteServicio($cod_sum){
+			$fecha_actual = self::consultar_fecha_actual();            
+
+			$idRS=self::idRegistroServ(); //como se generan los IDS. ?? preguntar admer
+			
+			$query = "SELECT asociado.nombre,asociado.apellido FROM asociado INNER JOIN suministro ON asociado.dni = suministro.asociado_dni 
+						WHERE suministro.cod_suministro = '$cod_sum'";
+			$query = mainModel::execute_single_query($query);
+			$suministro = $query->fetch(PDO::FETCH_ASSOC);
+
+			$datosController = array(
+                "codRS" => $idRS['Idcod'],
+                "anombre" => "{$suministro['nombre']} {$suministro['apellido']}",
+                "anio" =>$fecha_actual['anio'],
+                "mes" => $fecha_actual['mes'],
+                "fecha" => $fecha_actual['date_complete'],
+                "monto" => 0,
+                "totalp" => 30,
+                "estac" => 0,
+				"cods" => $cod_sum,
+				"mont_res" => 30
+
+            );
+			$rsptaModel_FS = adminModel::guardarRS($datosController);
+			
+			//Insertar detalle_servicio
+			$data_DS = [
+				"descrip" => "CORTE Y RECONEXION",
+				"dcosto" => 30,
+				"cds" => $idRS['Idcod']
+			];
+			
+			$rsptModel_DS = adminModel::insertsRS($data_DS);
+
+			
+			return true;
+		}
+
+
 	}

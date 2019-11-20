@@ -352,7 +352,9 @@ function cogerConsumo(value, cons_ant, cod_sum, categoria){
 		}).then(()=>{
 			//Cuando le de la opción de ok
 			console.log("le dio aceptar",consumo,cod_sum);
-			//document.querySelector("#rspSumi").innerHTML = "--->>"+cod_sum;				
+			//document.querySelector("#rspSumi").innerHTML = "--->>"+cod_sum;	
+			//limpiando por si no cargan los datos...
+			document.querySelector("#rspSumi").innerHTML = '';				
 			/*
 			*/
 			dataS = new FormData();
