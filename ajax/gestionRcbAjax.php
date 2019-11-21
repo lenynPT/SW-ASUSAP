@@ -106,9 +106,12 @@
                 echo json_encode($response);
             }
 
-            else if ($_POST['OPTION' == "msjRcb"]){
-                echo "server ";
-                //echo json_encode("hola");
+            else if ($_POST['OPTION'] == "MSJrcb"){
+                /*
+                */
+                $obj = new adminController();
+                $response = $obj->mensajeReciboController($_POST);
+                echo json_encode($_POST);
             }
 
 

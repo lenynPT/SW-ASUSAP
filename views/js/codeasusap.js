@@ -1345,44 +1345,27 @@ function obtenerListDirecciones(event){
 
 function mensajeParaRecibo(){
 	console.log("mensje para recibo");
+	let el = document.querySelector("#txtmsjRcb");
 
-	//e.preventDefault();
-	swal({
-		title: 'AGREGAR MENSAJE',
-		confirmButtonText: '<i class="zmdi zmdi-search"></i>  Search',
-		confirmButtonColor: '#03A9F4',
-		showCancelButton: true,
-		cancelButtonColor: '#F44336',
-		cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Cancel',
-		html: '<div class="form-group label-floating">'+
-					'<label class="control-label" for="Imput-msjRcb">Escribe Aquí:</label>'+
-					'<input class="form-control" id="Imput-msjRcb" type="text" value="aceptar">'+
-					'<input class="btn btn-success" id="btn-msjRcb" type="button" value="ACPTAR">'+
-			'</div>'
-	}).then(()=>{
-
-	});
-
-	let el = document.querySelector("#btn-msjRcb");
 	if(el){
-		el.addEventListener('click',()=>{
-			let msj = document.querySelector("#Imput-msjRcb")
-			console.log("holaa",msj.value);
 
-			$.ajax({
-				url:'../ajax/gestionRcbAjax.php',
-				data:{
-					'OPTION':'msjRcb',
-					'msj':"putito"					
-				},
-				type:"POST",
-				dataType : 'json',
-				success : function(json) {
-					console.log(json)
-					console.log("listo")
-				}
-			})
+		console.log(el.value);
 
+		let data = new FormData();
+		data.append('OPTION','MSJrcb')
+		data.append('msj',el.value)
+
+		fetch('../ajax/gestionRcbAjax.php',{
+			method:"post",
+			body:data
+		}).then(res => res.json())
+		.then(data=>{			
+			console.log(data)
+			swal(
+				'Listo!!',
+				'Se actualizó el Mensaje',
+				'success'
+			)
 		})
 	}
 }

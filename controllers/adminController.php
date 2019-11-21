@@ -1205,5 +1205,13 @@
 			return true;
 		}
 
+		public function mensajeReciboController($data){
+			//comprobar que exista el registro, sino crear uno 
+			
+			//Se actualiza el msj
+			$query = "UPDATE mensaje_recibo SET mensaje = '{$data['msj']}', fecha_upd=now() WHERE mensaje_recibo.id=1";			
+			$resQ = mainModel::execute_single_query($query);
+			return true;
+		}
 
 	}
