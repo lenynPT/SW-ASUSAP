@@ -1140,7 +1140,7 @@
 			for ($del_mes=intval($data['del_mes']); $del_mes <=12 ; $del_mes++) { 
 				# code...	
 				$query2 = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
-				VALUES (NULL, {$data['anio']}, {$del_mes}, '{$fecha_e}', '{$hora_e}', '{$fecha_v}', 0, {$data['monto']}, 1, 1, '{$data['cod_sum']}')";
+				VALUES (NULL, {$data['anio']}, {$del_mes}, '{$fecha_e}', '{$hora_e}', '{$fecha_v}', 0, '4.2', 1, 1, '{$data['cod_sum']}')";
 				$resInsrt2 = mainModel::execute_single_query($query2);
 
 			}
