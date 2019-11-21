@@ -224,6 +224,7 @@
 				"hora" 	=> date("H"),
 				"minuto" 	=> date("i"),
 				"segundo" 	=> date("s"),
+				"date_complete" => date("Y-m-d H:i:s")
 			];
 			return $fecha_hoy;
 		}
@@ -519,6 +520,8 @@
 			if($cont_deuda >= 3){
 				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
 				$resqr3 = mainModel::execute_single_query($query3);
+				//Agrgando pagaré por servicio de reconexión
+				$query4 = self::generarMontoXCorteServicio($cod_sum);
 			}
 			return $cont_deuda;
 		}
@@ -1142,7 +1145,7 @@
 			for ($del_mes=intval($data['del_mes']); $del_mes <=12 ; $del_mes++) { 
 				# code...	
 				$query2 = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
-				VALUES (NULL, {$data['anio']}, {$del_mes}, '{$fecha_e}', '{$hora_e}', '{$fecha_v}', 0, {$data['monto']}, 1, 1, '{$data['cod_sum']}')";
+				VALUES (NULL, {$data['anio']}, {$del_mes}, '{$fecha_e}', '{$hora_e}', '{$fecha_v}', 0, '4.2', 1, 1, '{$data['cod_sum']}')";
 				$resInsrt2 = mainModel::execute_single_query($query2);
 
 			}
@@ -1167,4 +1170,60 @@
 			}			
 			return ['res'=>$exist,'data'=>$arrData];
 		}
+
+		//Regitrar servicio de reconexion por corte
+		public function generarMontoXCorteServicio($cod_sum){
+			$fecha_actual = self::consultar_fecha_actual();            
+
+			$idRS=self::idRegistroServ(); //como se generan los IDS. ?? preguntar admer
+			
+			$query = "SELECT asociado.nombre,asociado.apellido FROM asociado INNER JOIN suministro ON asociado.dni = suministro.asociado_dni 
+						WHERE suministro.cod_suministro = '$cod_sum'";
+			$query = mainModel::execute_single_query($query);
+			$suministro = $query->fetch(PDO::FETCH_ASSOC);
+
+			$datosController = array(
+                "codRS" => $idRS['Idcod'],
+                "anombre" => "{$suministro['nombre']} {$suministro['apellido']}",
+                "anio" =>$fecha_actual['anio'],
+                "mes" => $fecha_actual['mes'],
+                "fecha" => $fecha_actual['date_complete'],
+                "monto" => 0,
+                "totalp" => 30,
+                "estac" => 0,
+				"cods" => $cod_sum,
+				"mont_res" => 30
+
+            );
+			$rsptaModel_FS = adminModel::guardarRS($datosController);
+			
+			//Insertar detalle_servicio
+			$data_DS = [
+				"descrip" => "CORTE Y RECONEXION",
+				"dcosto" => 30,
+				"cds" => $idRS['Idcod']
+			];
+			
+			$rsptModel_DS = adminModel::insertsRS($data_DS);
+
+			
+			return true;
+		}
+
+		public function mensajeReciboController($data){
+			//comprobar que exista el registro, sino crear uno 
+			
+			//Se actualiza el msj
+			$query = "UPDATE mensaje_recibo SET mensaje = '{$data['msj']}', fecha_upd=now() WHERE mensaje_recibo.id=1";			
+			$resQ = mainModel::execute_single_query($query);
+			return true;
+		}
+
+		public function getmensajeReciboController(){
+			$query = "SELECT mensaje FROM mensaje_recibo LIMIT 0,1";
+			$resQ = mainModel::execute_single_query($query);
+			$mensaje = $resQ->fetch(PDO::FETCH_ASSOC);
+			return $mensaje['mensaje'];
+		}
+
 	}

@@ -5,7 +5,13 @@
 		</li>
 
 		<li>
-			<a href="#!" class="btn-search">
+			<a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalMSJ">
+  				<i class="zmdi zmdi-comment-alt-text"></i>
+			</a>		
+		</li>
+
+		<li>
+			<a href="#!" class="btn-search**">
 				<i class="zmdi zmdi-search"></i>
 			</a>
 		</li>

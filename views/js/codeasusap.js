@@ -352,7 +352,9 @@ function cogerConsumo(value, cons_ant, cod_sum, categoria){
 		}).then(()=>{
 			//Cuando le de la opción de ok
 			console.log("le dio aceptar",consumo,cod_sum);
-			//document.querySelector("#rspSumi").innerHTML = "--->>"+cod_sum;				
+			//document.querySelector("#rspSumi").innerHTML = "--->>"+cod_sum;	
+			//limpiando por si no cargan los datos...
+			document.querySelector("#rspSumi").innerHTML = '';				
 			/*
 			*/
 			dataS = new FormData();
@@ -1339,4 +1341,31 @@ function obtenerListDirecciones(event){
 		selectDirecc.innerHTML = htmlSelectDirec;	
 	})
 
+}
+
+function mensajeParaRecibo(){
+	console.log("mensje para recibo");
+	let el = document.querySelector("#txtmsjRcb");
+
+	if(el){
+
+		console.log(el.value);
+
+		let data = new FormData();
+		data.append('OPTION','MSJrcb')
+		data.append('msj',el.value)
+
+		fetch('../ajax/gestionRcbAjax.php',{
+			method:"post",
+			body:data
+		}).then(res => res.json())
+		.then(data=>{			
+			console.log(data)
+			swal(
+				'Listo!!',
+				'Se actualizó el Mensaje',
+				'success'
+			)
+		})
+	}
 }

@@ -42,7 +42,7 @@
 
                 //actualizar contador_deuda + 1
                 if($response){
-                    //Tambien pone en CORTE si tiene una 3ra deuda
+                    //Tambien pone en CORTE si tiene una 3ra deuda y agrega cargo por reconexión
                     $ok = $respInsert->actualizarContadorDeudaController($arrData['cod_sum']);
                 }
 
@@ -104,6 +104,14 @@
                 $obj = new adminController();
                 $response = $obj->cobrarSumSnMxAnioController($_POST);
                 echo json_encode($response);
+            }
+
+            else if ($_POST['OPTION'] == "MSJrcb"){
+                /*
+                */
+                $obj = new adminController();
+                $response = $obj->mensajeReciboController($_POST);
+                echo json_encode($_POST);
             }
 
 

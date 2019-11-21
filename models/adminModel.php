@@ -222,8 +222,11 @@
 			$stmt->bindParam(":suministro_cod_suministro",$dataModel['cod_sum']);
 			
 			$stmt->execute();
-
-			return true;
+			
+			if($stmt->rowCount()==1){
+				return true;
+			}
+			return false;
 		}
 
 
@@ -283,9 +286,11 @@
 
 
         public function  guardarRS($datosModels){
-            //insertar Registro de servicio los items
+			//insertar Registro de servicio los items
+			$mont_res = (isset($datosModels['mont_res']))? 30 : 0 ;
+			
             $stmt=mainModel::connect()->prepare("INSERT INTO factura_servicio (idfactura_servicio,a_nombre ,anio,mes,fecha,monto_pagado,mont_restante,total_pago,esta_cancelado, suministro_cod_suministro)
-												                                 VALUES (:idfs, :a_nombre, :anio,:mes,:fecha,:monto_p,0,:total_p,:esta_c,:codigo_su)");
+												                                 VALUES (:idfs, :a_nombre, :anio,:mes,:fecha,:monto_p,$mont_res,:total_p,:esta_c,:codigo_su)");
 
 
             $stmt->bindParam(":idfs",$datosModels["codRS"]);
@@ -342,6 +347,7 @@
 
             $stmt->execute();
             return $stmt;
+
         }
 
         public function pagarASR($dataAd){

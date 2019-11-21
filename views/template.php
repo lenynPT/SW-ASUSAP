@@ -80,5 +80,34 @@
 		$.material.init();
 	</script>
 
+
+<!-- Button trigger modal PARA EL MSJ DE LOS RECIBOS -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalMSJ" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">MENSAJE RECIBO</h5>
+      </div>
+      <div class="modal-body">
+			<p>El mensaje que se escriba en este apartado, será el que se verá en la parte inferior de los recibos impresos para el mes que corresponda </p>
+			<div class="form-group">
+				<label for="message-text" class="col-form-label" >Mensaje:</label>
+        		<input type="text" id="txtmsjRcb" name="txtmsjRcb" class="form-control" placeholder=": Escribe aquí el mensaje :D">				
+          	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+        <button type="button" class="btn btn-primary" onclick="mensajeParaRecibo()">GUARDAR MENSAJE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>

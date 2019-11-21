@@ -14,6 +14,9 @@ $selectMes = $_GET['mes'];
 
 //Inicializando objeto de consultas
 $objDirec = new adminController();
+
+//mensaje admin
+$msjAdmin = utf8_decode($objDirec->getmensajeReciboController());
 //devuelve los registros por dirección
 $resConsult = $objDirec->recibosObtenerDataSumXdirec($selectDireccion,$selectAnio,$selectMes);
 //devuelve el mes en forma literal
@@ -180,10 +183,10 @@ if(!$resConsult['res']){
             //nueva seccion igv y subtotal***************************************************
             //Sub total
             $pdf->SetXY(130,103.5);
-            $pdf->Cell(100,10,"/S. ".$subT['subt'],0,0,'');
+            $pdf->Cell(100,10,"/S. ".number_format($subT['subt'],2),0,0,'');
             //IGV Total
             $pdf->SetXY(130,107);
-            $pdf->Cell(100,10,"/S. ".$subT['igvt'],0,0,'');
+            $pdf->Cell(100,10,"/S. ".number_format($subT['igvt'],2),0,0,'');
         }else{
             //primera fila de 
             $pdf->SetXY(85,64);
@@ -208,7 +211,7 @@ if(!$resConsult['res']){
         $pdf->SetXY(74.3,111);
         $pdf->Cell(100,10,"Deuda Mes Actual",0,0,'');
         $pdf->SetXY(125,111);
-        $pdf->Cell(20,10,"S/. ".$element['monto_pagar'],0,0,'C');
+        $pdf->Cell(20,10,"S/. ".number_format($element['monto_pagar'],2),0,0,'C');
         
         $pdf->SetFont('Arial','B',10);  
         $pdf->SetXY(118,140.5);
@@ -217,6 +220,9 @@ if(!$resConsult['res']){
         //mensaje de corte
         $pdf->SetXY(10,150);
         $pdf->Cell(0,10,utf8_decode($msjCorte),0,0,'');
+        $pdf->SetFont('Arial','B',7);
+        $pdf->SetXY(2,160);
+        $pdf->MultiCell( 70, 5,$msjAdmin, 0,'C');
         
         
         //SECCIÓN RECORTAR -**********************************
@@ -276,18 +282,18 @@ $pdf->Output();
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/ 0.18",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
-                $pdf->Cell(100,10,"$/. {$val1}",0,0,'');
+                $pdf->Cell(100,10,"$/. ".number_format($val1,2),0,0,'');
                 //segunda fila de 
                 $pdf->SetXY(85,67+1*$x);
                 $pdf->Cell(100,10,"(De 20 a 40)m3 * $/ 0.60",0,0,'');
                 $pdf->SetXY(130,67+1*$x);
-                $pdf->Cell(100,10,"$/. {$val2}",0,0,'');
+                $pdf->Cell(100,10,"$/. ".number_format($val2,2),0,0,'');
                 //tercera fila de 
                 $pdf->SetXY(85,70+2*$x);
                 $pdf->Cell(100,10,"(De 40 a mas)m3 * $/ 0.95",0,0,'');
                 $pdf->SetXY(130,70+2*$x);
-                $pdf->Cell(100,10,"$/. {$val3}",0,0,'');
-                
+                $pdf->Cell(100,10,"$/. ".number_format($val3,2),0,0,'');
+
                 /*
                 //IGV
                 $pdf->SetXY(85,73+3*$x);
@@ -316,12 +322,12 @@ $pdf->Output();
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/. 0.50",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
-                $pdf->Cell(100,10,"$/. {$val1}",0,0,'');
+                $pdf->Cell(100,10,"$/. ".number_format($val1,2),0,0,'');
                 //segunda fila de 
                 $pdf->SetXY(85,67+1*$x);
                 $pdf->Cell(100,10,"(De 20 a mas)m3 * $/ 0.95",0,0,'');
                 $pdf->SetXY(130,67+1*$x);
-                $pdf->Cell(100,10,"$/. {$val2}",0,0,'');
+                $pdf->Cell(100,10,"$/. ".number_format($val2,2),0,0,'');
                 
                 /*
                 //IGV
@@ -350,12 +356,12 @@ $pdf->Output();
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a 20)m3 * $/. 0.60",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
-                $pdf->Cell(100,10,"$/. {$val1}",0,0,'');
+                $pdf->Cell(100,10,"$/. ".number_format($val1,2),0,0,'');
                 //segunda fila de 
                 $pdf->SetXY(85,67+1*$x);
                 $pdf->Cell(100,10,"(De 20 a mas)m3 * $/ 0.95",0,0,'');
                 $pdf->SetXY(130,67+1*$x);
-                $pdf->Cell(100,10,"$/. {$val2}",0,0,'');
+                $pdf->Cell(100,10,"$/. ".number_format($val2,2),0,0,'');
                 
                 /*
                 //IGV
@@ -378,7 +384,8 @@ $pdf->Output();
                 $pdf->SetXY(85,64+0*$x);
                 $pdf->Cell(100,10,"(De 0 a mas)m3 * $/. 2.00",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
-                $pdf->Cell(100,10,"$/. {$val1}",0,0,'');
+                $pdf->Cell(100,10,"$/. ".number_format($val1,2),0,0,'');                
+
                 
                 /*
                 //IGV
