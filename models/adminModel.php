@@ -352,7 +352,7 @@
 
         public function pagarASR($dataAd){
 
-            $stmt=mainModel::connect()->prepare("INSERT INTO amorti_servicio (fecha,monto_amorti,factura_servicio_idfactura_servicio)
+            $stmt=mainModel::connect()->prepare("INSERT INTO amorti_servicio (fechaA,monto_amorti,factura_servicio_idfactura_servicio)
                                                         VALUES (:fecha,:montPagado,:id)");
             $stmt->bindParam(":montPagado",$dataAd["MPAGADO"]);
             $stmt->bindParam(":fecha",$dataAd["FECHAA"]);

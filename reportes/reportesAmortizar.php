@@ -13,26 +13,17 @@ require "fpdf/fpdf.php";
 $idate=$_GET['inicioDate'];
 $fdate=$_GET['finalDate'];
 
-$query = "SELECT * FROM factura_servicio WHERE ";
+$query = "SELECT  f.idfactura_servicio,f.suministro_cod_suministro,f.a_nombre,f.total_pago,a.fechaA, a.monto_amorti FROM amorti_servicio a INNER  JOIN factura_servicio f ON f.idfactura_servicio = a.factura_servicio_idfactura_servicio WHERE ";
 
 
-$query .= 'fecha BETWEEN "'.$idate.'" AND "'.$fdate.'" ';
-$query .= 'ORDER BY fecha DESC ';
+$query .= 'fechaA BETWEEN "'.$idate.'" AND "'.$fdate.'" ';
+$query .= 'ORDER BY fechaA DESC ';
 $result = $inst->consultaAsociado( $query );
 //Permite incluir los archivos necesarios para las funciones de consulta.
 
 $_POST['urlimg'] = 'img/boletaAGua.jpg';
-//anRSI=${anIRS}&codSI=${codsuI}&desNSI=${co},
-//$codSRSI=$_POST['CodRS']  tto;
-//window.open(`../reportes/reportesAmortizar.php?inicioDate=${start_date}&finalDate=${end_date}`,'_blank')
 
 $IRAS=$_GET['RAS'];
-//$idate=$_GET['inicioDate'];
-//$fdate=$_GET['finalDate'];
-
-
-//session_start(['name'=>'ASUSAP']);
-//$_SESSION['cost']=$_GET['cosTSI'];
 
 
 date_default_timezone_set('America/Lima');
@@ -133,10 +124,11 @@ while($row = $result->fetch()) {
     $pdf->Cell(6,6,$o++,1,0,'C');
     $pdf->Cell(25,6,utf8_decode($row['idfactura_servicio']),1,0,'C');
     $pdf->Cell(25,6,utf8_decode($row['suministro_cod_suministro']),1,0,'C');
+   // $pdf->Cell(25,6,utf8_decode($row['monto_amorti']),1,0,'C');
     $pdf->Cell(85,6,utf8_decode($row['a_nombre']),1,0,'L');
-    $pdf->Cell(30,6,$row['fecha'],1,0,'C');
-    $pdf->Cell(20,6,utf8_decode($row['total_pago']),1,1,'L');
-    $y=$y+$row['total_pago'];
+    $pdf->Cell(30,6,$row['fechaA'],1,0,'C');
+    $pdf->Cell(20,6,utf8_decode($row['monto_amorti']),1,1,'L');
+    $y=$y+$row['monto_amorti'];
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
 
    /* $pdf->Cell(11,$off,2,".","," ,0,0,"R");

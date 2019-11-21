@@ -248,7 +248,9 @@ function guardarARMOTIZACION() {
     let mTotal=document.getElementById("montAll").value;
     let ids=document.getElementById("idReciboA").innerHTML;
     let MONTOP=document.getElementById("montP").value;
-    let rest=mTotal-mpag;
+    Number.parseFloat(mTotal).toFixed(2);
+   // let rest=mTotal-mpag;
+    let rest=Number.parseFloat(mTotal).toFixed(2)-Number.parseFloat(mpag).toFixed(2);
 
     console.log("monto pagado esta guardandose "+ids+mpag)
     swal({

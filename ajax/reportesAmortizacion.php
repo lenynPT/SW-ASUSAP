@@ -7,23 +7,33 @@ require_once "../core/configSite.php";
 require_once "../controllers/adminController.php";
 
 $inst = new adminController();
+/*S
+$columns = array('idamorti_servicio', 'direccion', 'tiene_medidor', 'nombre', 'asociado_dni');
+// $query= "SELECT a.idfactura_recibo,f.nombre,s.cod_suministro,s.direccion,a.consumo,a.monto_pagar,a.anio,a.mes,a.fecha_emision,a.hora_emision,a.fecha_vencimiento,a.consumo,a.monto_pagar, s.cod_suministro
+//                            FROM ((factura_recibo a INNER JOIN suministro s ON a.suministro_cod_suministro = s.cod_suministro)
+//                            INNER JOIN asociado f ON f.dni = s.asociado_dni) WHERE a.suministro_cod_suministro  like '%" . $valor . "%' OR f.nombre  like '%" . $valor . "%' OR s.direccion  like '%" . $valor . "%'";
+//
+$query = "SELECT s.cod_suministro,s.direccion,S.casa_nro, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni WHERE ";
+*/
 
 //$connect = mysqli_connect("localhost", "root", "cardenas", "dbasusap2");
-$columns = array('fecha', 'suministro_cod_suministro', 'a_nombre', 'monto_amorti', 'factura_servicio_idfactura_servicio');
+$columns = array('idfactura_servicio','monto_amorti');
 
-$query = "SELECT * FROM amorti_servicio WHERE ";
+$query = "SELECT  f.idfactura_servicio,f.suministro_cod_suministro,f.total_pago,a.fechaA, a.monto_amorti FROM  amorti_servicio a INNER  JOIN factura_servicio f ON f.idfactura_servicio = a.factura_servicio_idfactura_servicio WHERE ";
+//$query = "SELECT a.factura_servicio_idfactura_servicio,fs.suministro_cod_suministro, a.fecha, a.monto_amorti FROM  amorti_servicio a INNER JOIN factura_servicio fs ON fs.idfactura_servicio = a.factura_servicio_idfactura_servicio  WHERE ";
 
 if($_POST["is_date_search"] == "yes")
 {
-    $query .= 'fecha BETWEEN "'.$_POST["start_date"].'" AND "'.$_POST["end_date"].'" AND ';
+    $query .= 'fechaA BETWEEN "'.$_POST["start_date"].'" AND "'.$_POST["end_date"].'" AND ';
 }
 
 if(isset($_POST["search"]["value"]))
 {
     $query .= '
-  (factura_servicio_idfactura_servicio LIKE "%'.$_POST["search"]["value"].'%" 
+  (idfactura_servicio LIKE "%'.$_POST["search"]["value"].'%" 
   OR monto_amorti LIKE "%'.$_POST["search"]["value"].'%" 
-  OR fecha LIKE "%'.$_POST["search"]["value"].'%" 
+  OR suministro_cod_suministro LIKE "%'.$_POST["search"]["value"].'%" 
+  OR fechaA LIKE "%'.$_POST["search"]["value"].'%" 
   )
  ';
     // OR total_pago LIKE "%'.$_POST["search"]["value"].'%"
@@ -36,7 +46,7 @@ if(isset($_POST["order"]))
 }
 else
 {
-    $query .= 'ORDER BY fecha DESC ';
+    $query .= 'ORDER BY fechaA DESC ';
 }
 
 $query1 = '';
@@ -47,9 +57,7 @@ if($_POST["length"] != -1)
 }
 $rs=$inst->consultaAsociado($query);
 $number_filter_row = $rs->rowCount($rs);
-//$number_filter_row = mysqli_num_rows(mysqli_query($connect, $query));
 
-//$result = mysqli_query($connect, $query . $query1);
 $result = $inst->consultaAsociado( $query . $query1);
 
 $data = array();
@@ -60,33 +68,19 @@ while($row = $result->fetch())
         $sub_array = array();
 
         $sub_array[] =$s++;
-        $sub_array[] =$row["factura_servicio_idfactura_servicio"];
+        $sub_array[] =$row["idfactura_servicio"];
+        $sub_array[] =$row["suministro_cod_suministro"];
+        $sub_array[] =$row["total_pago"];
         $sub_array[] =$row["monto_amorti"];
-        $sub_array[] = $row["fecha"];
-       // $sub_array[] = $row["mes"];
+        $sub_array[] = $row["fechaA"];
+    // $sub_array[] = $row["mes"];
        // $sub_array[] = $row["total_pago"];
         //$sub_array[] = $row["fecha"];
         $data[] = $sub_array;
    // }
 
 }
-/*
-while($row = mysqli_fetch_array($result))
-{
-    if ($row["fecha"]!=0){
-        $sub_array = array();
 
-        $sub_array[] =$s++;
-        $sub_array[] =$row["idfactura_servicio"];
-        $sub_array[] =$row["suministro_cod_suministro"];
-        $sub_array[] = $row["a_nombre"];
-       // $sub_array[] = $row["mes"];
-        $sub_array[] = $row["total_pago"];
-        $sub_array[] = $row["fecha"];
-        $data[] = $sub_array;
-    }
-
-}*/
 
 function get_all_data($connect)
 {   $insts = new adminController();

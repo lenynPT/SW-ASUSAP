@@ -163,7 +163,7 @@ if(isset($_POST["order"]))
 }
 else
 {
-    $query .= 'ORDER BY direccion DESC ';
+    $query .= 'ORDER BY apellido ASC ';
 }
 $query1 = '';
 
@@ -203,23 +203,7 @@ $s = 1;
 
 
 }
-/*
-while($row = mysqli_fetch_array($result))
-{
-    if ($row["fecha"]!=0){
-        $sub_array = array();
 
-        $sub_array[] =$s++;
-        $sub_array[] =$row["idfactura_servicio"];
-        $sub_array[] =$row["suministro_cod_suministro"];
-        $sub_array[] = $row["a_nombre"];
-       // $sub_array[] = $row["mes"];
-        $sub_array[] = $row["total_pago"];
-        $sub_array[] = $row["fecha"];
-        $data[] = $sub_array;
-    }
-
-}*/
 
 function get_all_data($connect)
 {
