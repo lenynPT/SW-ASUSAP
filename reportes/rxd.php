@@ -293,7 +293,7 @@ $pdf->Output();
                 $pdf->Cell(100,10,"(De 40 a mas)m3 * $/ 0.95",0,0,'');
                 $pdf->SetXY(130,70+2*$x);
                 $pdf->Cell(100,10,"$/. ".number_format($val3,2),0,0,'');
-                
+
                 /*
                 //IGV
                 $pdf->SetXY(85,73+3*$x);
@@ -385,6 +385,7 @@ $pdf->Output();
                 $pdf->Cell(100,10,"(De 0 a mas)m3 * $/. 2.00",0,0,'');
                 $pdf->SetXY(130,64+0*$x);
                 $pdf->Cell(100,10,"$/. ".number_format($val1,2),0,0,'');                
+
                 
                 /*
                 //IGV

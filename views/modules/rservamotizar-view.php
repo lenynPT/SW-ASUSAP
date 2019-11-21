@@ -55,8 +55,8 @@
                 <th>N° RECIBO</th>
                 <th>SUMINISTRO</th>
                 <th>A NOMBRE COMPLETO</th>
-                <th>MONTO</th>
-                <th>FECHAs</th>
+                <<!--<th>MONTO</th>
+                <th>FECHAs</th>-->>
             </tr>
             </thead>
         </table>

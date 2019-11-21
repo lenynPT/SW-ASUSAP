@@ -116,6 +116,9 @@
         //Auxiliar 
         $infPag = imprimirXmes($pdf,$registro['del_mes'],$dataObj);
 
+        //Auxiliar 
+        $infPag = imprimirXmes($pdf,$registro['del_mes'],$dataObj);
+
         //DETALLE DE LA FACTURACIÓN ****************************************************
         //primera fila de 
         $pdf->SetXY(78,64);

@@ -9,9 +9,9 @@ require_once "../controllers/adminController.php";
 $inst = new adminController();
 
 //$connect = mysqli_connect("localhost", "root", "cardenas", "dbasusap2");
-$columns = array('idfactura_servicio', 'suministro_cod_suministro', 'a_nombre', 'total_pago', 'fecha');
+$columns = array('fecha', 'suministro_cod_suministro', 'a_nombre', 'monto_amorti', 'factura_servicio_idfactura_servicio');
 
-$query = "SELECT * FROM factura_servicio WHERE ";
+$query = "SELECT * FROM amorti_servicio WHERE ";
 
 if($_POST["is_date_search"] == "yes")
 {
@@ -21,11 +21,12 @@ if($_POST["is_date_search"] == "yes")
 if(isset($_POST["search"]["value"]))
 {
     $query .= '
-  (idfactura_servicio LIKE "%'.$_POST["search"]["value"].'%" 
-  OR suministro_cod_suministro LIKE "%'.$_POST["search"]["value"].'%" 
-  OR a_nombre LIKE "%'.$_POST["search"]["value"].'%" 
-  OR total_pago LIKE "%'.$_POST["search"]["value"].'%")
+  (factura_servicio_idfactura_servicio LIKE "%'.$_POST["search"]["value"].'%" 
+  OR monto_amorti LIKE "%'.$_POST["search"]["value"].'%" 
+  OR fecha LIKE "%'.$_POST["search"]["value"].'%" 
+  )
  ';
+    // OR total_pago LIKE "%'.$_POST["search"]["value"].'%"
 }
 
 if(isset($_POST["order"]))
@@ -55,18 +56,18 @@ $data = array();
 $s=1;
 while($row = $result->fetch())
 {
-    if ($row["fecha"]!=0){
+  //  if ($row["fecha"]!=0){
         $sub_array = array();
 
         $sub_array[] =$s++;
-        $sub_array[] =$row["idfactura_servicio"];
-        $sub_array[] =$row["suministro_cod_suministro"];
-        $sub_array[] = $row["a_nombre"];
-       // $sub_array[] = $row["mes"];
-        $sub_array[] = $row["total_pago"];
+        $sub_array[] =$row["factura_servicio_idfactura_servicio"];
+        $sub_array[] =$row["monto_amorti"];
         $sub_array[] = $row["fecha"];
+       // $sub_array[] = $row["mes"];
+       // $sub_array[] = $row["total_pago"];
+        //$sub_array[] = $row["fecha"];
         $data[] = $sub_array;
-    }
+   // }
 
 }
 /*
@@ -89,7 +90,7 @@ while($row = mysqli_fetch_array($result))
 
 function get_all_data($connect)
 {   $insts = new adminController();
-    $query = "SELECT * FROM factura_servicio";
+    $query = "SELECT * FROM amorti_servicio";
     $result = $insts->consultaAsociado($query);
    // $result = mysqli_query($connect, $query);
     return $result->rowCount($result);

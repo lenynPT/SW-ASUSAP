@@ -1050,17 +1050,22 @@
 
         public function montoPagado($mopagr,$IDS,$MR){
             $res=0;
+            $res1=0;
+            date_default_timezone_set('America/Lima');
+            $created_date = date("Y-m-d H:i:s");
             $SS=$mopagr;
             if (!empty($SS)){
                 $dataAd = [
                     "id" => $IDS,
                     "MPAGADO" => $mopagr,
-                    "MREST" => $MR
+                    "MREST" => $MR,
+                    "FECHAA" => $created_date
                 ];
 
                 $res = adminModel::actualizarASR($dataAd);
+                $res1 = adminModel::pagarASR($dataAd);
             }
-            return $res;
+            return $res.$res1;
         }
         /*------------------------AMORTIZACION SU DETALLE-------------------------------------*/
         public function listaAservicioDetalle($valorS){
