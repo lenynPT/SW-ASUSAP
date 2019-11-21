@@ -28,6 +28,10 @@
     $cod_sum = $_GET['codigoSum'];
     
     $dataObj = new adminController();
+
+    //mensaje admin
+    $msjAdmin = utf8_decode($dataObj->getmensajeReciboController());
+
     $arrData = $dataObj->dataReciboXanio($cod_sum);
     
     $del_mes = $arrData['data']['del_mes'];
@@ -103,8 +107,11 @@
         $pdf->Cell(100,10,'',0,0,''); // Está cancelado el recibo ??
 
         //MENSAJE DE CORTE        
-        $pdf->SetXY(10,150);
+        /*$pdf->SetXY(10,150);
         $pdf->Cell(0,10,utf8_decode($mensajeAlPublico),0,0,'');
+        */
+        $pdf->SetXY(2,160);
+        $pdf->MultiCell( 70, 5,$msjAdmin, 0,'C');
 
         //Auxiliar 
         $infPag = imprimirXmes($pdf,$registro['del_mes'],$dataObj);

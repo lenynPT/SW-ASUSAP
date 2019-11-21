@@ -10,6 +10,10 @@
     $mes = $_GET['mes'];
 
     $dataObj = new adminController();
+
+    //mensaje admin
+    $msjAdmin = utf8_decode($dataObj->getmensajeReciboController());
+
     $arrData = $dataObj->recibosObtenerDataSumXCod($cod_sum,$anio,$mes);
     $fechaL = $dataObj->obtenerNombrefecha($anio,$mes);
     $mesLit = $fechaL['r_mes'];
@@ -193,8 +197,10 @@ class PDF extends FPDF
 
             //MENSAJE DE CORTE
             $pdf->SetXY(10,150);
-            $pdf->Cell(0,10,utf8_decode($msjCorte),0,0,'');
-
+            $pdf->Cell(0,10,utf8_decode($msjCorte),0,0,'');  
+            $pdf->SetFont('Arial','B',7);
+            $pdf->SetXY(2,160);
+            $pdf->MultiCell( 70, 5,$msjAdmin, 0,'C');
             //SECCIÓN RECORTAR -**********************************
             $pdf->SetFont('Arial','B',7); 
             $pdf->SetXY(21.5, 182.5);

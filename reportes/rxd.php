@@ -14,6 +14,9 @@ $selectMes = $_GET['mes'];
 
 //Inicializando objeto de consultas
 $objDirec = new adminController();
+
+//mensaje admin
+$msjAdmin = utf8_decode($objDirec->getmensajeReciboController());
 //devuelve los registros por dirección
 $resConsult = $objDirec->recibosObtenerDataSumXdirec($selectDireccion,$selectAnio,$selectMes);
 //devuelve el mes en forma literal
@@ -217,6 +220,9 @@ if(!$resConsult['res']){
         //mensaje de corte
         $pdf->SetXY(10,150);
         $pdf->Cell(0,10,utf8_decode($msjCorte),0,0,'');
+        $pdf->SetFont('Arial','B',7);
+        $pdf->SetXY(2,160);
+        $pdf->MultiCell( 70, 5,$msjAdmin, 0,'C');
         
         
         //SECCIÓN RECORTAR -**********************************

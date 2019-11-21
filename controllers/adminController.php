@@ -1214,4 +1214,11 @@
 			return true;
 		}
 
+		public function getmensajeReciboController(){
+			$query = "SELECT mensaje FROM mensaje_recibo LIMIT 0,1";
+			$resQ = mainModel::execute_single_query($query);
+			$mensaje = $resQ->fetch(PDO::FETCH_ASSOC);
+			return $mensaje['mensaje'];
+		}
+
 	}

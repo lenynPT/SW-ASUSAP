@@ -11,7 +11,7 @@
 		</li>
 
 		<li>
-			<a href="#!" class="btn-search">
+			<a href="#!" class="btn-search**">
 				<i class="zmdi zmdi-search"></i>
 			</a>
 		</li>
