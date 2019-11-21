@@ -118,8 +118,7 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">COD-SUMINSTRO</th>
-                                <th class="text-center">DIRECCIÓN</th>
-                                <th class="text-center">PASAJE</th>
+                                <th class="text-center">DIRECCIÓN</th>                                
                                 <th class="text-center">Nro CASA</th>
                                 <th class="text-center">ESTADO</th>                                
                                 <th class="text-center">MEDIDOR</th>
@@ -154,8 +153,8 @@
                                         }
                                         ?>
                                     </select>                                    
-                                </td>
-                                <td contenteditable="true" name="pasaje<?=$cont?>" id="pasaje<?=$cont?>"><?php echo $suministro['pasaje']; ?></td>
+                                </td>                              
+                                
                                 <td contenteditable="true" name="nr_casa<?=$cont?>" id="nr_casa<?=$cont?>"><?php echo $suministro['casa_nros']; ?></td>
                                 <td>
                                     <?php
@@ -213,6 +212,7 @@
                                     </select>
                                 </td>
                                 <td>
+                                <input type="hidden" name="pasaje<?=$cont?>" id="pasaje<?=$cont?>" value="<?php echo $suministro['pasaje']; ?>">
                                     <a href="#!" class="btn btn-success btn-raised btn-xs" onclick="btnUPDsum('<?=$suministro['cod_suministro']?>',<?=$cont?>,'<?=$con_deudas?>')" >
                                         <i class="zmdi zmdi-refresh"></i>
                                     </a>

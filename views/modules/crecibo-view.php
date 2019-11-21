@@ -34,6 +34,7 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Cod Suministro</th>
+                                <th class="text-center">Dirección</th>
                                 <th class="text-center">Categoría</th>
                                 <th class="text-center">Año</th>
                                 <th class="text-center">Mes</th>

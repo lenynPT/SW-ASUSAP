@@ -147,7 +147,7 @@
 									<th class="text-center">Nombre</th>
 									<th class="text-center">Apellido</th>
 									<th class="text-center">Telefono</th>
-									<th class="text-center">Estado</th>
+									
 									<th class="text-center">Cant. Suministro</th>
 									<th class="text-center">Ver Suministros</th>
 									<th class="text-center">Actualizar</th>
@@ -248,6 +248,7 @@
                                                     
                                                     <!--Validar en el ajax para procesar la petición-->
                                                     <input type="hidden" name="insertSumin" value="true">
+                                                    <input type="hidden" name="corteSumi" id="corteSumi" value="0">
                                                 </div>
                                         </div>
                                     </div>

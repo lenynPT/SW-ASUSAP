@@ -44,7 +44,7 @@ function busacarAsocBtn(){
 											<td>${datostabla["nombre"]}</td>
 											<td>${datostabla["apellido"]}</td>
 											<td>${datostabla["telefono"]}</td>
-											<td>${datostabla["estado"]}</td>
+											
 											<td>${datostabla["cant_suministro"]}</td>
 											<td>
 												<a href="#cantSumin" data-toggle="modal" dni="485666" class="cantSumin btn btn-success btn-raised btn-xs" >
@@ -714,6 +714,7 @@ function buscarSuministrosParaCobrarTBL(txtInput){
 				<tr>
 					<td>${++cont}</td>
 					<td>${element.suministro_cod_suministro}</td>
+					<td>${element.direccion}</td>
 					<td>${element.categoria_suministro}</td>
 					<td>${element.anio}</td>
 					<td>${element.mes}</td>

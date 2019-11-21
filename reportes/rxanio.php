@@ -6,7 +6,6 @@
     require_once "../controllers/adminController.php";
     require "fpdf/fpdf.php";
 
-
     class PDF extends FPDF
     {
         function Header()
@@ -18,9 +17,10 @@
         }
         function Footer()
         {
-           /* $this->SetY(-10);
-            $this->SetFont('Arial','I',8);
-            $this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
+            $this->SetXY(0,-24);
+            $this->SetFont('Arial','B',10);
+            $this->Cell(25,8,'Codigo Suministro: '.$_GET['codigoSum'],0,0,'');
+            /* 
             */
         }
     }
@@ -106,20 +106,25 @@
         $pdf->SetXY(10,150);
         $pdf->Cell(0,10,utf8_decode($mensajeAlPublico),0,0,'');
 
+        //Auxiliar 
+        $infPag = imprimirXmes($pdf,$registro['del_mes'],$dataObj);
+
         //DETALLE DE LA FACTURACIÓN ****************************************************
-           /* //primera fila de 
-            $pdf->SetXY(85,64);
-            $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
-            $pdf->SetXY(130,64);
-            $pdf->Cell(100,10,"$/ 3.56",0,0,'');
-            //segunda fila de 
+        //primera fila de 
+        $pdf->SetXY(78,64);
+        $pdf->Cell(100,10,"Por consumo de agua por mes",0,0,'');
+        $pdf->SetXY(122,64);
+        $pdf->Cell(100,10,"($/ 3.56) X ".$infPag['cant_mess']." meses",0,0,'');
+        
+        /* 
+        //segunda fila de 
             $pdf->SetXY(85,67);
             $pdf->Cell(100,10,"Por IGV (18%)",0,0,'');
             $pdf->SetXY(130,67);
             $pdf->Cell(100,10,"$/ 0.64",0,0,'');
         */
         
-        $infPag = imprimirXmes($pdf,$registro['del_mes'],$dataObj);
+        
 
         $pdf->SetXY(130,103);
         $pdf->Cell(100,10,"S/. ".$infPag['subTotal'],0,0,''); 
@@ -155,6 +160,7 @@
 
         $y = 6;
         $subTotal = 0;
+        $cant_mess=0;
         for ($mes=$del_mes; $mes <= 12; $mes++) { 
             # code...
             //Imprimiendo los meses
@@ -170,7 +176,8 @@
             */
             $subTotal += 3.6;
             $igvTotal += 0.6;
+            $cant_mess++;
         }
-        //$igvTotal = $subTotal * 0.18;
-        return ['subTotal'=>$subTotal,'igvTotal'=>$igvTotal];
+        
+        return ['subTotal'=>$subTotal,'igvTotal'=>$igvTotal,'cant_mess'=>$cant_mess];
     }
