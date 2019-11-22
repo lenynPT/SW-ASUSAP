@@ -111,12 +111,25 @@
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
                                 <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
                                     <div class="col-xs-12 col-sm-12">
+                                        <!--<div class="col-md-6 form-group label-floating">
+                                            <label for="categoriaAsoc" class="col-md-4 control-label">CATEGORIA</label>
+                                            <div class="col-md-12">
+                                                <select class="form-control" id="categoriaAsoc" name="categoriaAsoc">
+                                                    <option>Domestico</option>
+                                                    <option>Comercial</option>
+                                                    <option>Estatal</option>
+                                                    <option>Industrial</option>
+                                                </select>
+                                            </div>
+                                        </div>-->
                                         <div class="col-xs-6 col-md-9 form-group label-floating ">
-                                            <label class="control-label">Nombre - Descripcion</label>
+
+                                            <label class="staticEmail2">Nombre - Descripcion</label>
                                             <input class="form-control" type="text" name="nombreDesc" required id="NomDes">
+
                                         </div>
                                         <div class="col-xs-6 col-md-3 form-group label-floating ">
-                                            <label class="control-label">Costo</label>
+                                            <label class="staticEmail2">Costo</label>
                                             <input class="form-control" type="number" name="Costo" id="Costo" required>
                                         </div>
                                     </div>
@@ -126,6 +139,21 @@
                                     <button  type="reset"  class="btn btn-success btn-raised btn-sm  align-items-center" id="bt_add" >
                                         Agregar Item
                                     </button>
+                                    <script>
+                                        validar();
+                                        function validar() {
+
+                                            let a= document.querySelector("#bt_add");
+                                            if (a){
+                                                let bscAso = document.querySelector("#Costo");
+
+                                                if(bscAso!=""){
+
+                                                }
+                                            }
+
+                                        }
+                                    </script>
                                 </form>
                             </div>
                         </div>
@@ -193,8 +221,8 @@
                     <p class="text-center">
 
 
-                        <button type="submit"  class="btn btn-info btn-raised btn-sm" id="guardar" onclick="guardarTodo();"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
                         <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImprimerRecibo();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
+                        <button type="submit"  class="btn btn-info btn-raised btn-sm pull-right" id="guardar" onclick="guardarTodo();"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
 
                     </p>
                 </div>
