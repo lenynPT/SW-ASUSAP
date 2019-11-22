@@ -745,6 +745,7 @@ function cobrarAgua(e,cod_sum,anio,mes,monto,txtinput){
 		cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Cancel'		
 	}).then(()=>{
 		//Cuando le de la opción de ok
+		document.querySelector('#rspTblCrecibo').innerHTML = "";//limpiar bien la lista de cobros
 		let data = new FormData();
 		data.append('OPTION','PagoRecibo');
 		data.append('cod_sum',cod_sum);
