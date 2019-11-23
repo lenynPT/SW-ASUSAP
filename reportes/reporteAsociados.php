@@ -226,10 +226,10 @@ $pdf->SetFillColor(232,232,232);
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(10,6,'#',1,0,'C',1);
 $pdf->Cell(30,6,'SUMINISTRO',1,0,'C',1);
-$pdf->Cell(100,6,'NOMBRE Y APELLIDO',1,0,'C',1);
+$pdf->Cell(100,6,'APELLIDO Y NOMBRE',1,0,'C',1);
 $pdf->Cell(25,6,'DNI',1,0,'C',1);
-$pdf->Cell(5,6,'M',1,0,'C',1);
-$pdf->Cell(20,6,'C. Smt',1,1,'C',1);
+$pdf->Cell(30,6,'T. SMT',1,1,'C',1);
+//$pdf->Cell(20,6,'C. Smt',1,1,'C',1);
 
 
 $pdf->SetFont('Arial','',10);
@@ -253,8 +253,8 @@ while($row = $result->fetch()) {
     $pdf->Cell(30,6,utf8_decode($row['cod_suministro']),1,0,'C');
     $pdf->Cell(100,6,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
     $pdf->Cell(25,6,utf8_decode($row['asociado_dni']),1,0,'C');
-    $pdf->Cell(5,6,$row['tiene_medidor'],1,0,'C');
-    $pdf->Cell(20,6,utf8_decode($row['categoria_suministro']),1,1,'C');
+   //$pdf->Cell(5,6,$row['tiene_medidor'],1,0,'C');
+    $pdf->Cell(30,6,utf8_decode($row['categoria_suministro']),1,1,'C');
   //  $y=$y+$row['contador_deuda'];
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
 

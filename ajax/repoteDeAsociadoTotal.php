@@ -204,7 +204,7 @@ while ($row = $result->fetch()) {
     $sub_array[] = $s++;
     $sub_array[] = $row["asociado_dni"];
     $sub_array[] = $row["apellido"] . " " . $row["nombre"];
-    $sub_array[] = $row["telefono"]."CANT DNI: ";
+    $sub_array[] = $row["telefono"];
     if ($row["cant_suministro"]>=1){
 
         $sub_array[] = "2";
