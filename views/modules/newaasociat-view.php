@@ -12,7 +12,7 @@
 
 <div class="container-fluid">
 	<div class="page-header">
-	  <h1 class="text-titles"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Nuevo Persona <small>Registration</small></h1>
+	  <h1 class="text-titles"><i class="zmdi zmdi-money-box zmdi-hc-fw"></i> Nuevo Persona <small>Registrar</small></h1>
 	</div>
 	<p class="lead">            
     </p>    

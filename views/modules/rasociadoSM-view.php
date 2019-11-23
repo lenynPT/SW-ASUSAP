@@ -34,7 +34,7 @@
 
 
 <div class="container box">
-    <h1 align="center">REPORTE DE CUANTOS SUMINISTROS</h1>
+    <h1 align="center">REPORTE DE SUMINISTROS</h1>
 
     <div class="justify-content-between ">
         <p class="text-right text-al justify-content-between align-items-center">

@@ -21,7 +21,7 @@
 
 
 <div class="container box">
-    <h1 align="center">REPORTE DE PAGOS DE RICIBOS DE CONSUMO</h1>
+    <h1 align="center">REPORTE DE PAGOS DE RECIBOS</h1>
 
     <div class="justify-content-between ">
         <p class="text-right text-al justify-content-between align-items-center">
@@ -89,7 +89,7 @@
                     //"info": "Mostrando página _PAGE_ de _PAGES_ filtrados de un total de _MAX_ registros",
                     "infoEmpty": "No hay registros aún.",
                     "infoFiltered": "(filtrados de un total de _MAX_ registros)",
-                    //  "search" : "Búsqueda",
+                    "search" : "Búsqueda",
                     "LoadingRecords": "Cargando ...",
                     "Processing": "Procesando...",
                     // "SearchPlaceholder": "Comience a teclear...",

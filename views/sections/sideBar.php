@@ -92,18 +92,15 @@
 						</li>
 
                         <li>
-                            <a href="<?php echo SERVERURL; ?>rservamotizar/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver amortizavion</a>
+                            <a href="<?php echo SERVERURL; ?>rservamotizar/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i>Amortizacion</a>
                         </li>
                         <li>
-                            <a href="<?php echo SERVERURL; ?>rasociadoSM/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver Suministro</a>
+                            <a href="<?php echo SERVERURL; ?>rasociadoSM/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i>Suministro</a>
                         </li>
                         <li>
-                            <a href="<?php echo SERVERURL; ?>rasociadosTotal/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i> ver Asociado</a>
+                            <a href="<?php echo SERVERURL; ?>rasociadosTotal/"> <i class="zmdi zmdi-card zmdi-hc-fw"></i>Asociado</a>
                         </li>
 					</ul>
-
-
-
 
 				<!--
 					<li>

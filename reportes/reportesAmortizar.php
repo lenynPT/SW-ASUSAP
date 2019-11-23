@@ -61,16 +61,7 @@ class PDF extends FPDF
         $this->Cell(185,20,''.$_SESSION['fechaInicio'].'     A      '.$_SESSION['fechaFinal'],0,0,'C');
         $this->Ln(20);// Logo
         $this->Image('img/agua.jpg',10,6,45);
-        //$this->Image('img/agua.jpg',0,0,10,8);
-       // Arial bold 15
-        //// Movernos a la derecha
-        //$this->Cell(5);
 
-
-        // Título
-        //$this->Cell(30, 12, 'ASUSAP', 0, 0, 'C');
-        // Salto de línea
-       // $this->Ln(20);
     }
 
     // Pie de página
@@ -89,11 +80,8 @@ class PDF extends FPDF
 $pdf = new PDF('P', 'mm', 'A4');
 
 //cUANDO NO HAY REGISTRO
-$pdf->AddPage();/*
-$pdf->SetFont('Arial', 'B', 20);
-$pdf->SetXY(5, 7);
-$pdf->SetFont('Arial', 'B', 15);
-$pdf->SetXY(75, 6);*/
+$pdf->AddPage();
+
 $pdf->SetY(35);
 $pdf->SetFillColor(232,232,232);
 $pdf->SetFont('Arial','B',10);
@@ -127,7 +115,7 @@ while($row = $result->fetch()) {
    // $pdf->Cell(25,6,utf8_decode($row['monto_amorti']),1,0,'C');
     $pdf->Cell(85,6,utf8_decode($row['a_nombre']),1,0,'L');
     $pdf->Cell(30,6,$row['fechaA'],1,0,'C');
-    $pdf->Cell(20,6,utf8_decode($row['monto_amorti']),1,1,'L');
+    $pdf->Cell(20,6,utf8_decode("S/ ".$row['monto_amorti']),1,1,'L');
     $y=$y+$row['monto_amorti'];
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
 

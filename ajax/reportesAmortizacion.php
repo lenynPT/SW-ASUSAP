@@ -7,14 +7,7 @@ require_once "../core/configSite.php";
 require_once "../controllers/adminController.php";
 
 $inst = new adminController();
-/*S
-$columns = array('idamorti_servicio', 'direccion', 'tiene_medidor', 'nombre', 'asociado_dni');
-// $query= "SELECT a.idfactura_recibo,f.nombre,s.cod_suministro,s.direccion,a.consumo,a.monto_pagar,a.anio,a.mes,a.fecha_emision,a.hora_emision,a.fecha_vencimiento,a.consumo,a.monto_pagar, s.cod_suministro
-//                            FROM ((factura_recibo a INNER JOIN suministro s ON a.suministro_cod_suministro = s.cod_suministro)
-//                            INNER JOIN asociado f ON f.dni = s.asociado_dni) WHERE a.suministro_cod_suministro  like '%" . $valor . "%' OR f.nombre  like '%" . $valor . "%' OR s.direccion  like '%" . $valor . "%'";
-//
-$query = "SELECT s.cod_suministro,s.direccion,S.casa_nro, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni WHERE ";
-*/
+
 
 //$connect = mysqli_connect("localhost", "root", "cardenas", "dbasusap2");
 $columns = array('idfactura_servicio','monto_amorti');
@@ -70,8 +63,8 @@ while($row = $result->fetch())
         $sub_array[] =$s++;
         $sub_array[] =$row["idfactura_servicio"];
         $sub_array[] =$row["suministro_cod_suministro"];
-        $sub_array[] =$row["total_pago"];
-        $sub_array[] =$row["monto_amorti"];
+        $sub_array[] ="S/ ".$row["total_pago"];
+        $sub_array[] ="S/ ".$row["monto_amorti"];
         $sub_array[] = $row["fechaA"];
     // $sub_array[] = $row["mes"];
        // $sub_array[] = $row["total_pago"];

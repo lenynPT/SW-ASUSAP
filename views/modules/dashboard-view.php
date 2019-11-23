@@ -1,10 +1,15 @@
 <div class="container-fluid">
 	<div class="page-header">
-	  <h1 class="text-titles">System <small>Tiles</small></h1>
-	</div>
+<!--	  <h1 class="text-titles">System <small>Tiles</small></h1>
+-->	</div>
 </div>
 <div class="full-box text-center" style="padding: 30px 10px;">
-	<article class="full-box tile">
+
+
+    <p>
+        <h1 style="font-size: 60px;">BIENVENIDO A SIGEAP</h1>
+    </p>
+	<!--<article class="full-box tile">
 		<div class="full-box tile-title text-center text-titles text-uppercase">
 			GESTIÓN DE RECIBO
 		</div>
@@ -63,5 +68,5 @@
 			<p class="full-box">70</p>
 			<small>Register</small>
 		</div>
-	</article>
+	</article>-->
 </div>
