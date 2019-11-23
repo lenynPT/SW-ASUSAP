@@ -129,7 +129,7 @@ date_default_timezone_set('America/Lima');
 $created_date = date("Y-m-d H:i");
 session_start(['name'=>'ASUSAP']);
 $_SESSION['fecha']=$created_date;
-$_SESSION['asDIR']=$atDirc;
+$_SESSION['asDIR']=$atEstd;
 //$_SESSION['fechaFinal']=$_GET['finalDate'];
 $_SESSION['diatotal']=$td;
 
@@ -156,7 +156,12 @@ class PDF extends FPDF
         $this->SetFont('Arial','B',15);
         $this->SetX(50);
         $this->SetY(15);
-        $this->Cell(185,20,''.$_SESSION['asDIR'],0,0,'C');
+        if ($_SESSION['asDIR']==0){
+            $b="ACTIVO";
+        }else {
+            $b = "INACTIVO";
+            }
+        $this->Cell(185,20,''.$b,0,0,'C');
         $this->Ln(20);// Logo
         $this->Image('img/agua.jpg',10,6,45);
         //$this->Image('img/agua.jpg',0,0,10,8);
@@ -225,11 +230,11 @@ while($row = $result->fetch()) {
     $pdf->Cell(100,$off,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
     $pdf->Cell(25,$off,utf8_decode($row['telefono']),1,0,'C');
     if ($row['cant_suministro']>=1){
-        $v="2";
+        $v="2 a más";
     }else{
         $v="1";
     }
-    $pdf->Cell(15,$off,$v,1,1,'C');
+    $pdf->Cell(15,$off,utf8_decode($v),1,1,'C');
   //  $pdf->Cell(10,$off,utf8_decode($row['categoria_suministro']),1,1,'C');
     //  $y=$y+$row['contador_deuda'];
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
