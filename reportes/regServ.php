@@ -102,7 +102,7 @@ $desNSI=$_POST['desNSI'];*/
     $pdf->Cell(100, 10, $codsI, 0, 0, 'C');
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->SetXY(125, 22);
-    $pdf->Cell(20, 10, $idfsI, 0, 0, 'L');
+    $pdf->Cell(20, 10, "", 0, 0, 'L');
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetXY(22, 38);
     $pdf->Cell(90, 10, utf8_decode($tcsI), 0, 0, 'L');
