@@ -207,7 +207,7 @@ while ($row = $result->fetch()) {
     $sub_array[] = $row["telefono"];
     if ($row["cant_suministro"]>=1){
 
-        $sub_array[] = "2";
+        $sub_array[] = "2 a más";
     }else{
         $sub_array[]="1";
     }
