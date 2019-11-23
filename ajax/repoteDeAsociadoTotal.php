@@ -8,6 +8,7 @@ require_once "../core/configSite.php";
 require_once "../controllers/adminController.php";
 
 $inst = new adminController();
+//$insth = new mainModel();
 
 //$connect = mysqli_connect("localhost", "root", "cardenas", "dbasusap2");
 $columns = array('dni', 'nombre', 'apellido', 'telefono', 'cant_suministro');
@@ -15,7 +16,9 @@ $columns = array('dni', 'nombre', 'apellido', 'telefono', 'cant_suministro');
 //                            FROM ((factura_recibo a INNER JOIN suministro s ON a.suministro_cod_suministro = s.cod_suministro)
 //                            INNER JOIN asociado f ON f.dni = s.asociado_dni) WHERE a.suministro_cod_suministro  like '%" . $valor . "%' OR f.nombre  like '%" . $valor . "%' OR s.direccion  like '%" . $valor . "%'";
 //
-$query = "SELECT DISTINCT   s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro/*,s.estado_corte*/ FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni   WHERE ";
+$query = "SELECT DISTINCT  s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro/*,s.estado_corte*/ FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni   WHERE ";
+//$query = "SELECT DISTINCT   s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro/*,s.estado_corte*/ FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni   WHERE ";
+
 
 if($_POST["is_date_search"] == "yes")
 {
@@ -50,6 +53,8 @@ if($_POST["is_date_search"] == "yes")
         }*/
 
         $query .= ' estado_corte="'.$_POST["estad"].'" AND ';
+
+
     }
 //-----------------------------TIPO DE ESTADO DE DIVERSOS DIRECCIONES--------------------------------------------
   /*  else if ($all!="TODOS" && $esta==3){
@@ -171,19 +176,43 @@ $data = array();
 $s = 1;
 //$columns = array('cod_suministro', 'direccion', 'tiene_medidor', 'categoria_suministro', 'asociado_dni');
 
-
+$query3='';
+$instsa = new adminController();
 while ($row = $result->fetch()) {
 
 
    // if ($row["dni"]<=1){
 
-        $sub_array = array();
-        $sub_array[] = $s++;
-        $sub_array[] = $row["asociado_dni"];
-        $sub_array[] = $row["apellido"] . " " . $row["nombre"];
-        $sub_array[] = $row["telefono"];
-        $sub_array[] = $row["cant_suministro"];
-//    }
+   // $query3 ="SELECT  COUNT(*)  FROM asociado  a INNER JOIN  suministro s ON s.asociado_dni= a.dni where s.asociado_dni=".$row["asociado_dni"];
+    //$query3 ="SELECT  COUNT(*) FROM suministro where asociado_dni =".$row["asociado_dni"]." AND estado_corte='2'";
+    // $query4 ="SELECT  COUNT(*) FROM suministro where asociado_dni =".$row["asociado_dni"]." AND estado_corte='0'";
+   //  $resultd = $instsa->consultaAsociado($query3);
+     //$result->rowCount($result);
+   // $query3 = "SELECT  COUNT(*) FROM suministro where asociado_dni=".$row["asociado_dni"]." AND estado_corte='2'";
+  //  $resulty = $instsa->consultaAsociado($query3);
+   // $query4 = $query4->execute();
+    //$datos=adminController::->query("SELECT SQL_CALC_FOUND_ROWS * FROM factura_servicio WHERE idfactura_servicio!='1' ");
+
+// $result = mysqli_query($connect, $query);
+    //$resultda=$resultd->rowCount($resultd);
+
+
+
+    $sub_array = array();
+//    if ($resultda>=0) {
+
+    $sub_array[] = $s++;
+    $sub_array[] = $row["asociado_dni"];
+    $sub_array[] = $row["apellido"] . " " . $row["nombre"];
+    $sub_array[] = $row["telefono"];
+    if ($row["cant_suministro"]>=1){
+
+        $sub_array[] = "2";
+    }else{
+        $sub_array[]="1";
+    }
+
+  //  }
 
     //  $sub_array[] = $row["categoria_suministro"];
     // $sub_array[] = $row["mes"];

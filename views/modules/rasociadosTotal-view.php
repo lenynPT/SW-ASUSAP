@@ -38,7 +38,7 @@
 
     <div class="justify-content-between ">
         <p class="text-right text-al justify-content-between align-items-center">
-            <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImpAso();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
+            <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImpAsoTotal();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
         </p>
     </div>
     <br />
@@ -81,18 +81,7 @@
                         </div>
 
                     </div>
-                   <!-- <div class="col-md-3 form-group label-floating">
-                        <label for="categoriaAsoc" class="col-md-4 control-label">CATEGORIA</label>
-                        <div class="col-md-12">
-                            <select class="form-control" id="categoriaAsoc" name="categoriaAsoc">
-                                <option>Todos</option>
-                                <option>Domestico</option>
-                                <option>Comercial</option>
-                                <option>Estatal</option>
-                                <option>Industrial</option>
-                            </select>
-                        </div>
-                    </div>-->
+
                     <div class="col-md-3">
                         <input type="button" name="search" id="search" value="Search" class="btn btn-success btn-raised btn-sm" />
                     </div>

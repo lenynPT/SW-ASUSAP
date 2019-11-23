@@ -123,8 +123,8 @@ function volverA(){
                 <p class="text-center">
 
 
-                    <button type="submit"  class="btn btn-info btn-raised btn-sm" id="guardarARMOTIZACION" onclick="guardarARMOTIZACION();"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
                     <button type="submit"  class="btn btn-danger btn-raised btn-sm" onclick="ImprimerReciboAmotizacion();"><i class="zmdi zmdi-floppy"></i> IMPRIMIR</button>
+                    <button type="submit"  class="btn btn-info btn-raised btn-sm pull-right" id="guardarARMOTIZACION" onclick="guardarARMOTIZACION();"><i class="zmdi zmdi-floppy"></i> GUARDAR</button>
 
                    <!-- <a href="../reportes/amortizacionServ.php" target="_blank" class="btn btn-info btn-raised btn-xs"  >Imprimir</a>-->
                 </p>

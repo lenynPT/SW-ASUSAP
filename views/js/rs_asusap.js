@@ -384,3 +384,12 @@ function ImpAso() {
     console.log("Direccion:"+start_date+" Estado:"+estad+" Cat:"+catA)
     
 }
+function ImpAsoTotal(){
+    var start_date = document.querySelector("#direccionAsoc").value;
+    var estad = document.querySelector("#ESTADOt").value;
+
+    window.open(`../reportes/reporteAsociadosTotal.php?ATDIR=${start_date}&ATEST=${estad}`,'_blank')
+
+
+    console.log("Direccion:"+start_date+" Estado:"+estad)
+}

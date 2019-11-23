@@ -12,59 +12,30 @@ require "fpdf/fpdf.php";
 
 //$idate=$_GET['inicioDate']  ;
 //ADIR=${start_date}&AEST=${estad}&ACAT=${catA}
-$aDirc=$_GET['ADIR'];
-$aEstd=$_GET['AEST'];
-$aCatg=$_GET['ACAT'];
+$atDirc=$_GET['ATDIR'];
+$atEstd=$_GET['ATEST'];
 
 
-if ($aDirc=="TODOS" && $aEstd==3 && $aCatg=="Todos"){
+if ($atDirc=="TODOS" && $atEstd==3 ){
 
-    $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM (suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni)";
+   // $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM (suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni)";
+    $query =  "SELECT DISTINCT  s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni ";
+
     //$query .= 'direccion = "'.$aDirc.'"';
 
 }else{
 
-    $query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni,s.categoria_suministro FROM suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni WHERE ";
+    $query = "SELECT DISTINCT  s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni WHERE ";
 
-    if ($aDirc == "TODOS" && $aEstd == 0) {
+    if ($atDirc == "TODOS" && $atEstd == 0) {
 
-        if ($aCatg=="Domestico"){
-
-            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
-        }
-        if ($aCatg=="Comercial"){
-
-            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'] .'" AND';
-        }
-        if ($aCatg=="Estatal"){
-            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
-        }
-        if ($aCatg=="Industrial"){
-            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
-        }
-
-        $query .= ' estado_corte="' . $_GET['AEST']. '" ';
+        $query .= ' estado_corte="' . $_GET['ATEST']. '" ';
     }
-    else if ($aDirc == "TODOS" && $aEstd == 2) {
+    else if ($atDirc == "TODOS" && $atEstd == 2) {
 
-        if ($aCatg=="Domestico"){
-
-            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
-        }
-        if ($aCatg=="Comercial"){
-
-            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'] .'" AND';
-        }
-        if ($aCatg=="Estatal"){
-            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
-        }
-        if ($aCatg=="Industrial"){
-            $query .= 'estado_corte ="'.$_GET['AEST'].'" AND   categoria_suministro="'.$_GET['ACAT'].'" AND';
-        }
-
-        $query .= ' estado_corte="' . $_GET['AEST']. '" ';
+        $query .= ' estado_corte="' . $_GET['ATEST']. '" ';
     }
-
+/*
     //-----------------------------TIPO DE ESTADO DE DiVARSAS DIRECCIONES--------------------------------------------
     else if ($aDirc!="TODOS" && $aEstd==3){
         if ($aCatg=="Domestico"){
@@ -138,7 +109,7 @@ if ($aDirc=="TODOS" && $aEstd==3 && $aCatg=="Todos"){
     else if ($aDirc=="TODOS" && $aEstd==3 && $aCatg=="Industrial"){
 
         $query .= 'categoria_suministro="'.$_GET['ACAT'].'"';
-    }
+    }*/
 
 }
 
@@ -158,7 +129,7 @@ date_default_timezone_set('America/Lima');
 $created_date = date("Y-m-d H:i");
 session_start(['name'=>'ASUSAP']);
 $_SESSION['fecha']=$created_date;
-$_SESSION['asDIR']=$aDirc;
+$_SESSION['asDIR']=$atDirc;
 //$_SESSION['fechaFinal']=$_GET['finalDate'];
 $_SESSION['diatotal']=$td;
 
@@ -225,11 +196,11 @@ $pdf->SetY(35);
 $pdf->SetFillColor(232,232,232);
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(10,6,'#',1,0,'C',1);
-$pdf->Cell(30,6,'SUMINISTRO',1,0,'C',1);
-$pdf->Cell(100,6,'APELLIDO Y NOMBRE',1,0,'C',1);
-$pdf->Cell(25,6,'DNI',1,0,'C',1);
-$pdf->Cell(30,6,'T. SMT',1,1,'C',1);
-//$pdf->Cell(20,6,'C. Smt',1,1,'C',1);
+$pdf->Cell(30,6,'DNI',1,0,'C',1);
+$pdf->Cell(100,6,'APELLIDO Y NOMBRE ',1,0,'C',1);
+$pdf->Cell(25,6,'Telefono',1,0,'C',1);
+$pdf->Cell(15,6,'C. Smt',1,1,'C',1);
+//$pdf->Cell(10,6,'M',1,1,'C',1);
 
 
 $pdf->SetFont('Arial','',10);
@@ -238,27 +209,32 @@ $pdf->SetFont('Arial','',10);
 $off = $textypos+25;
 
 $pdf->SetFont('Arial','',12);*/
-$textypos+=35;
+$textypos+=5;
 //$pdf->setX(2);
 //$pdf->Cell(5,$textypos,'Nombre del Servicio / Descripcion          PRECIO ');
 
-$off = $textypos+25;
+$off = $textypos+2;
 $o=1;
 $y=0;
-//$query = "SELECT s.cod_suministro,s.direccion, s.tiene_medidor,a.nombre,a.apellido,s.asociado_dni FROM suministro s INNER JOIN asociado a ON a.dni = s.asociado_dni WHERE ";
+// "SELECT DISTINCT  s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni ";
 while($row = $result->fetch()) {
 
     $pdf->SetFillColor(232,232,232);
-    $pdf->Cell(10,6,$o++,1,0,'C');
-    $pdf->Cell(30,6,utf8_decode($row['cod_suministro']),1,0,'C');
-    $pdf->Cell(100,6,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
-    $pdf->Cell(25,6,utf8_decode($row['asociado_dni']),1,0,'C');
-   //$pdf->Cell(5,6,$row['tiene_medidor'],1,0,'C');
-    $pdf->Cell(30,6,utf8_decode($row['categoria_suministro']),1,1,'C');
-  //  $y=$y+$row['contador_deuda'];
+    $pdf->Cell(10,$off,$o++,1,0,'C');
+    $pdf->Cell(30,$off,utf8_decode($row['asociado_dni']),1,0,'C');
+    $pdf->Cell(100,$off,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
+    $pdf->Cell(25,$off,utf8_decode($row['telefono']),1,0,'C');
+    if ($row['cant_suministro']>=1){
+        $v="2";
+    }else{
+        $v="1";
+    }
+    $pdf->Cell(15,$off,$v,1,1,'C');
+  //  $pdf->Cell(10,$off,utf8_decode($row['categoria_suministro']),1,1,'C');
+    //  $y=$y+$row['contador_deuda'];
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
 
-    /* $pdf->Cell(11,$off,2,".","," ,0,0,"R");
+  /*  $pdf->Cell(11,$off,2,".","," ,0,0,"R");
      $off+=12;*/
 
 
