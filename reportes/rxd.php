@@ -153,7 +153,7 @@ if(!$resConsult['res']){
 
         //INFORMACIÓN COMPLEMENTARIA ****************************************************              
         
-        $pdf->SetXY(10,82);
+        $pdf->SetXY(10,143);
         $pdf->Cell(100,5,"Cantidad deudas: {$element['contador_deuda']}",0,0,'');  
         
         //$pdf->SetXY(10,115);
@@ -180,6 +180,17 @@ if(!$resConsult['res']){
         //DETALLE DE LA FACTURACIÓN ****************************************************
         if($medidor=="Si"){
             $subT = modoDePago($pdf,$element,$consumo_dif);
+
+            //conceptos----
+            $pdf->SetXY(85,68+12);
+            $pdf->Cell(100,10,"Cargo fijo",0,0,'');
+            $pdf->SetXY(130,68+12);
+            $pdf->Cell(100,10,"$/. 0.00",0,0,'');
+
+            $pdf->SetXY(85,72+12);
+            $pdf->Cell(100,10,"Alcantarillado",0,0,'');
+            $pdf->SetXY(130,72+12);
+            $pdf->Cell(100,10,"$/. 0.00",0,0,'');
             //nueva seccion igv y subtotal***************************************************
             //Sub total
             $pdf->SetXY(130,103.5);
@@ -193,6 +204,18 @@ if(!$resConsult['res']){
             $pdf->Cell(100,10,"Por consumo de agua x mes",0,0,'');
             $pdf->SetXY(130,64);
             $pdf->Cell(100,10,"$/. 3.56",0,0,'');
+
+            //conceptos----
+            $pdf->SetXY(85,68+2);
+            $pdf->Cell(100,10,"Cargo fijo",0,0,'');
+            $pdf->SetXY(130,68+2);
+            $pdf->Cell(100,10,"$/. 0.00",0,0,'');
+
+            $pdf->SetXY(85,72+2);
+            $pdf->Cell(100,10,"Alcantarillado",0,0,'');
+            $pdf->SetXY(130,72+2);
+            $pdf->Cell(100,10,"$/. 0.00",0,0,'');
+
             //segunda fila de 
             /*
             $pdf->SetXY(85,67);
@@ -218,8 +241,8 @@ if(!$resConsult['res']){
         $pdf->Cell(100,10,"S/. ".number_format($total_suma_deudas,2),0,0,'');
         
         //mensaje de corte
-        $pdf->SetXY(10,150);
-        $pdf->Cell(0,10,utf8_decode($msjCorte),0,0,'');
+        $pdf->SetXY(2,152);
+        $pdf->Cell(70,8,utf8_decode($msjCorte),0,0,'C');
         $pdf->SetFont('Arial','B',7);
         $pdf->SetXY(2,160);
         $pdf->MultiCell( 70, 5,$msjAdmin, 0,'C');

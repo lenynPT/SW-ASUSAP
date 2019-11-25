@@ -126,6 +126,16 @@
         $pdf->SetXY(122,64);
         $pdf->Cell(100,10,"($/ 3.56) X ".$infPag['cant_mess']." meses",0,0,'');
         
+        //conceptos----
+        $pdf->SetXY(85,68+2);
+        $pdf->Cell(100,10,"Cargo fijo",0,0,'');
+        $pdf->SetXY(130,68+2);
+        $pdf->Cell(100,10,"$/. 0.00",0,0,'');
+
+        $pdf->SetXY(85,72+2);
+        $pdf->Cell(100,10,"Alcantarillado",0,0,'');
+        $pdf->SetXY(130,72+2);
+        $pdf->Cell(100,10,"$/. 0.00",0,0,'');
         /* 
         //segunda fila de 
             $pdf->SetXY(85,67);

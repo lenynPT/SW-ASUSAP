@@ -17,7 +17,7 @@
     $fecha_db = $fechas->consultar_stado_gconsumo();
     $fecha_hoy = $fechas->consultar_fecha_actual();
     
-    if($fecha_hoy['mes'] == $fecha_db['mes']){
+    if($fecha_hoy['mes'] == $fecha_db['mes'] && $fecha_hoy['anio'] == $fecha_db['anio']){
         //habilitar el inicio de generacion de consumos        
         if($fecha_db['gsn_consumo'] == 1 && $fecha_db['gcn_consumo'] == 1){
             //include de la PAGINA DE que YA SE GENERO PARA el MES!!";
@@ -50,9 +50,8 @@
 
     }else{
         //verifcar si ya se genero CONSUMO tanto para los que tiene medidor como no, para los smi del mes anteriror
-        echo "<br> Actualizar las FECHAS";
-        echo "<br> MOSTRAR BTN : Habilitar MES <name_month>";
-        echo "<br> No coinciden las FECHAS";
+        //Mostrar BTN para actualizar a la fecha actual (mes y año actualizados)
+        echo "<br> <br> <br>";
         $pagos_mes_anterior = true; // Se canceló todos los recibos?? 
         $generado_consumos_anterior = true; //se genero para todos el consumo del mes anterior??
 
