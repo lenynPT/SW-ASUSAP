@@ -270,11 +270,11 @@ function listar_rs(valor) {
 
 }
 
-a=Array();
-to=Array();
-co=Array();
-function ImprimerRecibo() {
 
+function ImprimerRecibo() {
+    a=Array();
+    to=Array();
+    co=Array();
 
     console.log("has echo click en imprimir")
     let idfRSi=document.getElementById("idrs").innerHTML ;
@@ -309,6 +309,8 @@ function ImprimerRecibo() {
         // console.log("datos"+h)
         // a=id_f ila_selected.push(myTable.rows[x].innerText);
     }
+
+
     window.open(`../reportes/regServ.php?anRSI=${anIRS}&codSI=${codsuI}&DRSI=${DRS}&TCSI=${tDC}&IDFSI=${idfRSi}&desNSI=${co}&descSI=${a}&desCcSI=${to}&cosTSI=${costALL}&servSI=${servIRS}`, '_blank')
    // conts++;
     //let bx=co+a;

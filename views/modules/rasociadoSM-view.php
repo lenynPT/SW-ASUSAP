@@ -134,8 +134,7 @@
 
         fetch_data('no');
 
-        function fetch_data(is_date_search, start_date='',estad,catA)
-        {
+        function fetch_data(is_date_search, start_date='',estad,catA){
             var dataTable = $('#order_data').DataTable({
                 "language":{
                     "lengthMenu":"Mostrar _MENU_ registros por página.",
