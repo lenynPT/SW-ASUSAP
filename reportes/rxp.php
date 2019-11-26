@@ -388,6 +388,30 @@ function modoDePago($pdf,$element,$consumo_dif){
             */
 
             break;
+        case 'Mantenimiento':
+            # code...
+            $val1 = 2.11;
+            
+            $val1 = round($val1, 1);
+
+            $resIGV = $val1 * 0.18; $resIGV = round($resIGV, 1);
+
+            //primera fila de 
+            $pdf->SetXY(85,64+0*$x);
+            $pdf->Cell(100,10,"Por mantenimiento",0,0,'');
+            $pdf->SetXY(130,64+0*$x);
+            $pdf->Cell(100,10,"$/. ".number_format($val1,2),0,0,'');
+            
+            
+            /* 
+            //IGV
+            $pdf->SetXY(85,67+1*$x);
+            $pdf->Cell(100,10,"IGV (18%)",0,0,'');
+            $pdf->SetXY(130,67+1*$x);
+            $pdf->Cell(100,10,"$/ {$resIGV}",0,0,'');
+            */
+
+            break;
         
         default:
             # code...

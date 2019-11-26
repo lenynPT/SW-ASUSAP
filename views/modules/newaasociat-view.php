@@ -65,6 +65,7 @@
 													<option>Comercial</option>
 													<option>Estatal</option>
 													<option>Industrial</option>
+													<option>Mantenimiento</option>
 												</select>
 											</div>											
                                         </div>
@@ -210,6 +211,7 @@
                                                                 <option>Comercial</option>
                                                                 <option>Estatal</option>
                                                                 <option>Industrial</option>
+                                                                <option>Mantenimiento</option>
                                                             </select>
                                                         </div>
                                                     </div>

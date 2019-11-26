@@ -474,7 +474,19 @@ function generarMonto($consumo, categoria){
 					$resIGV = $sum*0.18; 
 					$resIGV = Number($resIGV.toFixed(1));
 
-					$montTotal = $sum + $resIGV;					
+					$montTotal = $sum + $resIGV;	
+					break;	
+				case 'Mantenimiento':
+					$val1 = 2.11;
+			
+					$val1 = Number($val1.toFixed(1));
+					$sum=$val1;		
+
+					$resIGV = $sum*0.18; 
+					$resIGV = Number($resIGV.toFixed(1));
+
+					$montTotal = $sum + $resIGV;	
+					break;				
 		
 				default:
 					break;
