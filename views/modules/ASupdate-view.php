@@ -44,9 +44,29 @@ function volverA(){
   require_once "./controllers/adminController.php";
   $classAdmin=new adminController();
 
+
+  $filesAS=$classAdmin->datos_AmortizarCServ($datos[1]);
+  $filesAS->rowCount();
+  $camposS = $filesAS->fetch();
+
+
   $filesA=$classAdmin->datos_AmortizarC($datos[1]);
   if($filesA->rowCount()){
   $campos = $filesA->fetch();
+
+
+
+
+
+     $serV=$camposS['descripcion'];
+     $arrServicio = ["CORTE Y RECONEXION","NUEVA INSTALACION","SERVICIO DE GASFITERIA","AVERIAS DE REDES TENDIDAS","OTROS"];
+
+
+
+
+
+
+
 ?>
     <div class="container-fluid" onload="guardarDB('');" >
 
@@ -58,11 +78,29 @@ function volverA(){
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rs-asusap" style="background: rgba(25,25,25,.1);" id="cuadro">
 
-                <div class="col-xs-12 col-sm-12">
+                <p class="text-center">
                     <label class="text-danger" name="nameUser">N. servicio <small id="idReciboA"><? echo $campos['idfactura_servicio']?></small></label>
+                </p>
+                <div class="col-xs-12 col-sm-12">
+
 
                     <div class="col-xs-12 col-md-6 ">
                         <h3 class="tile-titles text-left font-weight-bold"><b>Fecha de Deuda: </b><small id="fechaAS"><? echo $campos['fecha']?></small></h3>
+                    </div>
+                    <div class="col-xs-12 col-md-6 ">
+                        <?php
+                        foreach ($arrServicio as $value) {
+                                # code...
+                               if($value == $serV){
+                                    echo '<h3 class="tile-titles text-left font-weight-bold"><b>Servicio: </b><small id="servicioAS">'.$value.'</small></h3>';
+
+
+                                }
+
+                            }
+                        ?>
+
+
                     </div>
                 </div>
 

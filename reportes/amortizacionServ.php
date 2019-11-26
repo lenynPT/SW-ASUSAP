@@ -15,7 +15,7 @@ date_default_timezone_set('America/Lima');
 $created_date = date("Y-m-d H:i");
 $idate=$_GET['cdsi'];
 
-$query = "SELECT f.a_nombre,f.mont_restante,f.fecha,s.direccion FROM factura_servicio f INNER JOIN suministro s ON  s.cod_suministro=f.suministro_cod_suministro WHERE ";
+$query = "SELECT f.a_nombre,f.mont_restante,f.fecha,s.direccion,a.nombre , a.apellido FROM factura_servicio f INNER JOIN suministro s ON  s.cod_suministro=f.suministro_cod_suministro INNER JOIN asociado a ON a.dni=s.asociado_dni WHERE ";
 $query .= 'suministro_cod_suministro = "'.$idate.'"';
 
 //$query .= 'direccion = "'.$idate.'"';
@@ -33,6 +33,7 @@ $MP=$_GET['PM'];
 $_SESSION['cost']=$MP;
 $anm=$_GET['anom'];
 $fechae=$_GET['fechae'];
+$servAs=$_GET['servAs'];
 
 if($filesA->rowCount()) {
     $campos = $filesA->fetch();
@@ -81,7 +82,7 @@ if($filesA->rowCount()) {
             // Arial italic 8
             $this->SetFont('Arial', 'B', 12);
             $this->SetX(110);
-            $this->Cell(10, 17, "S/ ".$_SESSION['cost'], 0, 0, 'L');
+            $this->Cell(10, 17, "Total: S/ ".$_SESSION['cost'], 0, 0, 'L');
             // Número de página
             //  $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
         }
@@ -104,18 +105,23 @@ if($filesA->rowCount()) {
     $pdf->SetXY(125, 22);
     // $pdf->Cell(20, 10, $idfsI, 0, 0, 'L');
     $pdf->SetFont('Arial', 'B', 8);
-    $pdf->SetXY(22, 38);
-    $pdf->Cell(90, 10, utf8_decode($campos['a_nombre']), 0, 0, 'L');
-    $pdf->SetXY(110, 44);
-    $pdf->Cell(90, 10, $fechae, 0, 0, 'L');
-    $pdf->SetXY(110, 50);
-    $pdf->Cell(90, 10, $created_date, 0, 0, 'L');
-    $pdf->SetXY(20, 50);
+    $pdf->SetXY(22, 45);
+    $pdf->Cell(90, 10, utf8_decode($campos['apellido']." ".$campos['nombre']), 0, 0, 'L');
+    $pdf->SetXY(0, 52);
+    $pdf->Cell(90, 10, utf8_decode($campos['direccion']), 0, 0, 'C');
+    $pdf->SetXY(20, 59);
     $pdf->Cell(90, 10, utf8_decode($anm), 0, 0, 'L');
+    $pdf->SetXY(20, 66);
+    $pdf->Cell(90, 10, utf8_decode($servAs), 0, 0, 'L');
+
+    $pdf->SetXY(110, 52);
+    $pdf->Cell(90, 10, $fechae, 0, 0, 'L');
+    $pdf->SetXY(110, 60);
+    $pdf->Cell(90, 10, $created_date, 0, 0, 'L');
+
     $pdf->SetXY(0, 56);
    // $pdf->Cell(90, 10, utf8_decode($campos['direccion']), 0, 0, 'C');
-    $pdf->SetXY(0, 44);
-      $pdf->Cell(90, 10, utf8_decode($campos['direccion']), 0, 0, 'C');
+
     //PARA LOS SERVICIOS
     $textypos += 35;
     $off = $textypos+35;

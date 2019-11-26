@@ -338,6 +338,13 @@
             $query->execute();
             return $query;
         }
+        public function datos_AmortizarServicio($codigo){
+
+            $query=mainModel::connect()->prepare("SELECT  descripcion FROM detalle_servicio WHERE factura_servicio_idfactura_servicio=:coReciboS");
+            $query->bindParam(":coReciboS",$codigo);
+            $query->execute();
+            return $query;
+        }
 
         public function actualizarASR($dataAd){
             $stmt=mainModel::connect()->prepare("UPDATE factura_servicio SET monto_pagado=:montPagado,mont_restante=:montREST WHERE idfactura_servicio=:id");
