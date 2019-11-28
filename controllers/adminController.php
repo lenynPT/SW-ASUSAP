@@ -327,7 +327,7 @@
 			//(x)FALTA TERMINAR CON LAS FECHAS... ANALIZAR PARA MES DE ENERO - OJO-> Parece que ya se Creo una solución con un metodo para fechas escrito anteriormente <-OJO. 
 			$fecha_actual = self::consultar_fecha_actual();
 
-			$Diasum = $fecha_actual['dia'] + 10;
+			$Diasum = $fecha_actual['dia'] + 15;
 			$dia_v = ($Diasum<28)? $Diasum:28;
 
 			$anio_hoy=$fecha_actual['anio'];
@@ -343,7 +343,7 @@
 			WHERE factura_recibo_anio.anio = {$FConsumo['anio_GC']})";			
 			*/
 			//trae los registros que ya no están en los registros de factura_recibo y factura_x_ani
-			$query = "SELECT suministro.cod_suministro FROM suministro 
+			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro FROM suministro 
 			INNER JOIN 
 			( SELECT cod_suministro FROM suministro WHERE suministro.cod_suministro NOT IN 
 				( SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo WHERE factura_recibo.mes={$FConsumo['mes_GC']})
