@@ -357,7 +357,8 @@
 
 			$Datos = array(
 				"codigos" => [
-					'suministro'=>[],					
+					'suministro'=>[],
+					'sumi_mantenimiento'=>[]					
 				],
 				"datosAdi"=>[
 					'anio'=>$FConsumo['anio_GC'],
@@ -366,20 +367,32 @@
 					'hora_e'=>"{$fecha_actual['hora']}:{$fecha_actual['minuto']}:{$fecha_actual['segundo']}",
 					'fecha_v'=>"{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$dia_v}",
 					'consumo'=>0,
-					'monto'=>4.2
+					'monto'=>4.2,
+					'monto_Mante'=>2.5
 				]);
 
 			$listCodSum = [];			
+			$listCodSumMante = [];			
 			while($regis = $regSumiSnMed->fetch()){
-				$listCodSum[] = $regis['cod_suministro'];	
-				
-				/**
-				 * Esto se debe de hacer en el Modelo por cuestiones de orden 
-				 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
-				 */
-				$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);			
+
+				if($regis['categoria_suministro'] != 'Mantenimiento'){
+					$listCodSum[] = $regis['cod_suministro'];						
+					/**
+					 * Esto se debe de hacer en el Modelo por cuestiones de orden 
+					 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
+					 */
+					$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);								
+				}else{
+					$listCodSumMante[] = $regis['cod_suministro'];	
+					/**
+					 * Esto se debe de hacer en el Modelo por cuestiones de orden 
+					 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
+					 */
+					$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);
+				}
 			}
 			$Datos['codigos']['suministro'] = $listCodSum;	
+			$Datos['codigos']['sumi_mantenimiento'] = $listCodSumMante;	
 			
 			$result = adminModel::insertarConsumoSnMModel($Datos);
 

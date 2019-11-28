@@ -181,12 +181,28 @@
 		protected function insertarConsumoSnMModel($dataModel){
 			
 			$codSumi = $dataModel['codigos']['suministro'];
+			$codSumiMante = $dataModel['codigos']['sumi_mantenimiento'];
 			$dataAdic = $dataModel['datosAdi'];
+
 
 			foreach ($codSumi as $codigo) {
 				# code...			
 				$query = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
 				VALUES (NULL, :anio, :mes, '{$dataAdic['fecha_e']}', '{$dataAdic['hora_e']}', '{$dataAdic['fecha_v']}', {$dataAdic['consumo']}, {$dataAdic['monto']}, 0, 0, :suministro_cod_suministro)";
+				$stmt = mainModel::connect()->prepare($query);
+				$stmt->bindParam(":anio",$dataAdic['anio']);
+				$stmt->bindParam(":mes",$dataAdic['mes']);	
+				$stmt->bindParam(":suministro_cod_suministro",$codigo);
+				
+				$stmt->execute();				
+
+			}
+
+			//Insertar cosumos para MANTENIMIENTO
+			foreach ($codSumiMante as $codigo) {
+				# code...			
+				$query = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
+				VALUES (NULL, :anio, :mes, '{$dataAdic['fecha_e']}', '{$dataAdic['hora_e']}', '{$dataAdic['fecha_v']}', {$dataAdic['consumo']}, {$dataAdic['monto_Mante']}, 0, 0, :suministro_cod_suministro)";
 				$stmt = mainModel::connect()->prepare($query);
 				$stmt->bindParam(":anio",$dataAdic['anio']);
 				$stmt->bindParam(":mes",$dataAdic['mes']);	

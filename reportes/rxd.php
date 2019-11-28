@@ -178,7 +178,7 @@ if(!$resConsult['res']){
         }
         
         //DETALLE DE LA FACTURACIÓN ****************************************************
-        if($medidor=="Si"){
+        if($medidor=="Si" || $element['categoria_suministro'] == 'Mantenimiento'){
             $subT = modoDePago($pdf,$element,$consumo_dif);
 
             //conceptos----
