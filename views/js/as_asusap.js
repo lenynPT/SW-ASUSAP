@@ -307,6 +307,7 @@ function ImprimerReciboAmotizacion() {
     let mTotal=document.getElementById("montAll").value;
     let CDS=document.getElementById("codAR").innerHTML;
     let anomb=document.getElementById("nombreAR").innerHTML;
+    let aservicio=document.getElementById("servicioAS").innerHTML;
     let fechae=document.getElementById("fechaAS").innerHTML;
   /*  let ids=document.getElementById("idReciboA").innerHTML;
     let MONTOP=document.getElementById("montP").value;
@@ -319,8 +320,8 @@ function ImprimerReciboAmotizacion() {
 
         var canal = window.location.pathname;
   //  let mpagA=document.getElementById("montPa").value;
-    console.log("impsss"+mpagA+anomb)
-    window.open(`../reportes/amortizacionServ.php?PM=${mpagA}&cdsi=${CDS}&anom=${anomb}&fechae=${fechae}`, '_blank');
+    console.log("impsss"+mpagA+anomb+aservicio)
+    window.open(`../reportes/amortizacionServ.php?PM=${mpagA}&cdsi=${CDS}&anom=${anomb}&fechae=${fechae}&servAs=${aservicio}`, '_blank');
 
 /*
         $.ajax({

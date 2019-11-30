@@ -1060,6 +1060,10 @@
 
             return adminController::datos_Amortizar($codigo);
         }
+        public function datos_AmortizarCServ($codigo){
+
+            return adminController::datos_AmortizarServicio($codigo);
+        }
 
         public function montoPagado($mopagr,$IDS,$MR){
             $res=0;

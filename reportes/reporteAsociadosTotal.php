@@ -15,6 +15,11 @@ require "fpdf/fpdf.php";
 $atDirc=$_GET['ATDIR'];
 $atEstd=$_GET['ATEST'];
 
+session_start(['name'=>'ASUSAP']);
+$_SESSION['aestado']=$atEstd;
+
+
+
 
 if ($atDirc=="TODOS" && $atEstd==3 ){
 
@@ -32,6 +37,9 @@ if ($atDirc=="TODOS" && $atEstd==3 ){
         $query .= ' estado_corte="' . $_GET['ATEST']. '" ';
     }
     else if ($atDirc == "TODOS" && $atEstd == 2) {
+       /* $query2= 'SELECT COUNT (*) FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni WHERE a.cant_suministro="'.$_GET['ATEST'].'"';
+        $result2 = $inst->consultaAsociado( $query2 );*/
+
 
         $query .= ' estado_corte="' . $_GET['ATEST']. '" ';
     }
@@ -149,7 +157,7 @@ class PDF extends FPDF
         //$this->Image('images/logo.png', 5, 5, 30 );
         $this->SetFont('Arial','B',15);
         $this->Cell(30);
-        $this->Cell(120,10, 'Reporte De Suministro',0,0,'C');
+        $this->Cell(120,10, 'Reporte De Asociados',0,0,'C');
         $this->SetFont('Arial','B',10);
         $this->Cell(10);
         $this->Cell(20,20,'Fecha: '.$_SESSION['fecha'],0,0,'R');
@@ -222,19 +230,94 @@ $off = $textypos+2;
 $o=1;
 $y=0;
 // "SELECT DISTINCT  s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni ";
+
+
 while($row = $result->fetch()) {
 
     $pdf->SetFillColor(232,232,232);
-    $pdf->Cell(10,$off,$o++,1,0,'C');
-    $pdf->Cell(30,$off,utf8_decode($row['asociado_dni']),1,0,'C');
-    $pdf->Cell(100,$off,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
-    $pdf->Cell(25,$off,utf8_decode($row['telefono']),1,0,'C');
-    if ($row['cant_suministro']>=1){
-        $v="2 a más";
-    }else{
-        $v="1";
+   // $pdf->Cell(10,$off,$o++,1,0,'C');
+
+
+
+//CANTIDad de suministros
+    $query2= 'SELECT asociado_dni FROM  suministro WHERE asociado_dni="'.$row['asociado_dni'].'"';
+    $result2 = $inst->consultaAsociado( $query2 );
+    $va= $result2->fetchAll();
+    $h=count($va);
+
+
+    $estd=$_SESSION['aestado'];
+    if ($estd==3){
+        $pdf->Cell(10,$off,$o++,1,0,'C');
+        $pdf->Cell(30,$off,utf8_decode($row['asociado_dni']),1,0,'C');
+        $pdf->Cell(100,$off,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
+        $pdf->Cell(25,$off,utf8_decode($row['telefono']),1,0,'C');
+        /*if ($row['cant_suministro']>=1){
+            $v="2 a más";
+        }else{
+            $v="1";
+        }*/
+        $pdf->Cell(15,$off,$h,1,1,'C');
     }
-    $pdf->Cell(15,$off,utf8_decode($v),1,1,'C');
+    if ($estd==2) {
+
+//ACTIVOS 0
+        $query3 = 'SELECT asociado_dni FROM  suministro WHERE asociado_dni="' . $row['asociado_dni'] . '" AND estado_corte="0"';
+        $result3 = $inst->consultaAsociado($query3);
+        $va3 = $result3->fetchAll();
+        $h3 = count($va3);
+//INACTIVOS 2
+        $query4 = 'SELECT asociado_dni FROM  suministro WHERE asociado_dni="' . $row['asociado_dni'] . '" AND estado_corte="2"';
+        $result4 = $inst->consultaAsociado($query4);
+        $va4 = $result4->fetchAll();
+        $h4 = count($va4);
+
+        /* if ($h3>0  || $h3>$h4){
+              $pdf->Cell(30,$off,$h." A: ".$h3." IA:".$h4,1,0,'C');
+              $pdf->Cell(100,$off,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
+              $pdf->Cell(25,$off,utf8_decode($row['telefono']),1,0,'C');
+              if ($row['cant_suministro']>=1){
+                  $v="2 a más";
+              }else{
+                  $v="1";
+              }
+              $pdf->Cell(15,$off,utf8_decode($v),1,1,'C');
+          }*/
+
+        if ($h4 > 0) {
+
+            if ($h3 >= 1) {
+
+            }
+            else{
+                $pdf->Cell(10, $off, $o++, 1, 0, 'C');
+                $pdf->Cell(30, $off, $h . " A: " . $h3 . " IA:" . $h4, 1, 0, 'C');
+                $pdf->Cell(100, $off, utf8_decode($row['apellido'] . " " . $row['nombre']), 1, 0, 'L');
+                $pdf->Cell(25, $off, utf8_decode($row['telefono']), 1, 0, 'C');
+                /*if ($row['cant_suministro'] >= 1) {
+                    $v = "2 a más";
+                } else {
+                    $v = "1";
+                }*/
+                $pdf->Cell(15, $off, $h, 1, 1, 'C');
+            }
+
+        }
+    }
+    if ($estd==0){
+
+        $pdf->Cell(10, $off, $o++, 1, 0, 'C');
+        $pdf->Cell(30, $off, utf8_decode($row['asociado_dni']), 1, 0, 'C');
+        $pdf->Cell(100, $off, utf8_decode($row['apellido'] . " " . $row['nombre']), 1, 0, 'L');
+        $pdf->Cell(25, $off, utf8_decode($row['telefono']), 1, 0, 'C');
+        /*if ($row['cant_suministro'] >= 1) {
+            $v = "2 a más";
+        } else {
+            $v = "1";
+        }*/
+        $pdf->Cell(15, $off, $h, 1, 1, 'C');
+    }
+
   //  $pdf->Cell(10,$off,utf8_decode($row['categoria_suministro']),1,1,'C');
     //  $y=$y+$row['contador_deuda'];
     //$pdf->Cell(20,6,utf8_decode($y=($y+$row['total_pago'])),1,1,'C');
@@ -246,7 +329,7 @@ while($row = $result->fetch()) {
 }
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->SetX(158);
-//$pdf->Cell(10, 10,'TOTAL:  '. 'S/ '.$y, 0, 0, 'L');
+//$pdf->Cell(10, 10,'TOTAL:  '. 'S/ '.$h, 0, 0, 'L');
 
 $pdf->Output();
 

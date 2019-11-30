@@ -108,20 +108,21 @@ $desNSI=$_POST['desNSI'];*/
     $pdf->Cell(90, 10, utf8_decode($tcsI), 0, 0, 'L');
     $pdf->SetXY(110, 53);
     $pdf->Cell(90, 10, $created_date, 0, 0, 'L');
-    $pdf->SetXY(20, 60);
+    $pdf->SetXY(20, 59);
     $pdf->Cell(90, 10, utf8_decode($anorsI), 0, 0, 'L');
-    $pdf->SetXY(0, 65);
-    $pdf->Cell(90, 10, utf8_decode($servSI), 0, 0, 'C');
-    $pdf->SetXY(0, 53);
+    $pdf->SetXY(0, 52);
     $pdf->Cell(90, 10, $disI, 0, 1, 'C');
+    $pdf->SetXY(0, 66);
+    $pdf->Cell(90, 10, utf8_decode($servSI), 0, 0, 'C');
+
     //PARA LOS SERVICIOS
     $textypos+=35;
     //$pdf->setX(2);
     //$pdf->Cell(5,$textypos,'Nombre del Servicio / Descripcion          PRECIO ');
 
     $off = $textypos+60;
-
-    $pdf->setY(85);
+    //$pdf->SetXY(0, 83);
+    $pdf->setY(83);
     $pdf->SetFont('Arial','',12);
     for($i = 0; $i <= $ac; ++$i){
        // $pdf->setX(2);

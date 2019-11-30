@@ -24,6 +24,9 @@ if($_POST["is_date_search"] == "yes")
 {
     $all=$_POST["start_date"] ;
     $esta=$_POST["estad"] ;
+
+    session_start(['name'=>'ASUSAP']);
+    $_SESSION['aestado']=$esta;
    // $catA=$_POST["catA"] ;
     // if ($all=="TODOS"){
     //-----------------------DIRECCION  ------------------------------------------------------------
@@ -51,6 +54,7 @@ if($_POST["is_date_search"] == "yes")
         if ($catA=="Industrial"){
             $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }*/
+    //    $query = "SELECT DISTINCT  s.asociado_dni, a.nombre,a.apellido,a.telefono,a.cant_suministro/*,s.estado_corte*/ FROM  asociado a  INNER JOIN suministro s ON s.asociado_dni=a.dni   WHERE ";
 
         $query .= ' estado_corte="'.$_POST["estad"].'" AND ';
 
@@ -181,42 +185,86 @@ $instsa = new adminController();
 while ($row = $result->fetch()) {
 
 
-   // if ($row["dni"]<=1){
-
-   // $query3 ="SELECT  COUNT(*)  FROM asociado  a INNER JOIN  suministro s ON s.asociado_dni= a.dni where s.asociado_dni=".$row["asociado_dni"];
-    //$query3 ="SELECT  COUNT(*) FROM suministro where asociado_dni =".$row["asociado_dni"]." AND estado_corte='2'";
-    // $query4 ="SELECT  COUNT(*) FROM suministro where asociado_dni =".$row["asociado_dni"]." AND estado_corte='0'";
-   //  $resultd = $instsa->consultaAsociado($query3);
-     //$result->rowCount($result);
-   // $query3 = "SELECT  COUNT(*) FROM suministro where asociado_dni=".$row["asociado_dni"]." AND estado_corte='2'";
-  //  $resulty = $instsa->consultaAsociado($query3);
-   // $query4 = $query4->execute();
-    //$datos=adminController::->query("SELECT SQL_CALC_FOUND_ROWS * FROM factura_servicio WHERE idfactura_servicio!='1' ");
-
-// $result = mysqli_query($connect, $query);
-    //$resultda=$resultd->rowCount($resultd);
+//total de suministros
+    $query2= 'SELECT asociado_dni FROM  suministro WHERE asociado_dni="'.$row['asociado_dni'].'"';
+    $result2 = $inst->consultaAsociado( $query2 );
+    $va= $result2->fetchAll();
+    $h=count($va);
 
 
+    //$sub_array = array();
 
-    $sub_array = array();
-//    if ($resultda>=0) {
+    $estd=$_SESSION['aestado'];
+    if ($estd==3){
+        $sub_array = array();
+        $sub_array[] = $s++;
+        $sub_array[] = $row["asociado_dni"];
+        $sub_array[] = $row["apellido"] . " " . $row["nombre"];
+        $sub_array[] = $row["telefono"];
+        $sub_array[] = $h;
+        $data[] = $sub_array;
+    }
+    if ($estd==2) {
 
-    $sub_array[] = $s++;
+//ACTIVOS 0
+        $query3 = 'SELECT asociado_dni FROM  suministro WHERE asociado_dni="' . $row['asociado_dni'] . '" AND estado_corte="0"';
+        $result3 = $inst->consultaAsociado($query3);
+        $va3 = $result3->fetchAll();
+        $h3 = count($va3);
+//INACTIVOS 2
+        $query4 = 'SELECT asociado_dni FROM  suministro WHERE asociado_dni="' . $row['asociado_dni'] . '" AND estado_corte="2"';
+        $result4 = $inst->consultaAsociado($query4);
+        $va4 = $result4->fetchAll();
+        $h4 = count($va4);
+
+        /* if ($h3>0  || $h3>$h4){
+              $pdf->Cell(30,$off,$h." A: ".$h3." IA:".$h4,1,0,'C');
+              $pdf->Cell(100,$off,utf8_decode($row['apellido']." ".$row['nombre']),1,0,'L');
+              $pdf->Cell(25,$off,utf8_decode($row['telefono']),1,0,'C');
+              if ($row['cant_suministro']>=1){
+                  $v="2 a más";
+              }else{
+                  $v="1";
+              }
+              $pdf->Cell(15,$off,utf8_decode($v),1,1,'C');
+          }*/
+
+        if ($h4 > 0) {
+
+            if ($h3 >= 1) {
+
+            }
+            else{
+                $sub_array = array();
+                $sub_array[] = $s++;
+                $sub_array[] = $row["asociado_dni"];
+                $sub_array[] = $row["apellido"] . " " . $row["nombre"];
+                $sub_array[] = $row["telefono"];
+                $sub_array[] = $h;
+                $data[] = $sub_array;
+            }
+
+        }
+    }
+    if ($estd==0){
+        $sub_array = array();
+        $sub_array[] = $s++;
+        $sub_array[] = $row["asociado_dni"];
+        $sub_array[] = $row["apellido"] . " " . $row["nombre"];
+        $sub_array[] = $row["telefono"];
+        $sub_array[] = $h;
+        $data[] = $sub_array;
+    }
+
+
+
+   /* $sub_array[] = $s++;
     $sub_array[] = $row["asociado_dni"];
     $sub_array[] = $row["apellido"] . " " . $row["nombre"];
     $sub_array[] = $row["telefono"];
-    if ($row["cant_suministro"]>=1){
+    $sub_array[] = $h;
 
-        $sub_array[] = "2 a más";
-    }else{
-        $sub_array[]="1";
-    }
-
-  //  }
-
-    //  $sub_array[] = $row["categoria_suministro"];
-    // $sub_array[] = $row["mes"];
-    $data[] = $sub_array;
+    $data[] = $sub_array;*/
 
 
 
