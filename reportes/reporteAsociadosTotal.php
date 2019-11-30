@@ -157,7 +157,7 @@ class PDF extends FPDF
         //$this->Image('images/logo.png', 5, 5, 30 );
         $this->SetFont('Arial','B',15);
         $this->Cell(30);
-        $this->Cell(120,10, 'Reporte De Suministro',0,0,'C');
+        $this->Cell(120,10, 'Reporte De Asociados',0,0,'C');
         $this->SetFont('Arial','B',10);
         $this->Cell(10);
         $this->Cell(20,20,'Fecha: '.$_SESSION['fecha'],0,0,'R');
