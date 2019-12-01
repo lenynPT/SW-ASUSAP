@@ -28,9 +28,11 @@ class PDF extends FPDF
     }
     function Footer()
     {
+        /*        
         $this->SetY(-10);
         $this->SetFont('Arial','I',8);
         $this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
+        */
     }
 }
 
