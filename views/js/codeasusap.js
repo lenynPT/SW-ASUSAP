@@ -535,7 +535,7 @@ function generarmeses($selectmese, $selectanio){
 		})
 	}
 }
-generarmeses(".fechas-meses","#fecha_anio");
+//generarmeses(".fechas-meses","#fecha_anio");
 generarmeses("#fecha_mesXsumi","#fecha_anioXsumi");
 
 function GRbuscarXdireccion(){
@@ -547,6 +547,7 @@ function GRbuscarXdireccion(){
 		$option_mes = document.querySelector('#fecha_mes');
 		
 		//Linpiando tabla y buscador
+		/*
 		{
 			$option_anio.addEventListener('click',()=>{
 				el.value = '';
@@ -557,13 +558,11 @@ function GRbuscarXdireccion(){
 				document.querySelector("#resTablaRD").innerHTML = '';
 			})
 		}
+		*/
 		
 		actualizarTblGRDireccion("",$option_anio.value,$option_mes.value);
 		console.log(el);		
 		el.addEventListener("keyup",function(){
-			//console.log("keyup",this.value);
-			console.log($option_anio.value);
-			console.log($option_mes.value);
 
 			let nombreDireccion = this.value;
 

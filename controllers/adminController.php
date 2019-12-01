@@ -446,11 +446,15 @@
 			$query = "SELECT factura_recibo.consumo FROM factura_recibo 
 				WHERE factura_recibo.suministro_cod_suministro = '{$cod_sum}' 
 				AND factura_recibo.anio = {$FCAnterior['anio_GC']} AND factura_recibo.mes={$FCAnterior['mes_GC']}
-			";*/
+			";
 			$query ="SELECT DISTINCT factura_recibo.consumo FROM factura_recibo 
-				WHERE factura_recibo.suministro_cod_suministro = '{$cod_sum}' AND 
-				AND factura_recibo.anio <= {$FCAnterior['anio_GC']} AND factura_recibo.mes <= {$FCAnterior['mes_GC']}
-				ORDER BY anio DESC, mes DESC LIMIT 0,1";
+			WHERE factura_recibo.suministro_cod_suministro = '{$cod_sum}' AND 
+			AND factura_recibo.anio <= {$FCAnterior['anio_GC']} AND factura_recibo.mes <= {$FCAnterior['mes_GC']}
+			ORDER BY anio ASC, mes ASC LIMIT 0,1";
+			*/
+			$query = "SELECT DISTINCT factura_recibo.consumo, factura_recibo.anio,factura_recibo.mes FROM factura_recibo 
+			WHERE factura_recibo.mes <= {$FCAnterior['mes_GC']} AND factura_recibo.anio <= {$FCAnterior['anio_GC']} AND factura_recibo.suministro_cod_suministro='$cod_sum' 
+			ORDER BY factura_recibo.anio DESC,factura_recibo.mes DESC LIMIT 0,1";
 			$dataConsm = mainModel::execute_single_query($query);
 			if($dataConsm->rowCount()==1){
 				$regConsm = $dataConsm->fetch();
@@ -591,7 +595,7 @@
 			 factura_recibo.consumo, factura_recibo.monto_pagar,factura_recibo.esta_cancelado,factura_recibo.esta_impreso 
 			 FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
 			 INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro 
-			 WHERE suministro.estado_corte<>2 AND suministro.direccion = '$direccion' AND
+			 WHERE suministro.estado_corte<>2 AND suministro.contador_deuda>=1 AND suministro.direccion = '$direccion' AND
 			  factura_recibo.anio=$anio AND factura_recibo.mes=$mes ORDER BY asociado.apellido";
 			//$query = "SELECT * FROM suministro WHERE direccion='{$direccion}'";
 			$arrData = mainModel::execute_single_query($query);
@@ -1077,7 +1081,7 @@
 
 		/*================================ IMPRESION RECIBOS ============================================*/ 
 		public function consultaDeudasMes($cod_sum){
-			$query = "SELECT factura_recibo.suministro_cod_suministro,factura_recibo.anio,factura_recibo.mes,factura_recibo.esta_cancelado 
+			$query = "SELECT factura_recibo.suministro_cod_suministro,factura_recibo.anio,factura_recibo.mes,factura_recibo.esta_cancelado, factura_recibo.monto_pagar 
 			FROM factura_recibo 
 			WHERE factura_recibo.esta_cancelado=0 AND factura_recibo.suministro_cod_suministro='$cod_sum'";
 

@@ -127,12 +127,14 @@ class PDF extends FPDF
             $pdf->Cell(100,5,"Cantidad deudas: {$element['contador_deuda']}",0,0,'');   
             
             //Imprime los meses endeudados
-            $pdf->SetXY(10,87);        
+            $pdf->SetXY(10,87);   
+            $total_suma_deudas=0;     
             foreach ($deudasMes as $value) {
                 # code...
+                $total_suma_deudas += $value['monto_pagar'];
                 $nombreMes =  $dataObj->obtenerNombrefecha($value['anio'],$value['mes']);
                 $pdf->SetX(10);
-                $pdf->Cell(30,3,$nombreMes['r_mes']." del ".$nombreMes['r_anio'],1,0,'');
+                $pdf->Cell(40,3,$nombreMes['r_mes']." del ".$nombreMes['r_anio']."->".$value['monto_pagar'],1,0,'');
                 $pdf->ln();
             }  
             
@@ -151,8 +153,12 @@ class PDF extends FPDF
                 $pdf->SetXY(130,67);
                 $pdf->Cell(100,10,"$/ 0.64",0,0,'');
             }
+            $pdf->SetXY(85,130);
+            $pdf->Cell(100,10,"Deuda mes actual",0,0,'');
+            $pdf->SetXY(118,130);
+            $pdf->Cell(11,8,"S/ ".$element['monto_pagar'],1,0,'C');
             $pdf->SetXY(118,139);
-            $pdf->Cell(100,10,"S/ ".$element['monto_pagar'],0,0,'');
+            $pdf->Cell(100,10,"S/ ".$total_suma_deudas,0,0,'');
 
             //MENSAJE DE CORTE
             $pdf->SetXY(10,150);
