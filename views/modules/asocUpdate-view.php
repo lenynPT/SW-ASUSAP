@@ -196,7 +196,7 @@
                                 <td>
                                     <?php
                                         $categoria = $suministro['categoria_suministro'];
-                                        $arrCategoria = ["Industrial","Domestico","Comercial","Estatal"];
+                                        $arrCategoria = ["Industrial","Domestico","Comercial","Estatal",'Mantenimiento'];
                                     ?>
                                     <select class="" name="categoria<?=$cont?>" id="categoria<?=$cont?>">
                                         <?php 

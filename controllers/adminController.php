@@ -327,7 +327,7 @@
 			//(x)FALTA TERMINAR CON LAS FECHAS... ANALIZAR PARA MES DE ENERO - OJO-> Parece que ya se Creo una solución con un metodo para fechas escrito anteriormente <-OJO. 
 			$fecha_actual = self::consultar_fecha_actual();
 
-			$Diasum = $fecha_actual['dia'] + 10;
+			$Diasum = $fecha_actual['dia'] + 15;
 			$dia_v = ($Diasum<28)? $Diasum:28;
 
 			$anio_hoy=$fecha_actual['anio'];
@@ -343,7 +343,7 @@
 			WHERE factura_recibo_anio.anio = {$FConsumo['anio_GC']})";			
 			*/
 			//trae los registros que ya no están en los registros de factura_recibo y factura_x_ani
-			$query = "SELECT suministro.cod_suministro FROM suministro 
+			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro FROM suministro 
 			INNER JOIN 
 			( SELECT cod_suministro FROM suministro WHERE suministro.cod_suministro NOT IN 
 				( SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo WHERE factura_recibo.mes={$FConsumo['mes_GC']})
@@ -357,7 +357,8 @@
 
 			$Datos = array(
 				"codigos" => [
-					'suministro'=>[],					
+					'suministro'=>[],
+					'sumi_mantenimiento'=>[]					
 				],
 				"datosAdi"=>[
 					'anio'=>$FConsumo['anio_GC'],
@@ -366,20 +367,32 @@
 					'hora_e'=>"{$fecha_actual['hora']}:{$fecha_actual['minuto']}:{$fecha_actual['segundo']}",
 					'fecha_v'=>"{$fecha_actual['anio']}-{$fecha_actual['mes']}-{$dia_v}",
 					'consumo'=>0,
-					'monto'=>4.2
+					'monto'=>4.2,
+					'monto_Mante'=>2.5
 				]);
 
 			$listCodSum = [];			
+			$listCodSumMante = [];			
 			while($regis = $regSumiSnMed->fetch()){
-				$listCodSum[] = $regis['cod_suministro'];	
-				
-				/**
-				 * Esto se debe de hacer en el Modelo por cuestiones de orden 
-				 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
-				 */
-				$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);			
+
+				if($regis['categoria_suministro'] != 'Mantenimiento'){
+					$listCodSum[] = $regis['cod_suministro'];						
+					/**
+					 * Esto se debe de hacer en el Modelo por cuestiones de orden 
+					 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
+					 */
+					$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);								
+				}else{
+					$listCodSumMante[] = $regis['cod_suministro'];	
+					/**
+					 * Esto se debe de hacer en el Modelo por cuestiones de orden 
+					 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
+					 */
+					$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);
+				}
 			}
 			$Datos['codigos']['suministro'] = $listCodSum;	
+			$Datos['codigos']['sumi_mantenimiento'] = $listCodSumMante;	
 			
 			$result = adminModel::insertarConsumoSnMModel($Datos);
 

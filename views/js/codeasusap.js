@@ -35,7 +35,10 @@ function busacarAsocBtn(){
 									let datos = JSON.parse(respuesta);
 									let datostabla = datos.tabla;
 									let datosmodal = datos.modal;
-									
+
+									let cant_sumi = datostabla["cant_suministro"];
+									cant_sumi++;
+
 									let htmlAsoc = `
 																	
 										<tr>		
@@ -45,7 +48,7 @@ function busacarAsocBtn(){
 											<td>${datostabla["apellido"]}</td>
 											<td>${datostabla["telefono"]}</td>
 											
-											<td>${datostabla["cant_suministro"]}</td>
+											<td>${cant_sumi}</td>
 											<td>
 												<a href="#cantSumin" data-toggle="modal" dni="485666" class="cantSumin btn btn-success btn-raised btn-xs" >
 													<i class="zmdi zmdi-refresh"></i>
@@ -474,7 +477,19 @@ function generarMonto($consumo, categoria){
 					$resIGV = $sum*0.18; 
 					$resIGV = Number($resIGV.toFixed(1));
 
-					$montTotal = $sum + $resIGV;					
+					$montTotal = $sum + $resIGV;	
+					break;	
+				case 'Mantenimiento':
+					$val1 = 2.11;
+			
+					$val1 = Number($val1.toFixed(1));
+					$sum=$val1;		
+
+					$resIGV = $sum*0.18; 
+					$resIGV = Number($resIGV.toFixed(1));
+
+					$montTotal = $sum + $resIGV;	
+					break;				
 		
 				default:
 					break;
