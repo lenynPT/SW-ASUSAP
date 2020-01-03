@@ -16,7 +16,7 @@ function busacarAsocBtn(){
 			
 			if(usuario != ""){
 				if(!isNaN(usuario)){
-					if(usuario.length == 8 || usuario.length == 11){
+					if(usuario.length == 8 || usuario.length == 11 || usuario.length == 6){
 						
 						let datos = new FormData();
 						datos.append("codAsoc",usuario);
