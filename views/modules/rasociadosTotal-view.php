@@ -34,7 +34,7 @@
 
 
 <div class="container box">
-    <h1 align="center">REPORTE DE CUANTOS ASOCIADOS</h1>
+    <h1 align="center">REPORTE DE ASOCIADOS</h1>
 
     <div class="justify-content-between ">
         <p class="text-right text-al justify-content-between align-items-center">

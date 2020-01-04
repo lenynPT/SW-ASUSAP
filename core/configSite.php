@@ -4,7 +4,8 @@
 	============================================================================*/
 	const COMPANY="ASUSAP";
 
-	const SERVERURL="http://localhost/SW-ASUSAP/";
+	//const SERVERURL="http://localhost/SW-ASUSAP/";
+	const SERVERURL="/SW-ASUSAP/";
 
 	
 
