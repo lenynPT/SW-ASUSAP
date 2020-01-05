@@ -908,8 +908,8 @@ function instantformUser(){
 		dni.addEventListener("blur",function(){
 			//console.log(this.value,this.value.length)
 			if(this.value != ""){
-				if(!(this.value.length == 8 || this.value.length == 11)){
-					alert("ERROR DE DNI O RUC");
+				if(!(this.value.length == 6 || this.value.length == 8 || this.value.length == 11)){
+					alert("ERROR DE DNI, RUC O CODIGO");
 					dni_error.classList.add("has-error");
 				}				
 			}
