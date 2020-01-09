@@ -594,11 +594,17 @@
 		}
 
 		//GR emitir recibo
-		public function obtenerSumGRxCod($data){			
-			$query = "SELECT asociado.dni,suministro.tiene_medidor,suministro.estado_corte,factura_recibo.anio,factura_recibo.mes,factura_recibo.consumo,factura_recibo.monto_pagar,factura_recibo.esta_cancelado,factura_recibo.suministro_cod_suministro 
-				FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro
+		public function obtenerSumGRxCod($data){
+			$datoBuscar = trim($data['cod_sum']);
+			$anioBuscar = trim($data['anio']);
+			$mesBuscar = trim($data['mes']);
+			$query = "SELECT asociado.nombre,asociado.apellido,suministro.direccion,suministro.tiene_medidor,suministro.estado_corte,factura_recibo.anio,factura_recibo.mes,factura_recibo.esta_cancelado,factura_recibo.suministro_cod_suministro 
+				FROM factura_recibo 
+				INNER JOIN suministro ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro
 				INNER JOIN asociado ON asociado.dni = suministro.asociado_dni 
-				WHERE suministro.estado_corte<>2 AND factura_recibo.anio={$data['anio']} AND factura_recibo.mes={$data['mes']} AND factura_recibo.suministro_cod_suministro LIKE '%{$data['cod_sum']}%' limit 0,3";
+				WHERE suministro.estado_corte<>2 AND factura_recibo.anio={$anioBuscar} AND factura_recibo.mes={$mesBuscar} 
+				AND (factura_recibo.suministro_cod_suministro LIKE '%{$datoBuscar}%' OR asociado.apellido LIKE '%{$datoBuscar}%' OR asociado.nombre LIKE '%{$datoBuscar}%') 
+				LIMIT 0,15";
 			$arrReg = mainModel::execute_single_query($query);
 			$respData = [];
 			while($reg = $arrReg->fetch(PDO::FETCH_ASSOC)){

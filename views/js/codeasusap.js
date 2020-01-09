@@ -684,9 +684,9 @@ function GRbuscarSumXCod($this){
 			<tr>
 				<td>${++cont}</td>
 				<td>${element.suministro_cod_suministro}</td>
-				<td>${element.anio}</td>
-				<td>${element.mes}</td>
-				<td>${element.monto_pagar}</td>
+				<td>${element.nombre}</td>
+				<td>${element.apellido}</td>
+				<td>${element.direccion}</td>
 				<td>${element.esta_cancelado=='1'?"<span class='text-info'>Si</span>":"<span class='text-danger'>No</span>"}</td>
 				<td>${element.tiene_medidor=='1'?'Si':'No'}</td>
 				<td>${element.estado_corte=='1'?"<span class='text-danger'>Si</span>":"<span class='text-info'>No</span>"}</td>

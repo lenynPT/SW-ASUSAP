@@ -141,9 +141,9 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Cod Suministro</th>
-                                <th class="text-center">Año</th>
-                                <th class="text-center">Mes</th>
-                                <th class="text-center">Monto</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Apellidos</th>
+                                <th class="text-center">Dirección</th>
                                 <th class="text-center">Cancelado</th>
                                 <th class="text-center">Medidor</th>
                                 <th class="text-center">Con corte</th>
