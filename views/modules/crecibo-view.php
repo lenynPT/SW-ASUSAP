@@ -12,7 +12,7 @@
 
         <div class="col-lg-6">
             <div class="input-group">
-                <input type="text" placeholder="Busqueda..."  name='txtBscSumCobro' id='txtBscSumCobro' maxlength='25' class=" form-control form-control-lg form-control-borderless">
+                <input type="text" placeholder="Busqueda... Código, Nombre ó Apellido"  name='txtBscSumCobro' id='txtBscSumCobro' maxlength='25' class=" form-control form-control-lg form-control-borderless">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
                 </span>
@@ -35,6 +35,8 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Cod Suministro</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Apellido</th>
                                 <th class="text-center">Dirección</th>
                                 <th class="text-center">Categoría</th>
                                 <th class="text-center">Año</th>

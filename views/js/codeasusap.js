@@ -726,17 +726,20 @@ function buscarSuministrosParaCobrarTBL(txtInput){
 		let ahtml = ``;
 		let cont = 0;
 		data.forEach(element=>{
-			console.log(element)			
+			console.log(element)	
+			let xmes = NombreMes(element.mes);		
 			ahtml += `
 				<tr>
 					<td>${++cont}</td>
 					<td>${element.suministro_cod_suministro}</td>
+					<td>${element.nombre}</td>
+					<td>${element.apellido}</td>
 					<td>${element.direccion}</td>
 					<td>${element.categoria_suministro}</td>
 					<td>${element.anio}</td>
-					<td>${element.mes}</td>
+					<td>${xmes}</td>
 					<td>s/ ${element.monto_pagar}</td>
-					<td><a href="#!" class="btn btn-success btn-raised btn-xs" onclick="cobrarAgua(this,'${element.suministro_cod_suministro}',${element.anio},${element.mes},${element.monto_pagar},${txtInput})">Cobrar</a></td>
+					<td><a href="#!" class="btn btn-success btn-raised btn-xs" onclick="cobrarAgua(this,'${element.suministro_cod_suministro}',${element.anio},${element.mes},${element.monto_pagar},'${txtInput}')">Cobrar</a></td>
 				</tr>				
 			`;
 		});

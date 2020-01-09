@@ -655,9 +655,13 @@
 		//function para COBRAR
 		public function obtenerSumParaCobrar($cod_sum){
 
-			$query = "SELECT suministro.cod_suministro,suministro.direccion,suministro.categoria_suministro,factura_recibo.suministro_cod_suministro, factura_recibo.anio,factura_recibo.mes,factura_recibo.monto_pagar 
-					FROM suministro INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro
-						WHERE factura_recibo.esta_cancelado=0 AND suministro.estado_corte <> 2 AND factura_recibo.suministro_cod_suministro LIKE '%$cod_sum%' LIMIT 0,10";
+			$cod_sum = trim($cod_sum);
+			$query = "SELECT asociado.nombre, asociado.apellido, suministro.direccion, suministro.cod_suministro, suministro.categoria_suministro, factura_recibo.suministro_cod_suministro, factura_recibo.anio, factura_recibo.mes, factura_recibo.monto_pagar 
+					FROM asociado INNER JOIN suministro ON asociado.dni = suministro.asociado_dni
+					INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro
+					WHERE factura_recibo.esta_cancelado=0 AND suministro.estado_corte <> 2 
+					AND (factura_recibo.suministro_cod_suministro LIKE '%$cod_sum%' OR asociado.apellido LIKE '%$cod_sum%' OR asociado.nombre LIKE '%$cod_sum%')
+					LIMIT 0,15";
 			$arrData = mainModel::execute_single_query($query);
 			$arrResp = [];
 			while($reg = $arrData->fetch(PDO::FETCH_ASSOC)){
