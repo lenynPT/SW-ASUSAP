@@ -990,7 +990,7 @@ function validarUsuario(){
 			}
 		}
 
-		if(!(dniv.length == 8 || dniv.length == 11)){
+		if(!(dniv.length == 6 || dniv.length == 8 || dniv.length == 11)){
 			alert("DNI O RUC INVALIDO!!");
 			dni.value = "";
 			return false;
