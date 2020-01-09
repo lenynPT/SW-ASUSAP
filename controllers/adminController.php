@@ -429,10 +429,13 @@
 
 			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni					
-					WHERE suministro.cod_suministro LIKE '%{$codigoSum}%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
+					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
 					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
-					FROM factura_recibo WHERE 
-					factura_recibo.mes = {$FConsumo['mes_GC']} AND factura_recibo.anio = {$FConsumo['anio_GC']} AND factura_recibo.suministro_cod_suministro LIKE '%{$codigoSum}%') LIMIT 0,5";			
+					FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE 
+					suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND
+					factura_recibo.mes = {$FConsumo['mes_GC']} AND factura_recibo.anio = {$FConsumo['anio_GC']}) 
+					AND (suministro.cod_suministro LIKE '%{$codigoSum}%' OR asociado.apellido LIKE '%{$codigoSum}%' OR asociado.nombre LIKE '%{$codigoSum}%')
+					lIMIT 0,15";			
 			$regSumiCnMed = mainModel::execute_single_query($query);
 			
 			$rsptRegist = [];						

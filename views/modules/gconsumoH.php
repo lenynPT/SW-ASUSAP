@@ -140,7 +140,7 @@
                 <div class="form-group row">
                     <label for="btnBuscarSumCorte" class="col-sm-1 col-form-label"><i class="zmdi zmdi-search zmdi-hc-2x pull-left"></i></label>
                     <div class="col-sm-11">                       
-                        <input  type="search" name="buscar" id="buscarSumCnM" class="form-control" onkeyup="generarConsumoConMedidor(this.value)" placeholder="Ingrese Cod. Suministro o Nombre"/>
+                        <input  type="search" name="buscar" id="buscarSumCnM" class="form-control" onkeyup="generarConsumoConMedidor(this.value)" placeholder="Ingrese Cod. Suministro, Nombre ó apellido"/>
                     </div>
                 </div> 
 
