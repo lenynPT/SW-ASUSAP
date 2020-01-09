@@ -103,7 +103,7 @@
 
         <div class="col-xs-12 col-sm-12">
             <div class="col-xs-12 col-md-4 form-group">
-                <input class="form-control" type="search" name="txtCodSum_GR" id="txtCodSum_GR" onkeyup="GRbuscarSumXCod(this)" placeholder="CÓDIGO SUMINISTRO Ejm. 70598957-0">
+                <input class="form-control" type="search" name="txtCodSum_GR" id="txtCodSum_GR" onkeyup="GRbuscarSumXCod(this)" placeholder="Cod. Ejm. 70598957-0. Nombres ó apellidos">
             </div>
             <div class="col-xs-12 col-md-2 form-group ">
                 <button class="btn btn-success btn-raised btn-xs" name="btnBscCodSum_GR">buscar</button>
