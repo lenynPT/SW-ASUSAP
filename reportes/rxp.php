@@ -335,7 +335,7 @@ function modoDePago($pdf,$element,$consumo_dif){
             if($consumo_dif<=20){
                 $val1=20*0.60;
             }else {
-                $val1=10;                    
+                $val1=12;                    
                 $consumo_dif-=20;
                 $val2 = $consumo_dif*0.95;
             }
