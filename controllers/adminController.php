@@ -318,6 +318,9 @@
 		/**
 		 * FUNCION que inserta los consumos del mes anterior para los suministros sin medidor
 		 */
+		public function comprobando($msj){
+			return "server -> ". $msj;
+		}
 		public function insertarConsumoSnMController(){
 			/**
 			 * Obtener los registros de todos los sumi. que no tengan Medidor.
@@ -343,18 +346,30 @@
 			WHERE factura_recibo_anio.anio = {$FConsumo['anio_GC']})";			
 			*/
 			//trae los registros que ya no están en los registros de factura_recibo y factura_x_ani
-			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro FROM suministro 
+			/*
+			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro FROM suministro sA
 			INNER JOIN 
-			( SELECT cod_suministro FROM suministro WHERE suministro.cod_suministro NOT IN 
-				( SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo WHERE factura_recibo.mes={$FConsumo['mes_GC']})
-			) t 
-			ON suministro.cod_suministro=t.cod_suministro 
-			WHERE suministro.tiene_medidor = 0 AND suministro.estado_corte = 0 
-			AND suministro.cod_suministro NOT IN 
-			(SELECT factura_recibo_anio.cod_sum_anio FROM factura_recibo_anio WHERE factura_recibo_anio.anio = {$FConsumo['anio_GC']})";
+			( SELECT cod_suministro FROM suministro WHERE 
+				suministro.tiene_medidor = 0 AND suministro.estado_corte = 0 AND
+				suministro.cod_suministro NOT IN 
+				( SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo 
+				  WHERE factura_recibo.mes={$FConsumo['mes_GC']} AND factura_recibo.anio={$FConsumo['anio_GC']}) 
+			) sB 
+			ON sA.cod_suministro=sB.cod_suministro 
+			WHERE sA.tiene_medidor = 0 AND sA.estado_corte = 0 ";
+			*/
+
+			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro,suministro.contador_deuda 
+						FROM suministro 
+						WHERE suministro.estado_corte=0 AND suministro.tiene_medidor=0 AND 
+						suministro.cod_suministro 
+						NOT IN (SELECT factura_recibo.suministro_cod_suministro 
+								FROM factura_recibo 
+								WHERE factura_recibo.anio={$FConsumo['anio_GC']} AND factura_recibo.mes={$FConsumo['mes_GC']})
+						";
 
 			$regSumiSnMed = mainModel::execute_single_query($query);
-
+			//return $regSumiSnMed;
 			$Datos = array(
 				"codigos" => [
 					'suministro'=>[],
@@ -371,32 +386,37 @@
 					'monto_Mante'=>2.5
 				]);
 
-			$listCodSum = [];			
-			$listCodSumMante = [];			
+			//---$listCodSum = [];			
+			//---$listCodSumMante = [];			
 			while($regis = $regSumiSnMed->fetch()){
-
+				$codigo = $regis['cod_suministro'];
 				if($regis['categoria_suministro'] != 'Mantenimiento'){
-					$listCodSum[] = $regis['cod_suministro'];						
-					/**
-					 * Esto se debe de hacer en el Modelo por cuestiones de orden 
-					 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
-					 */
-					$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);								
+					//---$listCodSum[] = $regis['cod_suministro'];						
+					$monto = $Datos["datosAdi"]["monto"];
+					//insert consum x defautl					
+					adminModel::insertarConsumoSnMModelbb($Datos,$codigo, $monto);												
 				}else{
-					$listCodSumMante[] = $regis['cod_suministro'];	
-					/**
-					 * Esto se debe de hacer en el Modelo por cuestiones de orden 
-					 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
-					 */
-					$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);
+					//---$listCodSumMante[] = $regis['cod_suministro'];
+					$monto = $Datos["datosAdi"]["monto_Mante"];
+					//insert consum x defautl
+					adminModel::insertarConsumoSnMModelbb($Datos,$codigo, $monto);
 				}
+				/**
+				 * Esto se debe de hacer en el Modelo por cuestiones de orden 
+				 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
+				 */
+				
+				$ok = self::actualizarContadorDeudaControllerbb($regis['cod_suministro'],$regis['contador_deuda']);
 			}
-			$Datos['codigos']['suministro'] = $listCodSum;	
-			$Datos['codigos']['sumi_mantenimiento'] = $listCodSumMante;	
-			
-			$result = adminModel::insertarConsumoSnMModel($Datos);
 
-			return $result;
+			$vaegcm=adminModel::actualizarEGsnConsumoModel();
+			//---$Datos['codigos']['suministro'] = $listCodSum;	
+			//---$Datos['codigos']['sumi_mantenimiento'] = $listCodSumMante;	
+			
+			//---$result = adminModel::insertarConsumoSnMModel($Datos);
+
+			//---return $result;
+			return true;
 		}
 
 		public function datosSumiAsocController($codigoSum){
@@ -417,6 +437,8 @@
 				-----
 				SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro WHERE suministro.cod_suministro LIKE '%74%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE suministro.tiene_medidor=1 AND suministro.estado_corte=0 AND factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
 				*/
+			//limpiando espacios al principio y al final
+			$codigoSum = trim($codigoSum);
 			//comprueba si aún falta suministros con medidor por registrar.
 			if(self::completadoGCSumCnM()){
 				return "LISTO";
@@ -429,10 +451,13 @@
 
 			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni					
-					WHERE suministro.cod_suministro LIKE '%{$codigoSum}%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
+					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
 					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
-					FROM factura_recibo WHERE 
-					factura_recibo.mes = {$FConsumo['mes_GC']} AND factura_recibo.anio = {$FConsumo['anio_GC']} AND factura_recibo.suministro_cod_suministro LIKE '%{$codigoSum}%') LIMIT 0,5";			
+					FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE 
+					suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND
+					factura_recibo.mes = {$FConsumo['mes_GC']} AND factura_recibo.anio = {$FConsumo['anio_GC']}) 
+					AND (suministro.cod_suministro LIKE '%{$codigoSum}%' OR asociado.apellido LIKE '%{$codigoSum}%' OR asociado.nombre LIKE '%{$codigoSum}%')
+					lIMIT 0,15";			
 			$regSumiCnMed = mainModel::execute_single_query($query);
 			
 			$rsptRegist = [];						
@@ -518,6 +543,22 @@
 			return $responseModel;
 
 		}
+		//bb
+		public function actualizarContadorDeudaControllerbb($cod_sum,$cont_deuda){
+			$cont_deuda = (isset($cont_deuda) && !empty($cont_deuda))? $cont_deuda : 0;
+			$cont_deuda++;
+
+			$query2 = "UPDATE suministro SET contador_deuda = $cont_deuda WHERE cod_suministro = '{$cod_sum}'";
+			$resqr2 = mainModel::execute_single_query($query2);
+			
+			if($cont_deuda >= 3){
+				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
+				$resqr3 = mainModel::execute_single_query($query3);
+				//Agrgando pagaré por servicio de reconexión
+				$query4 = self::generarMontoXCorteServicio($cod_sum);
+			}
+		}
+
 		//cuando se realiza inserción de consumo
 		public function actualizarContadorDeudaController($cod_sum){
 			$cont_deuda=0;
@@ -589,11 +630,17 @@
 		}
 
 		//GR emitir recibo
-		public function obtenerSumGRxCod($data){			
-			$query = "SELECT asociado.dni,suministro.tiene_medidor,suministro.estado_corte,factura_recibo.anio,factura_recibo.mes,factura_recibo.consumo,factura_recibo.monto_pagar,factura_recibo.esta_cancelado,factura_recibo.suministro_cod_suministro 
-				FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro
+		public function obtenerSumGRxCod($data){
+			$datoBuscar = trim($data['cod_sum']);
+			$anioBuscar = trim($data['anio']);
+			$mesBuscar = trim($data['mes']);
+			$query = "SELECT asociado.nombre,asociado.apellido,suministro.direccion,suministro.tiene_medidor,suministro.estado_corte,factura_recibo.anio,factura_recibo.mes,factura_recibo.esta_cancelado,factura_recibo.suministro_cod_suministro 
+				FROM factura_recibo 
+				INNER JOIN suministro ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro
 				INNER JOIN asociado ON asociado.dni = suministro.asociado_dni 
-				WHERE suministro.estado_corte<>2 AND factura_recibo.anio={$data['anio']} AND factura_recibo.mes={$data['mes']} AND factura_recibo.suministro_cod_suministro LIKE '%{$data['cod_sum']}%' limit 0,3";
+				WHERE suministro.estado_corte<>2 AND factura_recibo.anio={$anioBuscar} AND factura_recibo.mes={$mesBuscar} 
+				AND (factura_recibo.suministro_cod_suministro LIKE '%{$datoBuscar}%' OR asociado.apellido LIKE '%{$datoBuscar}%' OR asociado.nombre LIKE '%{$datoBuscar}%') 
+				LIMIT 0,15";
 			$arrReg = mainModel::execute_single_query($query);
 			$respData = [];
 			while($reg = $arrReg->fetch(PDO::FETCH_ASSOC)){
@@ -644,9 +691,13 @@
 		//function para COBRAR
 		public function obtenerSumParaCobrar($cod_sum){
 
-			$query = "SELECT suministro.cod_suministro,suministro.direccion,suministro.categoria_suministro,factura_recibo.suministro_cod_suministro, factura_recibo.anio,factura_recibo.mes,factura_recibo.monto_pagar 
-					FROM suministro INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro
-						WHERE factura_recibo.esta_cancelado=0 AND suministro.estado_corte <> 2 AND factura_recibo.suministro_cod_suministro LIKE '%$cod_sum%' LIMIT 0,10";
+			$cod_sum = trim($cod_sum);
+			$query = "SELECT asociado.nombre, asociado.apellido, suministro.direccion, suministro.cod_suministro, suministro.categoria_suministro, factura_recibo.suministro_cod_suministro, factura_recibo.anio, factura_recibo.mes, factura_recibo.monto_pagar 
+					FROM asociado INNER JOIN suministro ON asociado.dni = suministro.asociado_dni
+					INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro
+					WHERE factura_recibo.esta_cancelado=0 AND suministro.estado_corte <> 2 
+					AND (factura_recibo.suministro_cod_suministro LIKE '%$cod_sum%' OR asociado.apellido LIKE '%$cod_sum%' OR asociado.nombre LIKE '%$cod_sum%')
+					LIMIT 0,15";
 			$arrData = mainModel::execute_single_query($query);
 			$arrResp = [];
 			while($reg = $arrData->fetch(PDO::FETCH_ASSOC)){
@@ -1130,13 +1181,15 @@
 				$query = "SELECT suministro.cod_suministro,suministro.direccion,suministro.categoria_suministro,suministro.contador_deuda, asociado.nombre,asociado.apellido
 				FROM asociado INNER JOIN suministro ON suministro.asociado_dni = asociado.dni 
 				INNER JOIN factura_recibo_anio ON factura_recibo_anio.cod_sum_anio=suministro.cod_suministro
-				WHERE factura_recibo_anio.anio = {$fecha_hoy['anio']} AND suministro.cod_suministro LIKE '%$inputBsc%'";
+				WHERE factura_recibo_anio.anio = {$fecha_hoy['anio']} AND suministro.cod_suministro LIKE '%$inputBsc%'
+				LIMIT 15";
 			}else{
 				$query = "SELECT suministro.cod_suministro,suministro.direccion,suministro.categoria_suministro,suministro.contador_deuda, asociado.nombre,asociado.apellido
 				FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni 
 				WHERE suministro.estado_corte=0 AND suministro.tiene_medidor=0 AND suministro.cod_suministro LIKE '%$inputBsc%'
 				AND suministro.cod_suministro NOT IN 
-				(SELECT factura_recibo_anio.cod_sum_anio FROM factura_recibo_anio WHERE factura_recibo_anio.anio={$fecha_hoy['anio']})";				
+				(SELECT factura_recibo_anio.cod_sum_anio FROM factura_recibo_anio WHERE factura_recibo_anio.anio={$fecha_hoy['anio']})
+				LIMIT 15";				
 			}
 			$resArr = mainModel::execute_single_query($query);
 			$arrData = [];

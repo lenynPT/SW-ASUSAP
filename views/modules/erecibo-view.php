@@ -103,7 +103,7 @@
 
         <div class="col-xs-12 col-sm-12">
             <div class="col-xs-12 col-md-4 form-group">
-                <input class="form-control" type="search" name="txtCodSum_GR" id="txtCodSum_GR" onkeyup="GRbuscarSumXCod(this)" placeholder="CÓDIGO SUMINISTRO Ejm. 70598957-0">
+                <input class="form-control" type="search" name="txtCodSum_GR" id="txtCodSum_GR" onkeyup="GRbuscarSumXCod(this)" placeholder="Cod. Ejm. 70598957-0. Nombres ó apellidos">
             </div>
             <div class="col-xs-12 col-md-2 form-group ">
                 <button class="btn btn-success btn-raised btn-xs" name="btnBscCodSum_GR">buscar</button>
@@ -141,9 +141,9 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Cod Suministro</th>
-                                <th class="text-center">Año</th>
-                                <th class="text-center">Mes</th>
-                                <th class="text-center">Monto</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Apellidos</th>
+                                <th class="text-center">Dirección</th>
                                 <th class="text-center">Cancelado</th>
                                 <th class="text-center">Medidor</th>
                                 <th class="text-center">Con corte</th>

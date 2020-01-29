@@ -25,7 +25,7 @@
 		<ul class="list-unstyled full-box dashboard-sideBar-Menu">
 			<li>
 				<a href="<?php echo SERVERURL; ?>dashboard/">
-					<i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> DASHBOARD
+					<i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> PRESENTACIÓN
 				</a>
 			</li>
 			<li>

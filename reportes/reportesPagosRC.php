@@ -60,7 +60,7 @@ class PDF extends FPDF
         //$this->Image('images/logo.png', 5, 5, 30 );
         $this->SetFont('Arial','B',15);
         $this->Cell(30);
-        $this->Cell(120,10, 'Reporte De Pagos de Ricibo',0,0,'C');
+        $this->Cell(120,10, 'Reporte De Pagos de Recibo',0,0,'C');
         $this->SetFont('Arial','B',10);
         $this->Cell(10);
         $this->Cell(20,20,'Fecha: '.$_SESSION['fecha'],0,0,'R');
@@ -89,7 +89,7 @@ class PDF extends FPDF
         // Posición: a 1,5 cm del final
         $this->SetY(-15);
         $this->SetFont('Arial','I', 8);
-        $this->Cell(0,10, 'Pagina '.$this->PageNo().'/{nb}',0,0,'C' );
+        $this->Cell(0,10, 'Pagina '.$this->PageNo(),0,0,'C' );
         // Número de página
         //  $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }

@@ -16,7 +16,7 @@ function busacarAsocBtn(){
 			
 			if(usuario != ""){
 				if(!isNaN(usuario)){
-					if(usuario.length == 8 || usuario.length == 11){
+					if(usuario.length == 8 || usuario.length == 11 || usuario.length == 6){
 						
 						let datos = new FormData();
 						datos.append("codAsoc",usuario);
@@ -257,14 +257,22 @@ function generarConsumoSinMedidor(){
 			let optionData = new FormData();
 			optionData.append("OPTION","GCSnMedi");
 
+			//ocultando bton
+			el.style.display="none";
+			document.getElementById("loadBtnGCXD").innerHTML = "Cargando...";
+
 			fetch('../ajax/gestionRcbAjax.php',{
 				method:'POST',
 				body:optionData
 			}).then(res => res.json())
 			.then(data=>{
 				console.log(data);
-				if(data)
+				if(data){
+					document.getElementById("loadBtnGCXD").innerHTML = "LISTO!!! :)";
 					location.reload();
+				}else{
+					console.log("NOT reload -> kev")
+				}
 				
 			});
 
@@ -684,9 +692,9 @@ function GRbuscarSumXCod($this){
 			<tr>
 				<td>${++cont}</td>
 				<td>${element.suministro_cod_suministro}</td>
-				<td>${element.anio}</td>
-				<td>${element.mes}</td>
-				<td>${element.monto_pagar}</td>
+				<td>${element.nombre}</td>
+				<td>${element.apellido}</td>
+				<td>${element.direccion}</td>
 				<td>${element.esta_cancelado=='1'?"<span class='text-info'>Si</span>":"<span class='text-danger'>No</span>"}</td>
 				<td>${element.tiene_medidor=='1'?'Si':'No'}</td>
 				<td>${element.estado_corte=='1'?"<span class='text-danger'>Si</span>":"<span class='text-info'>No</span>"}</td>
@@ -726,17 +734,20 @@ function buscarSuministrosParaCobrarTBL(txtInput){
 		let ahtml = ``;
 		let cont = 0;
 		data.forEach(element=>{
-			console.log(element)			
+			console.log(element)	
+			let xmes = NombreMes(element.mes);		
 			ahtml += `
 				<tr>
 					<td>${++cont}</td>
 					<td>${element.suministro_cod_suministro}</td>
+					<td>${element.nombre}</td>
+					<td>${element.apellido}</td>
 					<td>${element.direccion}</td>
 					<td>${element.categoria_suministro}</td>
 					<td>${element.anio}</td>
-					<td>${element.mes}</td>
+					<td>${xmes}</td>
 					<td>s/ ${element.monto_pagar}</td>
-					<td><a href="#!" class="btn btn-success btn-raised btn-xs" onclick="cobrarAgua(this,'${element.suministro_cod_suministro}',${element.anio},${element.mes},${element.monto_pagar},${txtInput})">Cobrar</a></td>
+					<td><a href="#!" class="btn btn-success btn-raised btn-xs" onclick="cobrarAgua(this,'${element.suministro_cod_suministro}',${element.anio},${element.mes},${element.monto_pagar},'${txtInput}')">Cobrar</a></td>
 				</tr>				
 			`;
 		});
@@ -908,8 +919,8 @@ function instantformUser(){
 		dni.addEventListener("blur",function(){
 			//console.log(this.value,this.value.length)
 			if(this.value != ""){
-				if(!(this.value.length == 8 || this.value.length == 11)){
-					alert("ERROR DE DNI O RUC");
+				if(!(this.value.length == 6 || this.value.length == 8 || this.value.length == 11)){
+					alert("ERROR DE DNI, RUC O CODIGO");
 					dni_error.classList.add("has-error");
 				}				
 			}
@@ -990,7 +1001,7 @@ function validarUsuario(){
 			}
 		}
 
-		if(!(dniv.length == 8 || dniv.length == 11)){
+		if(!(dniv.length == 6 || dniv.length == 8 || dniv.length == 11)){
 			alert("DNI O RUC INVALIDO!!");
 			dni.value = "";
 			return false;

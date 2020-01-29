@@ -11,6 +11,7 @@
         <a href="#" id="btnGenerarCXD" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> 
             GENERAR CONSUMO X DEFECTO
         </a>
+        <span id="loadBtnGCXD"></span>
         <br>
         <br>
     <?php 
@@ -140,7 +141,7 @@
                 <div class="form-group row">
                     <label for="btnBuscarSumCorte" class="col-sm-1 col-form-label"><i class="zmdi zmdi-search zmdi-hc-2x pull-left"></i></label>
                     <div class="col-sm-11">                       
-                        <input  type="search" name="buscar" id="buscarSumCnM" class="form-control" onkeyup="generarConsumoConMedidor(this.value)" placeholder="Ingrese Cod. Suministro o Nombre"/>
+                        <input  type="search" name="buscar" id="buscarSumCnM" class="form-control" onkeyup="generarConsumoConMedidor(this.value)" placeholder="Ingrese Cod. Suministro, Nombre ó apellido"/>
                     </div>
                 </div> 
 
