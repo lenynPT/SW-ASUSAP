@@ -1181,13 +1181,15 @@
 				$query = "SELECT suministro.cod_suministro,suministro.direccion,suministro.categoria_suministro,suministro.contador_deuda, asociado.nombre,asociado.apellido
 				FROM asociado INNER JOIN suministro ON suministro.asociado_dni = asociado.dni 
 				INNER JOIN factura_recibo_anio ON factura_recibo_anio.cod_sum_anio=suministro.cod_suministro
-				WHERE factura_recibo_anio.anio = {$fecha_hoy['anio']} AND suministro.cod_suministro LIKE '%$inputBsc%' LIMIT 15";
+				WHERE factura_recibo_anio.anio = {$fecha_hoy['anio']} AND suministro.cod_suministro LIKE '%$inputBsc%'
+				LIMIT 15";
 			}else{
 				$query = "SELECT suministro.cod_suministro,suministro.direccion,suministro.categoria_suministro,suministro.contador_deuda, asociado.nombre,asociado.apellido
 				FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni 
 				WHERE suministro.estado_corte=0 AND suministro.tiene_medidor=0 AND suministro.cod_suministro LIKE '%$inputBsc%'
 				AND suministro.cod_suministro NOT IN 
-				(SELECT factura_recibo_anio.cod_sum_anio FROM factura_recibo_anio WHERE factura_recibo_anio.anio={$fecha_hoy['anio']}) LIMIT 15";				
+				(SELECT factura_recibo_anio.cod_sum_anio FROM factura_recibo_anio WHERE factura_recibo_anio.anio={$fecha_hoy['anio']})
+				LIMIT 15";				
 			}
 			$resArr = mainModel::execute_single_query($query);
 			$arrData = [];
