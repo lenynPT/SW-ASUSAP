@@ -268,11 +268,10 @@ function generarConsumoSinMedidor(){
 			.then(data=>{
 				console.log(data);
 				if(data){
-					console.log("YES");
 					document.getElementById("loadBtnGCXD").innerHTML = "LISTO!!! :)";
 					location.reload();
 				}else{
-					console.log("NOT")
+					console.log("NOT reload -> kev")
 				}
 				
 			});
