@@ -318,6 +318,9 @@
 		/**
 		 * FUNCION que inserta los consumos del mes anterior para los suministros sin medidor
 		 */
+		public function comprobando($msj){
+			return "server -> ". $msj;
+		}
 		public function insertarConsumoSnMController(){
 			/**
 			 * Obtener los registros de todos los sumi. que no tengan Medidor.
@@ -343,18 +346,30 @@
 			WHERE factura_recibo_anio.anio = {$FConsumo['anio_GC']})";			
 			*/
 			//trae los registros que ya no están en los registros de factura_recibo y factura_x_ani
-			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro FROM suministro 
+			/*
+			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro FROM suministro sA
 			INNER JOIN 
-			( SELECT cod_suministro FROM suministro WHERE suministro.cod_suministro NOT IN 
-				( SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo WHERE factura_recibo.mes={$FConsumo['mes_GC']})
-			) t 
-			ON suministro.cod_suministro=t.cod_suministro 
-			WHERE suministro.tiene_medidor = 0 AND suministro.estado_corte = 0 
-			AND suministro.cod_suministro NOT IN 
-			(SELECT factura_recibo_anio.cod_sum_anio FROM factura_recibo_anio WHERE factura_recibo_anio.anio = {$FConsumo['anio_GC']})";
+			( SELECT cod_suministro FROM suministro WHERE 
+				suministro.tiene_medidor = 0 AND suministro.estado_corte = 0 AND
+				suministro.cod_suministro NOT IN 
+				( SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo 
+				  WHERE factura_recibo.mes={$FConsumo['mes_GC']} AND factura_recibo.anio={$FConsumo['anio_GC']}) 
+			) sB 
+			ON sA.cod_suministro=sB.cod_suministro 
+			WHERE sA.tiene_medidor = 0 AND sA.estado_corte = 0 ";
+			*/
+
+			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro,suministro.contador_deuda 
+						FROM suministro 
+						WHERE suministro.estado_corte=0 AND suministro.tiene_medidor=0 AND 
+						suministro.cod_suministro 
+						NOT IN (SELECT factura_recibo.suministro_cod_suministro 
+								FROM factura_recibo 
+								WHERE factura_recibo.anio={$FConsumo['anio_GC']} AND factura_recibo.mes={$FConsumo['mes_GC']})
+						";
 
 			$regSumiSnMed = mainModel::execute_single_query($query);
-
+			//return $regSumiSnMed;
 			$Datos = array(
 				"codigos" => [
 					'suministro'=>[],
@@ -371,32 +386,37 @@
 					'monto_Mante'=>2.5
 				]);
 
-			$listCodSum = [];			
-			$listCodSumMante = [];			
+			//---$listCodSum = [];			
+			//---$listCodSumMante = [];			
 			while($regis = $regSumiSnMed->fetch()){
-
+				$codigo = $regis['cod_suministro'];
 				if($regis['categoria_suministro'] != 'Mantenimiento'){
-					$listCodSum[] = $regis['cod_suministro'];						
-					/**
-					 * Esto se debe de hacer en el Modelo por cuestiones de orden 
-					 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
-					 */
-					$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);								
+					//---$listCodSum[] = $regis['cod_suministro'];						
+					$monto = $Datos["datosAdi"]["monto"];
+					//insert consum x defautl					
+					adminModel::insertarConsumoSnMModelbb($Datos,$codigo, $monto);												
 				}else{
-					$listCodSumMante[] = $regis['cod_suministro'];	
-					/**
-					 * Esto se debe de hacer en el Modelo por cuestiones de orden 
-					 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
-					 */
-					$ok = self::actualizarContadorDeudaController($regis['cod_suministro']);
+					//---$listCodSumMante[] = $regis['cod_suministro'];
+					$monto = $Datos["datosAdi"]["monto_Mante"];
+					//insert consum x defautl
+					adminModel::insertarConsumoSnMModelbb($Datos,$codigo, $monto);
 				}
+				/**
+				 * Esto se debe de hacer en el Modelo por cuestiones de orden 
+				 * Funcion que actualiza la deuda - Cuándo haya tiempo se debe actualizar				 
+				 */
+				
+				$ok = self::actualizarContadorDeudaControllerbb($regis['cod_suministro'],$regis['contador_deuda']);
 			}
-			$Datos['codigos']['suministro'] = $listCodSum;	
-			$Datos['codigos']['sumi_mantenimiento'] = $listCodSumMante;	
-			
-			$result = adminModel::insertarConsumoSnMModel($Datos);
 
-			return $result;
+			$vaegcm=adminModel::actualizarEGsnConsumoModel();
+			//---$Datos['codigos']['suministro'] = $listCodSum;	
+			//---$Datos['codigos']['sumi_mantenimiento'] = $listCodSumMante;	
+			
+			//---$result = adminModel::insertarConsumoSnMModel($Datos);
+
+			//---return $result;
+			return true;
 		}
 
 		public function datosSumiAsocController($codigoSum){
@@ -523,6 +543,22 @@
 			return $responseModel;
 
 		}
+		//bb
+		public function actualizarContadorDeudaControllerbb($cod_sum,$cont_deuda){
+			$cont_deuda = (isset($cont_deuda) && !empty($cont_deuda))? $cont_deuda : 0;
+			$cont_deuda++;
+
+			$query2 = "UPDATE suministro SET contador_deuda = $cont_deuda WHERE cod_suministro = '{$cod_sum}'";
+			$resqr2 = mainModel::execute_single_query($query2);
+			
+			if($cont_deuda >= 3){
+				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
+				$resqr3 = mainModel::execute_single_query($query3);
+				//Agrgando pagaré por servicio de reconexión
+				$query4 = self::generarMontoXCorteServicio($cod_sum);
+			}
+		}
+
 		//cuando se realiza inserción de consumo
 		public function actualizarContadorDeudaController($cod_sum){
 			$cont_deuda=0;

@@ -257,14 +257,23 @@ function generarConsumoSinMedidor(){
 			let optionData = new FormData();
 			optionData.append("OPTION","GCSnMedi");
 
+			//ocultando bton
+			el.style.display="none";
+			document.getElementById("loadBtnGCXD").innerHTML = "Cargando...";
+
 			fetch('../ajax/gestionRcbAjax.php',{
 				method:'POST',
 				body:optionData
 			}).then(res => res.json())
 			.then(data=>{
 				console.log(data);
-				if(data)
+				if(data){
+					console.log("YES");
+					document.getElementById("loadBtnGCXD").innerHTML = "LISTO!!! :)";
 					location.reload();
+				}else{
+					console.log("NOT")
+				}
 				
 			});
 

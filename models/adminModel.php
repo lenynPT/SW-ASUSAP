@@ -176,15 +176,26 @@
 
 
 		}
-		
+		//bb
+		public function insertarConsumoSnMModelbb($dataModel,$codigo, $monto){
+			$dataAdic = $dataModel['datosAdi'];
+
+			$query = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
+			VALUES (NULL, :anio, :mes, '{$dataAdic['fecha_e']}', '{$dataAdic['hora_e']}', '{$dataAdic['fecha_v']}', {$dataAdic['consumo']}, {$monto}, 0, 0, :suministro_cod_suministro)";
+			$stmt = mainModel::connect()->prepare($query);
+			$stmt->bindParam(":anio",$dataAdic['anio']);
+			$stmt->bindParam(":mes",$dataAdic['mes']);	
+			$stmt->bindParam(":suministro_cod_suministro",$codigo);
+			
+			$stmt->execute();	
+		}
 		//Función que inserta los consumos para los suministros sn medidor. TABLA factura_recibo es llenado
 		protected function insertarConsumoSnMModel($dataModel){
 			
 			$codSumi = $dataModel['codigos']['suministro'];
 			$codSumiMante = $dataModel['codigos']['sumi_mantenimiento'];
 			$dataAdic = $dataModel['datosAdi'];
-
-
+			
 			foreach ($codSumi as $codigo) {
 				# code...			
 				$query = "INSERT INTO factura_recibo (idfactura_recibo, anio, mes, fecha_emision, hora_emision, fecha_vencimiento, consumo, monto_pagar, esta_cancelado, esta_impreso, suministro_cod_suministro) 
@@ -194,8 +205,8 @@
 				$stmt->bindParam(":mes",$dataAdic['mes']);	
 				$stmt->bindParam(":suministro_cod_suministro",$codigo);
 				
-				$stmt->execute();				
-
+				$stmt->execute();		
+				
 			}
 
 			//Insertar cosumos para MANTENIMIENTO
@@ -213,7 +224,7 @@
 			}
 
 			//actualiza tabla estado_gonsumo. pone el sin_medidor a 1->1 es por que ya se tiene insertado los consumos para los suminis sin medidor
-			self::actualizarEGsnConsumoModel();
+			$vaegcm=self::actualizarEGsnConsumoModel();
 
 			/*
 			//Otra forma de hacer inserción 

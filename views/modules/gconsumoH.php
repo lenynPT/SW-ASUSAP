@@ -11,6 +11,7 @@
         <a href="#" id="btnGenerarCXD" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> 
             GENERAR CONSUMO X DEFECTO
         </a>
+        <span id="loadBtnGCXD"></span>
         <br>
         <br>
     <?php 
