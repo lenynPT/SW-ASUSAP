@@ -130,7 +130,6 @@ $desNSI=$_POST['desNSI'];*/
 
     //PARA LOS SERVICIOS
     $textypos+=35;
-    //$pdf->setX(2);
     //$pdf->Cell(5,$textypos,'Nombre del Servicio / Descripcion          PRECIO ');
 
     $off = $textypos+60;
@@ -140,17 +139,8 @@ $desNSI=$_POST['desNSI'];*/
 
     for($i = 0; $i <= $ac; ++$i){
        // $pdf->setX(2);
-      // $pdf->setY(90);
-
         $pdf->Cell(1,5,utf8_decode($array1[$i])."   ".utf8_decode($array2[$i]),0,0,"L");
-
-
-
-
-       // $pdf->setX(6);
-        //$pdf->setX(50);
         $pdf->Cell(0,5,  '                                                                                             '.$array3[$i],0,1,"L");
-        //$pdf->Cell(20,6,utf8_decode("S/ ".$row['monto_amorti']),1,1,'L');
         $off+=5;
     }
 
