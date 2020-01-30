@@ -31,6 +31,10 @@ $servSI=$_GET['servSI']; //tipo de servicio
 session_start(['name'=>'ASUSAP']);
 $_SESSION['cost']=$_GET['cosTSI'];
 
+//SACANDO EL IGV
+$_SESSION['igv'] = $_SESSION['cost']*(18/100);
+$_SESSION['subtotal'] = $_SESSION['cost'] - $_SESSION['igv'] ;
+
 /*$asociado = new adminController();
 $v=$asociado->mostImpItem($idfsI);*/
 
@@ -75,11 +79,20 @@ $desNSI=$_POST['desNSI'];*/
         function Footer()
         {
 
-            // Posición: a 1,5 cm del final
-            $this->SetY(-12);
-            // Arial italic 8
-            $this->SetFont('Arial', 'B', 12);
-            $this->SetX(110);
+            // IGV
+            $this->SetY(-20);
+            $this->SetFont('Arial', 'B', 11);
+            $this->setX(105);
+            $this->Cell(10, 10, "IGV: s/ ".$_SESSION['igv'], 0, 0, 'L');
+            // SUB TOTAL
+            $this->SetY(-15);
+            $this->SetFont('Arial', 'B', 11);
+            $this->setX(105);
+            $this->Cell(10, 10, "Sub Total: s/ ".$_SESSION['subtotal'], 0, 0, 'L');
+            // TOTAL
+            $this->SetY(-10);
+            $this->SetFont('Arial', 'B', 13);
+            $this->SetX(105);
             $this->Cell(10, 10, "Total: S/ ".$_SESSION['cost'], 0, 0, 'L');
             // Número de página
           //  $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
@@ -124,11 +137,16 @@ $desNSI=$_POST['desNSI'];*/
     //$pdf->SetXY(0, 83);
     $pdf->setY(83);
     $pdf->SetFont('Arial','',12);
+
     for($i = 0; $i <= $ac; ++$i){
        // $pdf->setX(2);
       // $pdf->setY(90);
 
         $pdf->Cell(1,5,utf8_decode($array1[$i])."   ".utf8_decode($array2[$i]),0,0,"L");
+
+
+
+
        // $pdf->setX(6);
         //$pdf->setX(50);
         $pdf->Cell(0,5,  '                                                                                             '.$array3[$i],0,1,"L");
