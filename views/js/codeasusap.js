@@ -259,7 +259,10 @@ function generarConsumoSinMedidor(){
 
 			//ocultando bton
 			el.style.display="none";
-			document.getElementById("loadBtnGCXD").innerHTML = "Cargando...";
+			document.getElementById("loadBtnGCXD").innerHTML = `
+					<i class="zmdi zmdi-spinner zmdi-hc-spin zmdi-hc-4x"></i> 
+					</br>Porfavor Espere... </br>Esta operación podría tardar un momento... 
+			`;
 
 			fetch('../ajax/gestionRcbAjax.php',{
 				method:'POST',
