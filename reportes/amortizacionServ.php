@@ -52,7 +52,7 @@ if($filesA->rowCount()) {
     $mesLit = $fechaL['r_mes'];
     //Asigna el fondo para el recibo
     $_POST['urlimg'] = $resConsult['res']?'img/reciboAgua.jpg':'img/sinResultado.jpg';*/
-    $_POST['urlimg'] = 'img/boletaAGua.jpg';
+    $_POST['urlimg'] = 'img/boletaAGuaEnd.jpg';
 
 
     class PDF extends FPDF

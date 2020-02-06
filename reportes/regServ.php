@@ -17,7 +17,7 @@ $MP=$_GET['PM'];
 
 
 
-$_POST['urlimg'] = 'img/boletaAGua.jpg';
+$_POST['urlimg'] = 'img/boletaAguaEnd.jpg';
 //anRSI=${anIRS}&codSI=${codsuI}&desNSI=${co},
 //$codSRSI=$_POST['CodRS']  tto;
 $anorsI=$_GET['anRSI'];
@@ -32,8 +32,10 @@ session_start(['name'=>'ASUSAP']);
 $_SESSION['cost']=$_GET['cosTSI'];
 
 //SACANDO EL IGV
-$_SESSION['igv'] = $_SESSION['cost']*(18/100);
-$_SESSION['subtotal'] = $_SESSION['cost'] - $_SESSION['igv'] ;
+
+//$_SESSION['igv'] = `<script>`+$_SESSION['cost']*(18/100)+`.toFixed(2)</script>`;
+$_SESSION['igv'] = number_format($_SESSION['cost']*(18/100), 2, '.', '');
+$_SESSION['subtotal'] = number_format( $_SESSION['cost'] - $_SESSION['igv'], 2, '.', '') ;
 
 /*$asociado = new adminController();
 $v=$asociado->mostImpItem($idfsI);*/
@@ -83,12 +85,12 @@ $desNSI=$_POST['desNSI'];*/
             $this->SetY(-20);
             $this->SetFont('Arial', 'B', 11);
             $this->setX(105);
-            $this->Cell(10, 10, "IGV: s/ ".$_SESSION['igv'], 0, 0, 'L');
+            $this->Cell(10, 10, "Sub Total: s/ ".$_SESSION['subtotal'], 0, 0, 'L');
             // SUB TOTAL
             $this->SetY(-15);
             $this->SetFont('Arial', 'B', 11);
             $this->setX(105);
-            $this->Cell(10, 10, "Sub Total: s/ ".$_SESSION['subtotal'], 0, 0, 'L');
+            $this->Cell(10, 10, "IGV: s/ ".$_SESSION['igv'], 0, 0, 'L');
             // TOTAL
             $this->SetY(-10);
             $this->SetFont('Arial', 'B', 13);
@@ -130,7 +132,6 @@ $desNSI=$_POST['desNSI'];*/
 
     //PARA LOS SERVICIOS
     $textypos+=35;
-    //$pdf->setX(2);
     //$pdf->Cell(5,$textypos,'Nombre del Servicio / Descripcion          PRECIO ');
 
     $off = $textypos+60;
@@ -140,17 +141,8 @@ $desNSI=$_POST['desNSI'];*/
 
     for($i = 0; $i <= $ac; ++$i){
        // $pdf->setX(2);
-      // $pdf->setY(90);
-
         $pdf->Cell(1,5,utf8_decode($array1[$i])."   ".utf8_decode($array2[$i]),0,0,"L");
-
-
-
-
-       // $pdf->setX(6);
-        //$pdf->setX(50);
         $pdf->Cell(0,5,  '                                                                                             '.$array3[$i],0,1,"L");
-        //$pdf->Cell(20,6,utf8_decode("S/ ".$row['monto_amorti']),1,1,'L');
         $off+=5;
     }
 

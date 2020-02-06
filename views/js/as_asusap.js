@@ -219,7 +219,7 @@ let t=$('#montPa').val();
        }else {
          //  alert('pagadte mayor a cero')
 
-           res=mt;
+           res=mt.toFixed(2);
        }
 
         htmlmsj=`<p>NO puede ingresar numero <b>MAYOR A MONTO TOTAL </b></p>
