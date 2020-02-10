@@ -75,7 +75,7 @@ function listar_as(valor) {
         $.ajax({
             url:"../ajax/gestionASERV.php",
             type:'POST',
-            data:'valor='+valor,
+            data:'valor='+valor.trim(),
             success:function (resp) {
                 let valores = JSON.parse(resp);
                 console.log("valores de resp es:"+valores)
@@ -177,16 +177,15 @@ function listar_as(valor) {
 
 function guardarDB(editableObj) {
 
-let mRST=$('#MONTRT').val();
-let mt=$('#montAll').val();
-let t=$('#montPa').val();
+    let mRST=$('#MONTRT').val();
+    let mt=$('#montAll').val();
+    let t=$('#montPa').val();
+    console.log("-------->",mt,"-",t)
     let mp=parseFloat(mt)-parseFloat(t);
-
+    console.log("-->> = ",mp)
 
     if (mp>=0 && mp<mt){
        res=mp;
-
-     // alert('pagaste lo correcto')
     }
     else if( mp<mt) {
         res=0;
@@ -198,11 +197,9 @@ let t=$('#montPa').val();
             title: 'PAGASTE MAYOR AL MONTO RESTANTE',
             showConfirmButton: true,
            // timer: 2000
-
         })
 
         htmlmsj=`<b STYLE="color: red;">PAGASTE MAYOR AL MONTO RESTANTE</b>`
-
 
     }
     else {
@@ -219,13 +216,13 @@ let t=$('#montPa').val();
        }else {
          //  alert('pagadte mayor a cero')
 
-           res=mt.toFixed(2);
+           res=mt;
        }
 
         htmlmsj=`<p>NO puede ingresar numero <b>MAYOR A MONTO TOTAL </b></p>
                                 <p>NO puede ingresar numero <b>MENOR A 0 </b></p>`
     }
-
+    res = parseFloat(res).toFixed(2);
     htmlSumi=`<b><input type="text" name="montTot" value="`+res+`" disabled ></b>`
     $("#montP").html(htmlSumi);
 
@@ -248,10 +245,11 @@ function guardarARMOTIZACION() {
     let mTotal=document.getElementById("montAll").value;
     let ids=document.getElementById("idReciboA").innerHTML;
     let MONTOP=document.getElementById("montP").value;
-    Number.parseFloat(mTotal).toFixed(2);
+    mTotal=Number.parseFloat(mTotal).toFixed(2);
+    mpag = Number.parseFloat(mpag).toFixed(2);
    // let rest=mTotal-mpag;
     let rest=Number.parseFloat(mTotal).toFixed(2)-Number.parseFloat(mpag).toFixed(2);
-
+    rest = parseFloat(rest).toFixed(2);
     console.log("monto pagado esta guardandose "+ids+mpag)
     swal({
         title: "¿Ejecutar esta acción?",

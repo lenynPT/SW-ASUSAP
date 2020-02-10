@@ -6,25 +6,34 @@
  function seleccionServicio() {
      var select = document.getElementById('servicio');
      if (select){
-         select.addEventListener('change',
-             function(){
-                 var selectedOption = this.options[select.selectedIndex];
-                 console.log(selectedOption.value + ': ' + selectedOption.text);
-                 document.getElementById("NomDes").value=selectedOption.text;
-                 var fila=`<input type="hidden" id="servS" value="${selectedOption.text}">`;
-                $('#ids').append(fila);
-             });
+        select.addEventListener('click',
+            function(){
+                var selectedOption = this.options[select.selectedIndex];
+                console.log(selectedOption.value + ': ' + selectedOption.text);
+                document.getElementById("NomDes").value=selectedOption.text;
 
-         $(document).ready(function(){
-             $('#bt_add').click(function(){
-                 agregar();
+            }
+        );
 
-             });
-             $('#bt_del').click(function(){
-                 eliminar(id_fila_selected);
-             });
+        $('#bt_add').click(function(){
+            //se agrega los items seleccionados a la tabla y agrega en la db
+            //tambien realiza la validacion de datos: descripcion y costo
+            let valid = agregar();
+            if(valid){
+                //Se agrega input que permite realizar la impresion
+                var selectedOption = select.options[select.selectedIndex];
+                var fila=`<input type="hidden" id="servS" value="${selectedOption.text}">`;
+                $('#ids').html(fila);
+            }
+        });
 
-         });
+        $('#bt_del').click(function(){
+            //elimina la validación para la impresion
+            $('#ids').html("");
+            //elimina los items de la tabla y limpia db
+            eliminar(id_fila_selected);
+        });
+
      }
 
  }
@@ -42,56 +51,43 @@ function agregar(){
     var nomd=$("#NomDes").val();
     var cost1=$("#Costo").val();
     let cost= Number.parseFloat(cost1).toFixed(2);
-    // console.log(nomd+cost+idrs)
-    console.log("agregaste"+nomd+cost)
-    if (nomd!="" || cost!=""){
 
-       /* if(cost!= ""){
-
-            swal({
-                title: "El campo esta vacio",
-
-                type: "info",
-                confirmButtonColor: '#03A9F4',
-                confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',
-
-                cancelButtonColor: '#F44336'
-            })
-
-           return false;
-        }*/
-        conts++;
-        //alert("FALTA AGREGAR ITEMS")
-        $.ajax({
-            url:"../ajax/agregarRS.php",
-            type:'POST',
-            // data:'ids='+idf+'&monto='+cost,
-            data:'NomD='+nomd+'&costD='+cost+'&CodRS='+idrs,
-            success:function (resp) {
-                // alert('respuesta'+resp);
-            }
-
-        });
-
+    if (nomd.trim().length == 0 || isNaN(cost)){
+        swal({
+            title: "Campos vacios",
+            type: "info",
+            confirmButtonColor: '#03A9F4',
+            confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',
+            cancelButtonColor: '#F44336'
+        })
+        return false;
+        
     }
+    
+    conts++;
+    //alert("FALTA AGREGAR ITEMS")
+    $.ajax({
+        url:"../ajax/agregarRS.php",
+        type:'POST',
+        // data:'ids='+idf+'&monto='+cost,
+        data:'NomD='+nomd+'&costD='+cost+'&CodRS='+idrs,
+        success:function (resp) {
+            // alert('respuesta'+resp);
+        }
 
-
-
+    });
 
     //console.log("has echo click"+cont+nomd)
     var fila='<tr class="selected" id="fila'+conts+'" ><td>'+conts+'</td><td>'+nomd+'</td><td>'+cost+'</td></tr>';
     $('#tabla').append(fila);
 
-
     costoTot=costoTot+parseFloat(cost);
 
-
-     costoTot1= Number.parseFloat(costoTot).toFixed(2);
+    costoTot1= Number.parseFloat(costoTot).toFixed(2);
 
     document.getElementById("costTotal").innerHTML=costoTot1;
 
-
-    //  reordenar();
+    return true;
 }
 
 
@@ -127,48 +123,55 @@ function eliminar(id_fila){
 /*------------------------AL GUARDAR TODO ACTUALIZADO -----------------------------------------------*/
 num1=0;
 function guardarTodo(){
-    /* Agregando todo los datos */
-    let idf=document.getElementById("idrs").innerHTML ;
-    let  nsu = document.getElementById("nombreSR").innerHTML ;
-    let  asu = document.getElementById("apellSR").innerHTML  ;
-    let codsu=document.getElementById("codSR").innerHTML  ;
-    let anirs=  document.getElementById("anioRS").innerHTML;
-    let mesrs=document.getElementById("mesRS").innerHTML  ;
-    let cost=document.getElementById("costTotal").innerHTML  ;
-    let anrs=document.getElementById("anombre").value;
-    //$cost1 = Number(cost.toFixed(1));
-   // cost = cost.replace(",",".");
-   // precioto = Number(cost.toFixed(2));// determinanod la cantidad de decimales.
-   // let tot= precioto ;
-    tot= Number.parseFloat(cost).toFixed(2);
+    let validarImpresion = document.querySelector("#servS");
+    if(validarImpresion){
 
-    console.log("Has echo click en guardar"+tot+"a nombre"+anrs)
+        /* Agregando todo los datos */
+        let idf=document.getElementById("idrs").innerHTML ;
+        let  nsu = document.getElementById("nombreSR").innerHTML ;
+        let  asu = document.getElementById("apellSR").innerHTML  ;
+        let codsu=document.getElementById("codSR").innerHTML  ;
+        let anirs=  document.getElementById("anioRS").innerHTML;
+        let mesrs=document.getElementById("mesRS").innerHTML  ;
+        let cost=document.getElementById("costTotal").innerHTML  ;
+        let anrs=document.getElementById("anombre").value;
+        //$cost1 = Number(cost.toFixed(1));
+        // cost = cost.replace(",",".");
+        // precioto = Number(cost.toFixed(2));// determinanod la cantidad de decimales.
+        // let tot= precioto ;
+        tot= Number.parseFloat(cost).toFixed(2);
 
-    /*############fin###############*/
-    // console.log(idf+codsu+anirs+mesrs+anrs);
+        console.log("Has echo click en guardar"+tot+"a nombre"+anrs)
 
-    var miArray=new Array()
-    var i=0
-    var tabla = document.getElementById("tabla");
-    var total=tabla.rows.length
+        /*############fin###############*/
+        // console.log(idf+codsu+anirs+mesrs+anrs);
 
-    if (tot!=0){
-        $.ajax({
-            url:"../ajax/agregarRS.php",
-            type:'POST',
-            // data:'ids='+idf+'&monto='+cost,
-            data: "ids="+idf+"&cost="+tot+"&anom="+anrs,
-            success:function (resp) {
+        var miArray=new Array()
+        var i=0
+        var tabla = document.getElementById("tabla");
+        var total=tabla.rows.length
+
+        if (tot!=0){
+            $.ajax({
+                url:"../ajax/agregarRS.php",
+                type:'POST',
+                // data:'ids='+idf+'&monto='+cost,
+                data: "ids="+idf+"&cost="+tot+"&anom="+anrs,
+                success:function (resp) {
 
 
-                // $('#add-all').hide();
-            }
+                    // $('#add-all').hide();
+                }
 
-        });
+            });
 
-        window.location="http://localhost/SW-ASUSAP/aservicio/";
+            window.location="http://localhost/SW-ASUSAP/aservicio/";
+        }
+
+    }else{
+        console.log("Sin acción")
+        alert("No seas mamon ps")
     }
-
 
 }
 /*----------------cuando seleccionas de id  EN LA BUSQUEDA---------------------------------------*/
@@ -240,7 +243,7 @@ function listar_rs(valor) {
         $.ajax({
             url:"../ajax/buscarRS.php",
             type:'POST',
-            data:'valor='+valor,
+            data:'valor='+valor.trim(),
             success:function (resp) {
                 let valores = JSON.parse(resp);
                 htmlSumi=`<table class='table table-bordered'><thead><tr><th>#</th><th>Nombre AS.</th><th>Apellido AS.</th><th>Suministro</th><th>Direccion</th><th>año</th><th>mes</th><th>Seleccionar </th></tr></thead><tbody>`;
