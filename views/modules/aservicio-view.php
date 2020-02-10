@@ -27,7 +27,7 @@ $insAdmin=new adminController();
 
 ?>
 
-<div class="container-fluid" onload="listar_as('');">
+<div class="container-fluid">
 
     <div class="container" onload="listar_as('');">
         <div class="tab-content">

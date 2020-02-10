@@ -947,7 +947,11 @@
             if (!empty($valorS)) {
 
                 $conexion = mainModel::connect();
-                $query1="SELECT idfactura_servicio,a_nombre,suministro_cod_suministro,anio,mes,fecha,total_pago,mont_restante FROM factura_servicio WHERE idfactura_servicio like '%" . $valorS . "%' OR a_nombre like '%" . $valorS . "%'OR  suministro_cod_suministro like '%" . $valorS . "%'";
+                $query1="SELECT idfactura_servicio,a_nombre,suministro_cod_suministro,anio,mes,fecha,total_pago,mont_restante 
+						FROM factura_servicio 
+						WHERE (idfactura_servicio like '%" . $valorS . "%' OR a_nombre like '%" . $valorS . "%'OR  suministro_cod_suministro like '%" . $valorS . "%')
+						AND mont_restante <> 0
+						LIMIT 20";
                 $results = mainModel::execute_single_query($query1);
 
                 $registroModal = [];

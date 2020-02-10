@@ -243,7 +243,7 @@ function listar_rs(valor) {
         $.ajax({
             url:"../ajax/buscarRS.php",
             type:'POST',
-            data:'valor='+valor,
+            data:'valor='+valor.trim(),
             success:function (resp) {
                 let valores = JSON.parse(resp);
                 htmlSumi=`<table class='table table-bordered'><thead><tr><th>#</th><th>Nombre AS.</th><th>Apellido AS.</th><th>Suministro</th><th>Direccion</th><th>año</th><th>mes</th><th>Seleccionar </th></tr></thead><tbody>`;
