@@ -5,9 +5,9 @@
     <!--    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse voluptas reiciendis tempora voluptatum eius porro ipsa quae voluptates officiis sapiente sunt dolorem, velit quos a qui nobis sed, dignissimos possimus!</p>
     --></div>
 
-<div class="container-fluid" onload="listar_rs('');">
+<div class="container-fluid">
 
-    <div class="container" onload="listar_rs('');">
+    <div class="container">
 
 
         <div class="tab-content" id="contTRSSS">
@@ -21,7 +21,7 @@
                                     <label for="buscar" class="control-label">Buscar:</label>
                                 </div>
                                 <div class="col-xs-4">
-                                    <input  type="text" name="buscar" id="buscarRS" class="form-control" onkeyup="listar_rs(this.value);" placeholder="Ingrese Cod. Suministro o Nombre / Calle"/>
+                                    <input  type="text" name="buscar" id="buscarRS" class="form-control text-uppercase" onkeyup="listar_rs(this.value);" placeholder="Ingrese Cod. Suministro o Nombre / Calle"/>
                                 </div>
                             </div>
                             <div class="form-group" id="datos-result" style="display: none;">
