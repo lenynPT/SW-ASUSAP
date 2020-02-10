@@ -8,12 +8,16 @@
 </div>
 <div class="container-fluid">
     <?php if($btn_xdefct){ ?>
-        <a href="#" id="btnGenerarCXD" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> 
+        <a href="#" id="btnGenerarCXD" class="btn btn-primary btn-lg p-4"><span class="glyphicon glyphicon-plus"></span> 
             GENERAR CONSUMO X DEFECTO
         </a>
-        <span id="loadBtnGCXD"></span>
-        <br>
-        <br>
+        <div id="loadBtnGCXD" class="lead bg-secondary px-4 text-center">
+            <!--
+                <i class="zmdi zmdi-spinner zmdi-hc-spin zmdi-hc-4x"></i> 
+                </br>Porfavor Espere... </br>Esta operación podría tardar un momento...    
+            -->   
+        </div>        
+        <br>        
     <?php 
         }else{
             echo '

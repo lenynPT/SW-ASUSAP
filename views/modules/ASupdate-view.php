@@ -59,7 +59,7 @@ function volverA(){
 
 
      $serV=$camposS['descripcion'];
-     $arrServicio = ["CORTE Y RECONEXION","NUEVA INSTALACION","SERVICIO DE GASFITERIA","AVERIAS DE REDES TENDIDAS","OTROS"];
+     //$arrServicio = ["CORTE Y RECONEXION","NUEVA INSTALACION","SERVICIO DE GASFITERIA","AVERIAS DE REDES TENDIDAS","OTROS"];
 
 
 
@@ -89,15 +89,15 @@ function volverA(){
                     </div>
                     <div class="col-xs-12 col-md-6 ">
                         <?php
+                        /*
                         foreach ($arrServicio as $value) {
-                                # code...
-                               if($value == $serV){
-                                    echo '<h3 class="tile-titles text-left font-weight-bold"><b>Servicio: </b><small id="servicioAS">'.$value.'</small></h3>';
-
-
-                                }
-
+                            # code...
+                            if($value == $serV){
+                                echo '<h3 class="tile-titles text-left font-weight-bold"><b>Servicio: </b><small id="servicioAS">'.$value.'</small></h3>';
                             }
+                        }
+                        */
+                        echo '<h3 class="tile-titles text-left font-weight-bold"><b>Servicio: </b><small id="servicioAS">'.$serV.'</small></h3>';
                         ?>
 
 
