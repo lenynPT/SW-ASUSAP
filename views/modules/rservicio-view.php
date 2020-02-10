@@ -47,7 +47,7 @@
         <div class="container-fluid" id="add-all" style="display: none;">
             <div class="row" >
 
-
+ids
                 <div class="col-lg-12 col-md-8 col-sm-8 col-xs-8 rs-asusap" style="background: rgba(25,25,25,.1);" id="cuadro">
 
                     <div class="col-xs-12 col-sm-12">
@@ -58,8 +58,7 @@
                             <label for="staticEmail2">Servicio:</label>
                             <div class="form-group mx-sm-3 mb-3">
 
-                                <select class="form-control"  id="servicio" name="servicios" >
-                                    <option  value="">Seleccione:</option>
+                                <select class="form-control"  id="servicio" name="servicios" >                                    
                                     <?php
                                     echo $insAdmin->SelectorS();
                                     ?>
@@ -71,7 +70,7 @@
                     <div class="col-xs-12 col-sm-12">
 
                         <div class="col-xs-12 col-md-6 ">
-                            <div id="ids"></div>
+                            <div id="ids">**</div>
                             <h3 class="tile-titles text-left font-weight-bold"class="text-titles" ><b> Nombre: </b><small id="nombreSR">Ana</small></h3>
                         </div>
                         <div class="col-xs-12 col-md-6 ">
@@ -129,21 +128,6 @@
                                     <button  type="reset"  class="btn btn-success btn-raised btn-sm  align-items-center" id="bt_add" >
                                         Agregar Item
                                     </button>
-                                    <script>
-                                        validar();
-                                        function validar() {
-
-                                            let a= document.querySelector("#bt_add");
-                                            if (a){
-                                                let bscAso = document.querySelector("#Costo");
-
-                                                if(bscAso!=""){
-
-                                                }
-                                            }
-
-                                        }
-                                    </script>
                                 </form>
                             </div>
                         </div>
