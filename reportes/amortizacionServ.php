@@ -53,7 +53,7 @@ if($filesA->rowCount()) {
     //Asigna el fondo para el recibo
     $_POST['urlimg'] = $resConsult['res']?'img/reciboAgua.jpg':'img/sinResultado.jpg';*/
     $_POST['urlimg'] = 'img/boletaAGuaEnd.jpg';
-
+    $_SESSION['dire'] = $campos['direccion'];
 
     class PDF extends FPDF
     {
@@ -76,7 +76,21 @@ if($filesA->rowCount()) {
         // Pie de página
         function Footer()
         {
+            $anm=$_GET['anom'];
+            $codsI = $_GET["cdsi"];
+            $this->SetY(-20);
+            $this->SetFont('Arial', 'B', 11);
+            $this->setX(2);            
+            $this->Cell(-20, 10,"Nom. y Ape. : ".$anm, 0, 1, 'L');
+            $this->SetY(-15);
+            $this->SetFont('Arial', 'B', 11);
+            $this->setX(2);   
+            $this->Cell(-74, 10, "Sum. : ".$codsI, 0, 0, 'L');
 
+            $this->SetY(-10);
+            $this->SetFont('Arial', 'B', 11);
+            $this->setX(2); 
+            $this->Cell(10, 10, "Dir. : ". $_SESSION['dire'], 0, 0, 'L');
             // Posición: a 1,5 cm del final
             $this->SetY(-15);
             // Arial italic 8

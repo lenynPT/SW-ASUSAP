@@ -44,8 +44,9 @@ function agregar(){
     let cost= Number.parseFloat(cost1).toFixed(2);
     // console.log(nomd+cost+idrs)
     console.log("agregaste"+nomd+cost)
-    if (nomd != "" || cost != ""){
-        if(cost == ""){
+    if (nomd!="" || cost!=""){
+
+       /* if(cost!= ""){
 
             swal({
                 title: "El campo esta vacio",
@@ -56,8 +57,9 @@ function agregar(){
 
                 cancelButtonColor: '#F44336'
             })
-            return false;
-        }
+
+           return false;
+        }*/
         conts++;
         //alert("FALTA AGREGAR ITEMS")
         $.ajax({
@@ -70,6 +72,7 @@ function agregar(){
             }
 
         });
+
     }
 
 

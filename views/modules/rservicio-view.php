@@ -131,7 +131,7 @@
                                     </button>
                                     <script>
                                         validar();
-                                        function validar() {
+                                       function validar() {
 
                                             let a= document.querySelector("#bt_add");
                                             if (a){

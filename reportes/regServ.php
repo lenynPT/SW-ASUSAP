@@ -21,6 +21,7 @@ $_POST['urlimg'] = 'img/boletaAguaEnd.jpg';
 //anRSI=${anIRS}&codSI=${codsuI}&desNSI=${co},
 //$codSRSI=$_POST['CodRS']  tto;
 $anorsI=$_GET['anRSI'];
+
 $codsI=$_GET['codSI']; //cod suministro
 $disI=$_GET['DRSI']; //cod suministro
 $tcsI=$_GET['TCSI']; //cod suministro
@@ -80,22 +81,42 @@ $desNSI=$_POST['desNSI'];*/
         // Pie de página
         function Footer()
         {
+            $codsI=$_GET['codSI'];
+            $anorsI=$_GET['anRSI'];
+            $disI=$_GET['DRSI'];
 
             // IGV
             $this->SetY(-20);
             $this->SetFont('Arial', 'B', 11);
             $this->setX(105);
-            $this->Cell(10, 10, "Sub Total: s/ ".$_SESSION['subtotal'], 0, 0, 'L');
+            $this->Cell(10, 10,"Sub Total: s/ ".$_SESSION['subtotal'], 0, 0, 'L');
+
+
+            $this->SetY(-20);
+            $this->SetFont('Arial', 'B', 11);
+            $this->setX(2);            
+            $this->Cell(-20, 10,"Nom. y Ape. :".$anorsI, 0, 1, 'L');
             // SUB TOTAL
             $this->SetY(-15);
             $this->SetFont('Arial', 'B', 11);
             $this->setX(105);
             $this->Cell(10, 10, "IGV: s/ ".$_SESSION['igv'], 0, 0, 'L');
+
+            $this->SetY(-15);
+            $this->SetFont('Arial', 'B', 11);
+            $this->setX(2);   
+            $this->Cell(-74, 10, "Sum. : ".$codsI, 0, 0, 'L');
             // TOTAL
             $this->SetY(-10);
             $this->SetFont('Arial', 'B', 13);
             $this->SetX(105);
             $this->Cell(10, 10, "Total: S/ ".$_SESSION['cost'], 0, 0, 'L');
+
+
+            $this->SetY(-10);
+            $this->SetFont('Arial', 'B', 11);
+            $this->setX(2); 
+            $this->Cell(10, 10, "Dir. : ".$disI, 0, 0, 'L');
             // Número de página
           //  $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
         }
