@@ -93,9 +93,9 @@ $desNSI=$_POST['desNSI'];*/
 
 
             $this->SetY(-20);
-            $this->SetFont('Arial', 'B', 11);
+            $this->SetFont('Arial', 'B', 8);
             $this->setX(2);            
-            $this->Cell(-20, 10,"Nom. y Ape. :".$anorsI, 0, 1, 'L');
+            $this->Cell(10, 10,"N.yAp.: ".$anorsI, 0, 1, 'L');
             // SUB TOTAL
             $this->SetY(-15);
             $this->SetFont('Arial', 'B', 11);
@@ -103,7 +103,7 @@ $desNSI=$_POST['desNSI'];*/
             $this->Cell(10, 10, "IGV: s/ ".$_SESSION['igv'], 0, 0, 'L');
 
             $this->SetY(-15);
-            $this->SetFont('Arial', 'B', 11);
+            $this->SetFont('Arial', 'B', 10);
             $this->setX(2);   
             $this->Cell(-74, 10, "Sum. : ".$codsI, 0, 0, 'L');
             // TOTAL
@@ -114,7 +114,7 @@ $desNSI=$_POST['desNSI'];*/
 
 
             $this->SetY(-10);
-            $this->SetFont('Arial', 'B', 11);
+            $this->SetFont('Arial', 'B', 9);
             $this->setX(2); 
             $this->Cell(10, 10, "Dir. : ".$disI, 0, 0, 'L');
             // Número de página
