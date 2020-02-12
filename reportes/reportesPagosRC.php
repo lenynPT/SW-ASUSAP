@@ -13,11 +13,13 @@ require "fpdf/fpdf.php";
 $idate=$_GET['inicioDate'];
 $fdate=$_GET['finalDate'];
 
-$query = "SELECT * FROM factura_recibo WHERE ";
+$query = "SELECT fr.esta_cancelado,fr.suministro_cod_suministro , fr.fecha_emision , fr.consumo, fr.monto_pagar, s.asociado_dni, a.nombre,a.apellido
+ FROM (( factura_recibo fr INNER JOIN  suministro s ON s.cod_suministro = fr.suministro_cod_suministro )
+  INNER JOIN asociado a on a.dni = s.asociado_dni ) WHERE ";
 
 
 $query .= 'fecha_cobro BETWEEN "'.$idate.'" AND "'.$fdate.'" ';
-$query .= 'ORDER BY fecha_cobro DESC ';
+$query .= 'ORDER BY nombre ASC ';
 $result = $inst->consultaAsociado( $query );
 //Permite incluir los archivos necesarios para las funciones de consulta.
 
@@ -108,9 +110,9 @@ $pdf->SetFillColor(232,232,232);
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(10,6,'#',1,0,'C',1);
 $pdf->Cell(30,6,'SUMINISTRO',1,0,'C',1);
-$pdf->Cell(40,6,'F. EMISION',1,0,'C',1);
-$pdf->Cell(50,6,'CONSUMO',1,0,'C',1);
-$pdf->Cell(40,6,'F. CANCELACION',1,0,'C',1);
+$pdf->Cell(25,6,'F. EMISION',1,0,'C',1);
+$pdf->Cell(110,6,'NOMBRE Y APELLIDO ',1,0,'C',1);
+//$pdf->Cell(40,6,'F. CANCELACION',1,1,'C',1);
 $pdf->Cell(20,6,'MONTO',1,1,'C',1);
 
 
@@ -133,9 +135,9 @@ while($row = $result->fetch()) {
     $pdf->SetFillColor(232,232,232);
     $pdf->Cell(10,6,$o++,1,0,'C');
     $pdf->Cell(30,6,utf8_decode($row['suministro_cod_suministro']),1,0,'C');
-    $pdf->Cell(40,6,utf8_decode($row['fecha_emision']),1,0,'C');
-    $pdf->Cell(50,6,utf8_decode($row['consumo']." m³"),1,0,'L');
-    $pdf->Cell(40,6,$row['fecha_cobro'],1,0,'C');
+    $pdf->Cell(25,6,utf8_decode($row['fecha_emision']),1,0,'C');
+    $pdf->Cell(110,6,utf8_decode($row['nombre']." ".$row['apellido']),1,0,'L');
+    //$pdf->Cell(40,6,$row['monto_pagar'],1,1,'C');
     $pdf->Cell(20,6,utf8_decode($row['monto_pagar']),1,1,'L');
     $y=$y+$row['monto_pagar'];
     }
