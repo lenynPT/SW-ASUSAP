@@ -22,126 +22,422 @@ if($_POST["is_date_search"] == "yes")
     $all=$_POST["start_date"] ;
    $esta=$_POST["estad"] ;
    $catA=$_POST["catA"] ;
+   $MdAso = $_POST["MdAsoc"] ;
    // if ($all=="TODOS"){
     //-----------------------DIRECCION  ------------------------------------------------------------
-    if ( $all==="TODOS" && $esta==3 && $catA=="Todos"){
+    if ( $all==="TODOS" && $esta==3 && $catA=="Todos" && $MdAso=="Todos"){
       // $query .= 'direccion BETWEEN "'.$_POST["start_date"].'" AND ';
         $query .= 'direccion BETWEEN "'.$_POST["start_date"].'" AND ';
     }
+    //-----------------------ESTADO ACTIVO--------------------------------------
     else if ($all=="TODOS" && $esta==0){
         if ($catA=="Domestico"){
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+           else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+           else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND';
+            }
 
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+
+           // $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Comercial"){
 
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND';
+            }
+
+            //$query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Estatal"){
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND';
+            }
+          //  $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Industrial"){
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND';
+            }
+            //$query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+        }
+        ///.................PARA TODOS
+        if ($catA=="Todos"){
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND';
+            }
+            //$query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
 
         $query .= ' estado_corte="'.$_POST["estad"].'" AND ';
     }
     else if ($all=="TODOS" && $esta==2){
         if ($catA=="Domestico"){
-
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND';
+            }
+           // $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Comercial"){
 
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND';
+            }
+
+
+            //$query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Estatal"){
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND';
+            }
+           // $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Industrial"){
-            $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"].'" AND';
+            }
+            //$query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+        }
+        //-------------------D-TO, ESTA-INACT, SUMINI-TODOS,------------todos con medidor-------------------------------------
+        if ($catA=="Todos"){
+            if ($MdAso=='C Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= 'estado_corte ="'.$_POST["estad"].'" AND';
+            }
+            //$query .= 'estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
          $query .= ' estado_corte="'.$_POST["estad"].'" AND ';
     }
+
 //-----------------------------TIPO DE ESTADO DE DIVERSOS DIRECCIONES--------------------------------------------
     else if ($all!="TODOS" && $esta==3){
-        if ($catA=="Domestico"){
 
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND categoria_suministro="'.$_POST["catA"] .'" AND';
+        if ($catA=="Domestico"){
+            if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+            else if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+          // $query .= ' direccion ="'.$_POST["start_date"].'" AND categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Comercial"){
-
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND  categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+            else if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
         }
         if ($catA=="Estatal"){
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+            else if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Industrial"){
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+            else if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
+        if ($catA=="Todos"){
+            if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"] .'" AND';
+            }
+            else if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+        }
+
         $query .= ' direccion ="'.$_POST["start_date"].'" AND ';
     }
-
     else if ($all!="TODOS" && $esta==2){
         if ($catA=="Domestico"){
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
 
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND categoria_suministro="'.$_POST["catA"] .'" AND';
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Comercial"){
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
 
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND  categoria_suministro="'.$_POST["catA"] .'" AND';
+            //$query .= ' direccion ="'.$_POST["start_date"].'" AND  categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Estatal"){
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Industrial"){
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
 
-        $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND';
+        if ($catA=="Todos"){
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+        }
+
+      $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND';
 
     }
-
     else if ($all!="TODOS" && $esta==0){
         if ($catA=="Domestico"){
 
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Comercial"){
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
 
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Estatal"){
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
         if ($catA=="Industrial"){
-            $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
         }
+
+        if ($catA=="Todos"){
+            if ($MdAso=='C Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   tiene_medidor="'.'1'.'" AND';
+            }
+            else if ($MdAso=='S Medidor'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   tiene_medidor="'.'0'.'" AND';
+            }
+            else if ($MdAso=='Todos'){
+                $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND';
+            }
+           // $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+        }
+
+
         $query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND';
     }
 //-------------------------CATEGORIA DE SUMINISTRO-------------------------------------
 
     else if ($all=="TODOS" && $esta==3 && $catA=="Domestico"){
 
-        $query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
+        if ($MdAso=='C Medidor'){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND   tiene_medidor ="'.'1'.'" AND';
+        }else if ($MdAso=="Todos"){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND';
+        }else if ($MdAso=='S Medidor'){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND   tiene_medidor ="'.'0'.'" AND';
+        }
+
+       //$query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
         //$query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
     }
     else if ($all=="TODOS" && $esta==3 && $catA=="Comercial"){
+        if ($MdAso=='C Medidor'){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND   tiene_medidor ="'.'1'.'" AND';
+        }else if ($MdAso=="Todos"){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND';
+        }else if ($MdAso=='S Medidor'){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND   tiene_medidor ="'.'0'.'" AND';
 
-        $query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
-        //$query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
+        }
+          //
+
+
+       //$query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
+       // $query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
+        //$query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" ANDSSS   categoria_suministro="'.$_POST["catA"] .'" AND';
     }
     else if ($all=="TODOS" && $esta==3 && $catA=="Estatal"){
+        if ($MdAso=='C Medidor'){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND   tiene_medidor ="'.'1'.'" AND';
+        }else if ($MdAso=="Todos"){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND';
+        }else if ($MdAso=='S Medidor'){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND   tiene_medidor ="'.'0'.'" AND';
+        }
 
-        $query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
+       // $query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
         //$query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
     }
     else if ($all=="TODOS" && $esta==3 && $catA=="Industrial"){
 
-        $query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
+        if ($MdAso=='C Medidor'){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND   tiene_medidor ="'.'1'.'" AND';
+        }else if ($MdAso=="Todos"){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND';
+        }else if ($MdAso=='S Medidor'){
+            $query .= 'categoria_suministro ="'.$_POST["catA"].'" AND   tiene_medidor ="'.'0'.'" AND';
+        }
+
+        //$query .= 'categoria_suministro="'.$_POST["catA"] .'" AND';
         //$query .= ' direccion ="'.$_POST["start_date"].'" AND estado_corte ="'.$_POST["estad"].'" AND   categoria_suministro="'.$_POST["catA"] .'" AND';
     }
-    //-----------------------
+    //-----------------------CON MEDIDOR----------------------------------------
+   else if ($all=="TODOS" && $esta==3 && $catA=="Todos" && $MdAso=='Todos' ){
+       $query .= ' tiene_medidor ="'.$_POST["MdAso"].'" AND';
+        //$query .=' direccion ="'.$_POST["start_date"]. 'AND tiene_medidor="'."1".'" AND';
+    }
+   else if ($all=="TODOS" && $esta==3 && $catA=="Todos" && $MdAso=='S Medidor' ){
+       $query .= ' tiene_medidor ="'.'0'.'" AND';
+        //$query .=' direccion ="'.$_POST["start_date"]. 'AND tiene_medidor="'."1".'" AND';
+    }
+   else if ($all=="TODOS" && $esta==3 && $catA=="Todos" && $MdAso=='C Medidor' ){
+       $query .= ' tiene_medidor ="'.'1'.'" AND';
+        //$query .=' direccion ="'.$_POST["start_date"]. 'AND tiene_medidor="'."1".'" AND';
+    }
 
 }
 
@@ -196,6 +492,13 @@ $s = 1;
         $sub_array[] = $row["asociado_dni"];
         $sub_array[] = $row["direccion"]."  N° #".$row["casa_nro"];
         $sub_array[] = $row["categoria_suministro"];
+        if ($row['tiene_medidor'] == "1"){
+            $sub_array[] = "CM";
+        }
+        else{
+            $sub_array[] = "SM";
+        }
+       // $sub_array[] = $row['tiene_medidor'].$MdAso;
         // $sub_array[] = $row["mes"];
         $data[] = $sub_array;
 

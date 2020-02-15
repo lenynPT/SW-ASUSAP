@@ -93,6 +93,17 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-3 form-group label-floating">
+                    <label for="categoriaAsoc" class="col-md-4 control-label">MEDIDOR</label>
+                    <div class="col-md-12">
+                        <select class="form-control" id="medidorAsoc" name="categoriaAsoc">
+                            <option >Todos</option>
+                            <option >C Medidor</option>
+                            <option >S Medidor</option>
+
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-3">
                     <input type="button" name="search" id="search" value="Search" class="btn btn-success btn-raised btn-sm" />
                 </div>
@@ -112,6 +123,7 @@
                 <th>DNI</th>
                 <th>DIRECCION</th>
                 <th>C. SUMINISTRO</th>
+                <th>Medidor</th>
             </tr>
             </thead>
         </table>
@@ -134,7 +146,7 @@
 
         fetch_data('no');
 
-        function fetch_data(is_date_search, start_date='',estad,catA){
+        function fetch_data(is_date_search, start_date='',estad,catA,MdAsoc){
             var dataTable = $('#order_data').DataTable({
                 "language":{
                     "lengthMenu":"Mostrar _MENU_ registros por página.",
@@ -161,7 +173,7 @@
                     url:"../ajax/reportesAsociados.php",
                     type:"POST",
                     data:{
-                        is_date_search:is_date_search , start_date:start_date ,estad:estad,catA:catA
+                        is_date_search:is_date_search , start_date:start_date ,estad:estad,catA:catA,MdAsoc:MdAsoc
                     }
                 }
             });
@@ -173,15 +185,16 @@
             var start_date = document.querySelector("#direccionAsoc").value;
             var estad = document.querySelector("#ESTADO").value;
             var catA = document.querySelector("#categoriaAsoc").value;
+            var MdAsoc = document.querySelector("#medidorAsoc").value;
 
-            console.log("estddo: "+estad+" la categoria es:"+catA)
+            console.log("estddo: "+estad+" la categoria es:"+catA+" Medidor: "+MdAsoc)
           //  console.log('la direccion'+direccion);
 
           //  var end_date = $('#end_date').val();
             if(start_date != '')
             {
                 $('#order_data').DataTable().destroy();
-               fetch_data('yes', start_date,estad,catA);
+               fetch_data('yes', start_date,estad,catA,MdAsoc);
             }
             else
             {
