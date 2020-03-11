@@ -419,26 +419,12 @@
 			return true;
 		}
 
-		public function datosSumiAsocController($codigoSum){
-			/*	antiguoo
-				SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido 
-					FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni WHERE suministro.tiene_medidor = 0  AND suministro.cod_suministro LIKE '%$codigoSum%'
-				----->>>
-				SELECT * FROM suministro 
-				LEFT JOIN factura_recibo 
-				ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro 
-				WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND 
-				suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
-				FROM factura_recibo WHERE factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
-				----------
-				SELECT * FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro WHERE suministro.cod_suministro LIKE '%74%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo WHERE factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
-				-----------
-				SELECT * FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro WHERE suministro.cod_suministro LIKE '%74%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE suministro.tiene_medidor=1 AND suministro.estado_corte=0 AND factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
-				-----
-				SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.casa_nro, asociado.nombre, asociado.apellido FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni LEFT JOIN factura_recibo ON suministro.cod_suministro = factura_recibo.suministro_cod_suministro WHERE suministro.cod_suministro LIKE '%74%' AND suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE suministro.tiene_medidor=1 AND suministro.estado_corte=0 AND factura_recibo.mes = 10 AND factura_recibo.anio = 2019)
-				*/
+		public function datosSumiAsocController($datos){
+
 			//limpiando espacios al principio y al final
-			$codigoSum = trim($codigoSum);
+			$codigoSum = trim($datos['codigo_sum']);
+			$optTP = json_decode($datos['optTP']);
+		
 			//comprueba si aún falta suministros con medidor por registrar.
 			if(self::completadoGCSumCnM()){
 				return "LISTO";
@@ -449,7 +435,18 @@
 			$mes_hoy=$fecha_actual['mes'];
 			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
 
-			$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
+			if($optTP){
+				$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
+					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni					
+					WHERE suministro.categoria_suministro='Tarifa Plana' AND suministro.estado_corte = 0 
+					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
+					FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE 
+					suministro.categoria_suministro='Tarifa Plana' AND suministro.estado_corte = 0 AND
+					factura_recibo.mes = {$FConsumo['mes_GC']} AND factura_recibo.anio = {$FConsumo['anio_GC']}) 
+					AND (suministro.cod_suministro LIKE '%{$codigoSum}%' OR asociado.apellido LIKE '%{$codigoSum}%' OR asociado.nombre LIKE '%{$codigoSum}%')
+					lIMIT 0,15";
+			}else{
+				$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni					
 					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
 					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
@@ -457,7 +454,10 @@
 					suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND
 					factura_recibo.mes = {$FConsumo['mes_GC']} AND factura_recibo.anio = {$FConsumo['anio_GC']}) 
 					AND (suministro.cod_suministro LIKE '%{$codigoSum}%' OR asociado.apellido LIKE '%{$codigoSum}%' OR asociado.nombre LIKE '%{$codigoSum}%')
-					lIMIT 0,15";			
+					lIMIT 0,15";
+			}
+
+
 			$regSumiCnMed = mainModel::execute_single_query($query);
 			
 			$rsptRegist = [];						
@@ -471,7 +471,8 @@
 					"nombre"=>$rgs['nombre'],
 					"apellido"=>$rgs['apellido'],
 					"categoria"=>$rgs['categoria_suministro'],
-					"consm_ant"=>$consm_ant
+					"consm_ant"=>$consm_ant,
+					"resTarifP"=>$optTP
 				];
 			}		
 			

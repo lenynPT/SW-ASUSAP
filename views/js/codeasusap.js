@@ -288,17 +288,53 @@ function generarConsumoSinMedidor(){
 function generarConsumoConMedidor(value){
 	let el = document.querySelector('#buscarSumCnM');
 	if(el){
-		console.log("Fn->generarConsumoConMedidor",value);
+		//TARIFA PLANA...
+		let optTarifaP = document.getElementById("optTP");
+		//Limpia los resultados para iniciar la busqueda
+		optTarifaP.addEventListener("click",function(){
+			document.querySelector("#rspSumi").innerHTML = '';
+			if(this.checked){
+				document.querySelector("#titRspSumi").innerHTML = `
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Suministro</th>
+					<th scope="col">MONTO TP</th>
+					<th scope="col">Consumo Anterior</th>
+					<th scope="col">Cant. Deudas</th>
+					<th scope="col">Asociado</th>
+					<th scope="col">Categoria</th>
+					<th scope="col">Direccion</th>				
+				</tr>
+				`;
+			}else{
+				document.querySelector("#titRspSumi").innerHTML = `
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Suministro</th>
+					<th scope="col">CONSUMO</th>
+					<th scope="col">Consumo Anterior</th>
+					<th scope="col">Cant. Deudas</th>
+					<th scope="col">Asociado</th>
+					<th scope="col">Categoria</th>
+					<th scope="col">Direccion</th>				
+				</tr>
+				`;
+			}
+		})
+		
+		console.log("Fn->generarConsumoConMedidor",value,optTarifaP);
 		
 		let optionData = new FormData();
 		optionData.append('OPTION',"GCCnMedi");
 		optionData.append("codigo_sum",value);
+		optionData.append("optTP",optTarifaP.checked);
 		
 		fetch("../ajax/gestionRcbAjax.php",{
 			method:"POST",
 			body:optionData
 		}).then(res=>res.json())
 		.then(data=>{
+			console.log(data,".....-.-.-.")
 
 			if(data=="LISTO"){
 				//crear boton de reinicio. reload
@@ -310,22 +346,43 @@ function generarConsumoConMedidor(value){
 
 			let htmlSumi = ``;
 			let nmracion = 0;		
-			data.forEach(element => {			
-				htmlSumi +=`
-					<tr>
-						<th scope="row">${++nmracion}</th>
-						<td>${element.codigo_sum}</td>
-						<td contenteditable="true" onBlur="cogerConsumo(this,${element.consm_ant},'${element.codigo_sum}','${element.categoria}')" style="background: #00aa9a;color: red;" placeholder="0.0" autofocus>
-							0.0
-						</td>
-						<td>${element.consm_ant}</td>
-						<td>${element.contador_deuda}</td>
-						<td>${element.nombre} ${element.apellido}</td>      
-						<td>${element.categoria}</td>
-						<td>${element.direccion}</td>
-
-					</tr>
-				`;
+			data.forEach(element => {	
+			
+				if(element.resTarifP){
+					//CUANDO SEAN TARIFA PLANA
+					htmlSumi +=`
+						<tr>
+							<th scope="row">${++nmracion}</th>
+							<td>${element.codigo_sum}</td>
+							<td contenteditable="true" onBlur="cogerMontoTP(this,'${element.codigo_sum}','${element.categoria}')" style="background: #00aa9a;color: red;" placeholder="0.0" autofocus>
+								0.0
+							</td>
+							<td>${element.consm_ant}</td>
+							<td>${element.contador_deuda}</td>
+							<td>${element.nombre} ${element.apellido}</td>      
+							<td>${element.categoria}</td>
+							<td>${element.direccion}</td>
+	
+						</tr>
+					`;
+				}else{
+					//CUANDO NO SEAN TARIFA PLANA
+					htmlSumi +=`
+						<tr>
+							<th scope="row">${++nmracion}</th>
+							<td>${element.codigo_sum}</td>
+							<td contenteditable="true" onBlur="cogerConsumo(this,${element.consm_ant},'${element.codigo_sum}','${element.categoria}')" style="background: #00aa9a;color: red;" placeholder="0.0" autofocus>
+								0.0
+							</td>
+							<td>${element.consm_ant}</td>
+							<td>${element.contador_deuda}</td>
+							<td>${element.nombre} ${element.apellido}</td>      
+							<td>${element.categoria}</td>
+							<td>${element.direccion}</td>
+	
+						</tr>
+					`;
+				}	
 			});
 
 			document.querySelector("#rspSumi").innerHTML = htmlSumi;		
@@ -336,7 +393,67 @@ function generarConsumoConMedidor(value){
 
 }
 generarConsumoConMedidor("");
+function cogerMontoTP(value, cod_sum, categoria){
+	//realizar el repintado por si habia cometido un error.
+	value.style.background = "#00aa9a";
+	value.style.color = "red";
+	//------------------------------------------
 
+	let montoTP = value.innerHTML;
+	montoTP = montoTP.replace(",",".");	
+	montoTP = Number(montoTP).toFixed(2);
+
+	//si distinto de false, el monto es valido
+	if(montoTP > 0 && !Number.isNaN(montoTP)){
+
+		//MENSAJE DE ALERTA PARA INSERTAR CONSUMO O NO :d
+			swal({
+				title: "¿Ejecutar esta acción?",
+				text: "USUARIO: " + cod_sum + "<br>MONTO: " + montoTP,
+				type: "info",				
+				confirmButtonColor: '#03A9F4',		  		
+				confirmButtonText: '<i class="zmdi zmdi-run"></i> Aceptar',		
+				showCancelButton: true,
+				cancelButtonColor: '#F44336',
+				cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Cancel'		
+			}).then(()=>{
+				//Cuando le de la opción de ok
+				console.log("le dio aceptar",0,cod_sum);
+
+				//limpiando por si no cargan los datos...
+				document.querySelector("#rspSumi").innerHTML = '';				
+				/*
+				*/
+				dataS = new FormData();
+				dataS.append("consumo",0);
+				dataS.append("cod_sum",cod_sum);
+				dataS.append("monto",montoTP);
+				dataS.append("OPTION","insertGCCnM");
+				
+				fetch('../ajax/gestionRcbAjax.php',{
+					method:'POST',
+					body:dataS
+				})
+				.then(res => res.json())
+				.then(data=>{
+					console.log("->",data);					
+					//actualizar tabla 
+					let inputCode = document.querySelector("#buscarSumCnM").value;
+					generarConsumoConMedidor(inputCode);
+				});
+			
+			},function(){
+				//si no le da a la opcion de aceptar
+				console.log("No le dió aceptar")
+			});
+	
+		}else{
+			//color de ERROR para cuando ingrese un consumo invalido
+			value.style.background = "red";
+			value.style.color = "white";
+		}
+
+}
 function cogerConsumo(value, cons_ant, cod_sum, categoria){
 
 	//realizar el repintado por si habia cometido un error.

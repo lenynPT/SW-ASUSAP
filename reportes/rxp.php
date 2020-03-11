@@ -156,7 +156,7 @@ class PDF extends FPDF
             }  
             
             //DETALLE DE LA FACTURACIÓN ****************************************************
-            if($medidor=="Si" || $element['categoria_suministro'] == 'Mantenimiento'){
+            if($medidor=="Si" || $element['categoria_suministro'] == 'Mantenimiento' || $element['categoria_suministro'] == 'Tarifa Plana'){
                 $subT = modoDePago($pdf,$element,$consumo_dif);
                 //conceptos----
                 $pdf->SetXY(85,68+12);
@@ -412,7 +412,25 @@ function modoDePago($pdf,$element,$consumo_dif){
             */
 
             break;
-        
+        case 'Tarifa Plana':
+            # code...
+            $val1 = number_format($element['monto_pagar'],2);
+            
+            $val1 = round($val1, 1);
+
+            $resIGV = $val1 * 0.18; 
+            $resIGV = round($resIGV, 1);
+            //sacando la diferencia para obtener el subtotal
+            $val1 -=$resIGV; 
+            
+            //primera fila de 
+            $pdf->SetXY(85,64+0*$x);
+            $pdf->Cell(100,10,"Por Tarifa Plana",0,0,'');
+            $pdf->SetXY(130,64+0*$x);
+            $pdf->Cell(100,10,"$/. ".number_format($val1,2),0,0,'');
+            
+            
+            break;
         default:
             # code...
             break;

@@ -66,6 +66,7 @@
 													<option>Estatal</option>
 													<option>Industrial</option>
 													<option>Mantenimiento</option>
+													<option>Tarifa Plana</option>
 												</select>
 											</div>											
                                         </div>
@@ -212,6 +213,7 @@
                                                                 <option>Estatal</option>
                                                                 <option>Industrial</option>
                                                                 <option>Mantenimiento</option>
+                                                                <option>Tarifa Plana</option>
                                                             </select>
                                                         </div>
                                                     </div>
