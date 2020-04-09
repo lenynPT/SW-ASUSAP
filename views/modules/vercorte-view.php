@@ -11,6 +11,11 @@
                         <input type="search" id="btnBuscarSumCorte" class="form-control" placeholder="BUSCAR SUMINISTRO POR CÓDIGO-DNI">
                     </div>
                 </div> 
+
+                <button class='btn btn-danger btn-raised btn-sm' onclick="btnImprimeReporteCorte()">
+                    <i class='zmdi zmdi-floppy'></i>
+                    IMPRIMIR
+                </button>
                 
             </div>
         </div>        

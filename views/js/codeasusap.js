@@ -1516,3 +1516,10 @@ function mensajeParaRecibo(){
 		})
 	}
 }
+
+function btnImprimeReporteCorte(){
+	start_date = 2000;
+	end_date = 2005;
+	console.log("abriendo btn ");
+	window.open(`../reportes/reporteCorte.php?inicioDate=${start_date}&finalDate=${end_date}`,'_blank')
+}

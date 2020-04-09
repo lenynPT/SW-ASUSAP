@@ -630,6 +630,21 @@
 			return $responseStruc;
 		}
 
+		//consulta de suministros con corte PARA IMPRIMIR
+		public function obtenerRegSumCnCorteIMPRIMIRController($cod_sum){
+			$query = "SELECT asociado.nombre,asociado.apellido, asociado.telefono, 
+			suministro.cod_suministro, suministro.direccion, suministro.categoria_suministro, suministro.contador_deuda 
+			FROM suministro INNER JOIN asociado ON suministro.asociado_dni = asociado.dni 
+			WHERE asociado.estado = 1 AND suministro.estado_corte=1 AND suministro.cod_suministro LIKE '%$cod_sum%' ORDER BY suministro.direccion,suministro.cod_suministro, asociado.apellido";
+			//$query = "SELECT * FROM suministro WHERE estado_corte=1 AND cod_suministro LIKE '%$cod_sum%' LIMIT 0,15";
+			$arrReg = mainModel::execute_single_query($query);
+			$responseStruc = [];
+			while($reg = $arrReg->fetch(PDO::FETCH_ASSOC)){
+				$responseStruc[] = $reg;
+			}
+			return $responseStruc;
+		}
+
 		//GR emitir recibo
 		public function obtenerSumGRxCod($data){
 			$datoBuscar = trim($data['cod_sum']);
