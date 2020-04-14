@@ -1316,4 +1316,15 @@
 			return $mensaje['mensaje'];
 		}
 
+
+		/**
+		 * 
+		 */
+		public function update_habilitarConsumoController(){
+			$dataModel = new stdClass;
+			$dataModel->respuesta = "está bien";
+			$resData = self::update_habilitarConsumoModel($dataModel);
+			return $resData;
+		}
+
 	}

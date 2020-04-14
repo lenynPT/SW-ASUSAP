@@ -395,6 +395,19 @@
 
             $stmt->execute();
             return $stmt;
-        }
+		}
+		
+		/**
+		 * 
+		 */
+		protected function update_habilitarConsumoModel(){
+			$query = "UPDATE estado_gonsumo SET con_medidor=0, sin_medidor=0 WHERE 1";
+			$resQuery = self::execute_single_query($query);
+			if ($resQuery->rowCount()>=1) {
+				# code...
+				return ['eval'=>true,'data'=>$resQuery->rowCount()];
+			}
+			return ['eval'=>false,'data'=>null];
+		}
     }
 

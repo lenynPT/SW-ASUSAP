@@ -21,3 +21,7 @@
 <h3 class="text-center lead"> 
     SE GENERÓ LOS CONSUMOS PARA <br> <b><?php echo "$fechaGenerado Del $anioGenerado";?> </b>
 </h3>
+<hr>
+<div class="text-center py-4 my-4">
+    <button class ="btn btn-primary" onclick="habilitarConsumos()"> HABILITAR </button>
+</div>

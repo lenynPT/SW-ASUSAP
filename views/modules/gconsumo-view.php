@@ -16,7 +16,7 @@
 
     $fecha_db = $fechas->consultar_stado_gconsumo();
     $fecha_hoy = $fechas->consultar_fecha_actual();
-    
+
     if($fecha_hoy['mes'] == $fecha_db['mes'] && $fecha_hoy['anio'] == $fecha_db['anio']){
         //habilitar el inicio de generacion de consumos        
         if($fecha_db['gsn_consumo'] == 1 && $fecha_db['gcn_consumo'] == 1){
