@@ -1,4 +1,4 @@
-sw-asusap
+﻿sw-asusap
 
 ///////////////// SOPORTE INSTALACION - TARIFA PLANA ---------------------------
 
@@ -78,3 +78,51 @@ sw-asusap
     MAÑANA EJECUTARÁ EL MODULO DE GENERACION DE CONSUMO X DEFECTO Y CON MEDIDOR.
 
     *** TAMBÉN TOCARÁ ACTUALIZAR LOS DATOS DE LOS USUARIOS CON TARIFA PLANA... (Esto supondrá un PAGO SOPORTE - proxima semana )
+
+
+//-------------------------- NUEVAS TARES
+
+* eliminar el limite de meses para corte (3 meses no va) [ ]
+** suministro de tarifa plana solo debe salir en tarifa plana [check] aún así tenga MEDIDOR  [ ]
+* habilitar boton de (habilitar), en consumo por defecto. Cuando ya lo haya habilitado. [ ]
+
+* Actualizar las deudas para el mes de MARZO (medidor, sin medidor) 
+    #-> ESTADO_CORTE: 0=>(SIN CORTE) / 1=>(CON CORTE) / 2=>(INACTIVO)
+    #-> TIENE_MEDIDOR: 0=>(NO TIENE MEDIDOR) / 1=>(SI TIENE MEDIDOR)
+    # Todos los suministros que no fueron registrados. Del {MES} y que {tiene_medidor}  y está en {estado_corte}
+SELECT * FROM suministro s 
+WHERE s.cod_suministro not in (SELECT fr.suministro_cod_suministro FROM factura_recibo fr WHERE fr.mes = 3) 
+AND s.tiene_medidor in (1) AND s.estado_corte in (0,1)
+
+* Eliminar deuda de corte y reconexión para todos. (modulo servicios) [ ]
+** Deudas de suministros de TARIFA PLANA pasar datos a las tablas del modulo de GENRAR CONSUMOS, ya que antes funcionaban en el modulo SERVICIOS [ ]
+
+
+***************** ELIMINAR DEUDAS DE CORTE Y RECONEXION *******************
+
+QUERY 1:----- ESTOS REGISTROS SE DEBEN ELIMINAR ----
+SELECT * FROM detalle_servicio ds1 WHERE ds1.factura_servicio_idfactura_servicio in 
+(SELECT fs.idfactura_servicio FROM factura_servicio fs 
+WHERE fs.idfactura_servicio in 
+(SELECT ds.factura_servicio_idfactura_servicio FROM detalle_servicio ds WHERE ds.descripcion LIKE '%CORTE Y RECONEXION%') 
+AND fs.monto_pagado = 0) 
+AND ds1.descripcion LIKE '%CORTE Y RECONEXION%'
+
+QUERY 2:----- ESTOS REGISTROS SE DEBEN ELIMINAR ----
+SELECT * FROM factura_servicio fs 
+WHERE fs.idfactura_servicio in 
+(SELECT ds.factura_servicio_idfactura_servicio FROM detalle_servicio ds WHERE ds.descripcion LIKE '%CORTE Y RECONEXION%') 
+AND fs.monto_pagado = 0
+
+
+***********  VER TARIFAS PLANA y REGISTRALOS EN LA NUEVA TABLA ***************
+QUERY 1: --------- LOS QUE DEBEN EN EL MES DE 2 (FEBRERO)
+SELECT * FROM factura_servicio fs 
+WHERE FS.idfactura_servicio in 
+(SELECT ds.factura_servicio_idfactura_servicio FROM detalle_servicio ds WHERE ds.descripcion LIKE '%TARIFA PLANA%')
+AND fs.monto_pagado = 0
+AND fs.mes = 2
+ORDER BY fs.suministro_cod_suministro, mes
+
+
+
