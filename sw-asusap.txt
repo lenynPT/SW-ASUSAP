@@ -1,1 +1,9 @@
 sw-asusap
+
+Soporte instalacion
+- buscar usuarios con tarifa plana
+- identificar el monto acordado
+- contabilizar las deuda total de cada usuario TP
+- Insertar en la db las deudas con las fechas / [la suma total- menos tiempo - no recomnedaddo]  
+- Realizar la verificación de los datos de los montos/deudas de los susministros con tarifa plana.
+- 
