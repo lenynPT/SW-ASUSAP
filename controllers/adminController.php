@@ -552,7 +552,7 @@
 			$query2 = "UPDATE suministro SET contador_deuda = $cont_deuda WHERE cod_suministro = '{$cod_sum}'";
 			$resqr2 = mainModel::execute_single_query($query2);
 			
-			if($cont_deuda >= 3){
+			if($cont_deuda >= 4){
 				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
 				$resqr3 = mainModel::execute_single_query($query3);
 				
@@ -573,7 +573,7 @@
 			}
 			$query2 = "UPDATE suministro SET contador_deuda = $cont_deuda WHERE cod_suministro = '{$cod_sum}'";
 			$resqr2 = mainModel::execute_single_query($query2);
-			if($cont_deuda >= 3){
+			if($cont_deuda >= 4){
 				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
 				$resqr3 = mainModel::execute_single_query($query3);
 				
