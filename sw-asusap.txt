@@ -66,9 +66,9 @@ sw-asusap
         """ 
         UTILIZA ESTADO_CORTE en 0 para poder generar los recibos. Si cambiamos el ESTADO DE CORTE a CERO (sin corte) en la db para los suministros con corte, podremos generar los recibos!! 
         (NECESITAMOS CAMBIAR EN EL CÓDIGO)
-        -++- ANTES debemos actulizar el estado_corte (1-corte) de todos los suministros y ponerlos a CERO ( 0-sin corte )   luego eliminar las deudas_por_corte.
+        -++- ANTES debemos actulizar el estado_corte (1-corte) de todos los suministros y ponerlos a CERO ( 0-sin corte )   -)luego eliminar las deudas_por_corte.
         =====>> LUEGO HABILITAR GENERAR CONSUMO para continuar genrando los recibos y las deudas...!!!
-        
+
         -+- condición para poner a un usuario en corte ||=>|| (contador_deuda >= [3/4]) => { estado_corte = 1; }        
         -+- condición para anular corte. Si el usuario tiene 3 y luego paga almenos una deuda, elimina su corte
             Cuando realize el pago, verificar el contador_deudas, si es menor que 3, entonces estado_corte = 0
