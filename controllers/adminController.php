@@ -756,11 +756,7 @@
 		}
 
 
-
-
-
-
-
+		
         public function updGConsumo($valor,$id){
                 $res=0;
             if (!empty($id)){
