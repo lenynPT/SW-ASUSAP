@@ -741,15 +741,16 @@
 			$dbCont = $queryRes->fetch();
 			$contador_deuda = $dbCont['contador_deuda'];
 			$contador_deuda--;
-			
-			//Actualizando corte de manera automática
-			if($contador_deuda == 0){
-				$query0 = "UPDATE suministro SET estado_corte=$contador_deuda WHERE suministro.cod_suministro='$cod_sum'";
-				$queryRes0 = mainModel::execute_single_query($query0);
-			}
+
 			//actualizando contador de deudas
 			$query1 = "UPDATE suministro SET contador_deuda=$contador_deuda WHERE suministro.cod_suministro='$cod_sum'";
 			$queryRes1 = mainModel::execute_single_query($query1);
+			
+			//Actualizando corte de manera automática
+			if($contador_deuda < 4){
+				$query0 = "UPDATE suministro SET estado_corte=0 WHERE suministro.cod_suministro='$cod_sum'";
+				$queryRes0 = mainModel::execute_single_query($query0);
+			}			
 
 			return true;
 		}
