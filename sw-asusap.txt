@@ -1,9 +1,76 @@
 sw-asusap
 
-Soporte instalacion
+///////////////// SOPORTE INSTALACION - TARIFA PLANA ---------------------------
+
 - buscar usuarios con tarifa plana
+- cambiar el tipo de tarifa (tarifa plana Nueva opcion) (de estado inactivo a activo)
 - identificar el monto acordado
 - contabilizar las deuda total de cada usuario TP
 - Insertar en la db las deudas con las fechas / [la suma total- menos tiempo - no recomnedaddo]  
 - Realizar la verificación de los datos de los montos/deudas de los susministros con tarifa plana.
+
+
+///////////////// SOPORTE ACTUALIZAR DATOS USUARIOS - SIN CORTE  ---------------------------
+
+- identificar suministros con corte
+    * realizar analisis/tracer código ( para evitar errores - futuros) / luego realizar cambios (actulizar corte)
+- actulizar estado de CORTE a SIN CORTE para todos los usuarios con corte  
+- identificar deudas pendientes por corte y anular deudas ( Modulo generación por servicios ).    
 - 
+
+
+
+
+///////////////// cambios pendientes -----------------------
+- después de generar el corte, el gasfitero deberá ir a realizar el corte.
+    Después de realizar el corte, debe registrarlo en el sistema como cortado. Esto ejecutará las dos acciones siguientes:
+    * El sistema ya no registrará más consumos/recibo hasta que cancele todas sus deudas ( o al menos una deuda, pero con la idea de que faltará un mes para que se cumpla los 3 meses (CORTE) )
+    * Se genera deuda de 30 soles por reconexión
+
+- mostrar todos los recibos pendientes de todos los meses que debe, en una tabla separada, sin la necesidad de escoger una fecha-mes (esta en - Modulo emitir recibo)
+
+
+////////// para mañana -----------------------------
+- Generar recibos ( mes abril ) de las personas que están con corte
+    - anular deuda de corte * ESTO VA TOMAR TIEMPO 
+    - no poner en corte ( 3 meses cambiar a 4 meses )
+        /@ 
+        (+) cambiar el estado de corte de los usuarios inplica anular por lo menos una deuda, de otro modo sería imposible anular el corte al usuario.
+        (+) Una solución posible, podría ser aumentando la camtidad de meses para llegar a tener una deuda de corte (3 meses) a 4 meses. Este modo podría mantener las deudas anteriores.
+        @/ 
+
+/////////////// TEST LIST --------------------------------------------------
+
+- Que pasa cuando cambio el limite de tiempo/fecha/mes de DEUDA POR CORTE de 3 a 4 meses : ()
+    """
+
+- Qué pasa cuando vuelvo a ejecutar el boton de "GENERAR CONSUMO X DEFECTO" :
+    """ 
+    No se duplica la deuda del usuarios dos veces en un mes! Esto se debe por el control por fecha (año y mes como ID's) en la tabla factura-recibo (tabla donde se almacenan todos los registros de deudas de los recibos) 
+    """
+
+- Qué pasa cuando pago solamente 1 deuda de 3 deudas (CORTE) ¿Se anula el CORTE?:
+    """
+
+
+-------------------------SIMULACIONES 
+    genero boleta (moto deuda) ==> contador deuda ++  ==> pago recibo / contador deuda --   
+    contador deuda -IGUAL- 3 ==> deuda de corte (30 soles) => estado_corte -IGUAL- 1 (activado)
+    GASFITERO CORTA AGUA
+    paga deuda corte (30 soles )   AND   
+    cancela las 3 deudas ==> estado_corte -IGUAL- 0 (desactvado) / contador_deuda -IGUAL- 0
+    GASFITERO INSTALA AGUA
+
+    ver generación por defecto / ver generación consumo x medidor 
+    ver condición / filtro de registros para generar RECIBOS
+        """ 
+        UTILIZA ESTADO_CORTE en 0 para poder generar los recibos. Si cambiamos el ESTADO DE CORTE a CERO (sin corte) en la db para los suministros con corte, podremos generar los recibos!! 
+        (NECESITAMOS CAMBIAR EN EL CÓDIGO)
+        -++- ANTES debemos actulizar el estado_corte (1-corte) de todos los suministros y ponerlos a CERO ( 0-sin corte )   luego eliminar las deudas_por_corte.
+        =====>> LUEGO HABILITAR GENERAR CONSUMO para continuar genrando los recibos y las deudas...!!!
+        
+        -+- condición para poner a un usuario en corte ||=>|| (contador_deuda >= [3/4]) => { estado_corte = 1; }        
+        -+- condición para anular corte. Si el usuario tiene 3 y luego paga almenos una deuda, elimina su corte
+            Cuando realize el pago, verificar el contador_deudas, si es menor que 3, entonces estado_corte = 0
+            ||=>|| accion paga recibo ==>  ( contador_deuda < 3 ) => { estado_corte = 0; }
+        """
