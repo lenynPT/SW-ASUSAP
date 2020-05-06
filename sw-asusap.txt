@@ -74,3 +74,7 @@ sw-asusap
             Cuando realize el pago, verificar el contador_deudas, si es menor que 3, entonces estado_corte = 0
             ||=>|| accion paga recibo ==>  ( contador_deuda < 3 ) => { estado_corte = 0; }
         """
+    
+    MAÑANA EJECUTARÁ EL MODULO DE GENERACION DE CONSUMO X DEFECTO Y CON MEDIDOR.
+
+    *** TAMBÉN TOCARÁ ACTUALIZAR LOS DATOS DE LOS USUARIOS CON TARIFA PLANA... (Esto supondrá un PAGO SOPORTE - proxima semana )
