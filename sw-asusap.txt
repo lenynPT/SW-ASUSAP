@@ -80,7 +80,7 @@
     *** TAMBÉN TOCARÁ ACTUALIZAR LOS DATOS DE LOS USUARIOS CON TARIFA PLANA... (Esto supondrá un PAGO SOPORTE - proxima semana )
 
 
-//-------------------------- NUEVAS TARES
+//-------------------------- NUEVAS TARES ----- esta semana
 
 * eliminar el limite de meses para corte (3 meses no va) [ ]
 ** suministro de tarifa plana solo debe salir en tarifa plana [check] aún así tenga MEDIDOR  [ ]
