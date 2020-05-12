@@ -553,8 +553,8 @@
 			$resqr2 = mainModel::execute_single_query($query2);
 			
 			if($cont_deuda >= 4){
-				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
-				$resqr3 = mainModel::execute_single_query($query3);
+				//$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
+				//$resqr3 = mainModel::execute_single_query($query3);
 				
 				//Agrgando pagaré por servicio de reconexión
 				//$query4 = self::generarMontoXCorteServicio($cod_sum);
@@ -574,8 +574,8 @@
 			$query2 = "UPDATE suministro SET contador_deuda = $cont_deuda WHERE cod_suministro = '{$cod_sum}'";
 			$resqr2 = mainModel::execute_single_query($query2);
 			if($cont_deuda >= 4){
-				$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
-				$resqr3 = mainModel::execute_single_query($query3);
+				//$query3 = "UPDATE suministro SET estado_corte = 1 WHERE cod_suministro = '{$cod_sum}'";
+				//$resqr3 = mainModel::execute_single_query($query3);
 				
 				//Agrgando pagaré por servicio de reconexión
 				//$query4 = self::generarMontoXCorteServicio($cod_sum);
