@@ -361,7 +361,7 @@
 
 			$query = "SELECT suministro.cod_suministro, suministro.categoria_suministro,suministro.contador_deuda 
 						FROM suministro 
-						WHERE suministro.estado_corte=0 AND suministro.tiene_medidor=0 AND 
+						WHERE suministro.estado_corte=0 AND suministro.tiene_medidor=0 AND suministro.categoria_suministro NOT LIKE '%Tarifa Plana%' AND 
 						suministro.cod_suministro 
 						NOT IN (SELECT factura_recibo.suministro_cod_suministro 
 								FROM factura_recibo 
