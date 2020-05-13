@@ -438,7 +438,7 @@
 			if($optTP){
 				$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni					
-					WHERE suministro.categoria_suministro='Tarifa Plana' AND suministro.estado_corte = 0 
+					WHERE suministro.categoria_suministro LIKE '%Tarifa Plana%' AND suministro.estado_corte = 0 
 					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
 					FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE 
 					suministro.categoria_suministro='Tarifa Plana' AND suministro.estado_corte = 0 AND
@@ -448,7 +448,7 @@
 			}else{
 				$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni					
-					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 
+					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.categoria_suministro NOT LIKE '%Tarifa Plana%' 
 					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
 					FROM factura_recibo INNER JOIN suministro ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro WHERE 
 					suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND
