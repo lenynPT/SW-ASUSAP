@@ -8,7 +8,13 @@ GRUPO DE PROYECTO
 
 Trabajo desarrollado para la asociasión de usuarios de agua potable sanjerónimo, donde se llego a desarrollar una plataforma web con las siguientes funcionalidades. Control de pagos de servicio de agua potable para los distintos usuarios ( tarifa plana, domestico, instirucional, comercial, mantenimiento ). Generación automática de consumos de usuarios para la emision e impresion de los recibos de cada mes. Reportes de pagos por fecha. Reportes de usuarios morosos. Reportes de usuarios con Corte. etc.
 
-![ok](https://github.com/KevinQL/sutep2020/blob/master/img/pg-sutea%202020.png)
+INICIO SESSION
+
+![ok](https://github.com/KevinQL/SW-ASUSAP/blob/kevin-rama/public/screemshotLoguin.png)
+
+PRESENTACIÓN DEL SISTEMA
+
+![ok](https://github.com/KevinQL/SW-ASUSAP/blob/kevin-rama/public/screemshotInicio.png)
 
 #### Tecnoglogías relacionadas.
 - Gestor de base de datos Mysql
