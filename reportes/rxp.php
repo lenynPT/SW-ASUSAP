@@ -69,7 +69,7 @@ class PDF extends FPDF
 
             $medidor = $element['tiene_medidor']?'Si':'No';    
             $cortado = $element['estado_corte']?'Si':'No';
-            $nombre_completo = $element['categoria_suministro']=='Estatal'?utf8_decode($element['nombre']):utf8_decode($element['apellido']." ".$element['nombre']); 
+            $nombre_completo = $element['categoria_suministro']=='Estatal'?utf8_decode($element['nombre'] . " " . $element['nombre_sum']):utf8_decode($element['apellido']." ".$element['nombre'] . " " . $element['nombre_sum']); 
                         
             //MESAJE DE CORTE O NO CORTE
             $msjCorte = ($element['contador_deuda']>=2)?'PRÓXIMO MES EN CORTE!!':'NO ESTÁ EN CORTE';

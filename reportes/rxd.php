@@ -88,7 +88,7 @@ if(!$resConsult['res']){
         $esta_cancelado = $element['esta_cancelado']?'RECIBO CANCELADO':'FALTA CANCELAR';
 
         //verifica que sea una institución para solo imprimir el nombre
-        $nombre_completo = ($element['categoria_suministro']=='Estatal')?utf8_decode($element['nombre']):utf8_decode($element['apellido']." ".$element['nombre']); 
+        $nombre_completo = ($element['categoria_suministro']=='Estatal')?utf8_decode($element['nombre']." ". $element['nombre_sum']):utf8_decode($element['nombre']." ". $element['apellido']." ".$element['nombre_sum']); 
         $_POST['urlimg'] = $element['estado_corte'] || $element['contador_deuda']>=2?'img/corte.jpg':'img/reciboAgua.jpg';
         
         //MESAJE DE CORTE O NO CORTE

@@ -359,7 +359,7 @@ function generarConsumoConMedidor(value){
 							</td>
 							<td>${element.consm_ant}</td>
 							<td>${element.contador_deuda}</td>
-							<td>${element.nombre} ${element.apellido}</td>      
+							<td>${element.nombre} ${element.apellido} ${element.nombre_sum}</td>      
 							<td>${element.categoria}</td>
 							<td>${element.direccion}</td>
 	
@@ -376,7 +376,7 @@ function generarConsumoConMedidor(value){
 							</td>
 							<td>${element.consm_ant}</td>
 							<td>${element.contador_deuda}</td>
-							<td>${element.nombre} ${element.apellido}</td>      
+							<td>${element.nombre} ${element.apellido} ${element.nombre_sum}</td>      
 							<td>${element.categoria}</td>
 							<td>${element.direccion}</td>
 	
@@ -812,8 +812,7 @@ function GRbuscarSumXCod($this){
 			<tr>
 				<td>${++cont}</td>
 				<td>${element.suministro_cod_suministro}</td>
-				<td>${element.nombre}</td>
-				<td>${element.apellido}</td>
+				<td>${element.nombre} ${element.apellido} ${element.nombre_sum}</td>
 				<td>${element.direccion}</td>
 				<td>${element.esta_cancelado=='1'?"<span class='text-info'>Si</span>":"<span class='text-danger'>No</span>"}</td>
 				<td>${element.tiene_medidor=='1'?'Si':'No'}</td>
@@ -854,14 +853,12 @@ function buscarSuministrosParaCobrarTBL(txtInput){
 		let ahtml = ``;
 		let cont = 0;
 		data.forEach(element=>{
-			console.log(element)	
 			let xmes = NombreMes(element.mes);		
 			ahtml += `
 				<tr>
 					<td>${++cont}</td>
 					<td>${element.suministro_cod_suministro}</td>
-					<td>${element.nombre}</td>
-					<td>${element.apellido}</td>
+					<td>${element.nombre} ${element.apellido} ${element.nombre_sum}</td>
 					<td>${element.direccion}</td>
 					<td>${element.categoria_suministro}</td>
 					<td>${element.anio}</td>

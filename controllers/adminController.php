@@ -436,7 +436,7 @@
 			$FConsumo = self::obtenerFechasConsumo($anio_hoy,$mes_hoy);
 
 			if($optTP){
-				$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
+				$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, suministro.nombre_sum, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni					
 					WHERE suministro.categoria_suministro LIKE '%Tarifa Plana%' AND suministro.estado_corte = 0 
 					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
@@ -446,7 +446,7 @@
 					AND (suministro.cod_suministro LIKE '%{$codigoSum}%' OR asociado.apellido LIKE '%{$codigoSum}%' OR asociado.nombre LIKE '%{$codigoSum}%')
 					lIMIT 0,15";
 			}else{
-				$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, asociado.nombre, asociado.apellido 
+				$query = "SELECT suministro.cod_suministro, suministro.direccion, suministro.pasaje, suministro.categoria_suministro, suministro.contador_deuda, suministro.nombre_sum, asociado.nombre, asociado.apellido 
 					FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni					
 					WHERE suministro.tiene_medidor=1 AND suministro.estado_corte = 0 AND suministro.categoria_suministro NOT LIKE '%Tarifa Plana%' 
 					AND suministro.cod_suministro NOT IN (SELECT factura_recibo.suministro_cod_suministro 
@@ -470,6 +470,7 @@
 					"contador_deuda"=>$rgs['contador_deuda'],
 					"nombre"=>$rgs['nombre'],
 					"apellido"=>$rgs['apellido'],
+					"nombre_sum"=>$rgs['nombre_sum'],
 					"categoria"=>$rgs['categoria_suministro'],
 					"consm_ant"=>$consm_ant,
 					"resTarifP"=>$optTP
@@ -652,7 +653,7 @@
 			$datoBuscar = trim($data['cod_sum']);
 			$anioBuscar = trim($data['anio']);
 			$mesBuscar = trim($data['mes']);
-			$query = "SELECT asociado.nombre,asociado.apellido,suministro.direccion,suministro.tiene_medidor,suministro.estado_corte,factura_recibo.anio,factura_recibo.mes,factura_recibo.esta_cancelado,factura_recibo.suministro_cod_suministro 
+			$query = "SELECT asociado.nombre,asociado.apellido,suministro.direccion,suministro.tiene_medidor ,suministro.estado_corte, suministro.nombre_sum, factura_recibo.anio,factura_recibo.mes,factura_recibo.esta_cancelado,factura_recibo.suministro_cod_suministro 
 				FROM factura_recibo 
 				INNER JOIN suministro ON factura_recibo.suministro_cod_suministro=suministro.cod_suministro
 				INNER JOIN asociado ON asociado.dni = suministro.asociado_dni 
@@ -671,7 +672,7 @@
 		public function recibosObtenerDataSumXdirec($direccion,$anio,$mes){
 			$direccion = trim($direccion);
 			$query="SELECT asociado.dni,asociado.nombre,asociado.apellido,suministro.cod_suministro,suministro.direccion,
-			 suministro.estado_corte,suministro.tiene_medidor,suministro.categoria_suministro,suministro.contador_deuda,
+			 suministro.estado_corte,suministro.tiene_medidor,suministro.categoria_suministro,suministro.contador_deuda, suministro.nombre_sum,
 			 factura_recibo.anio,factura_recibo.mes,factura_recibo.fecha_emision,factura_recibo.fecha_vencimiento,
 			 factura_recibo.consumo, factura_recibo.monto_pagar,factura_recibo.esta_cancelado,factura_recibo.esta_impreso 
 			 FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
@@ -691,7 +692,7 @@
 			
 			$cod_sum = trim($cod_sum);
 			$query="SELECT asociado.dni,asociado.nombre,asociado.apellido,suministro.cod_suministro,suministro.direccion,
-			 suministro.estado_corte,suministro.tiene_medidor,suministro.categoria_suministro,suministro.contador_deuda,
+			 suministro.estado_corte,suministro.tiene_medidor,suministro.categoria_suministro,suministro.contador_deuda, suministro.nombre_sum,
 			 factura_recibo.anio,factura_recibo.mes,factura_recibo.fecha_emision,factura_recibo.fecha_vencimiento,
 			 factura_recibo.consumo, factura_recibo.monto_pagar,factura_recibo.esta_cancelado,factura_recibo.esta_impreso 
 			 FROM asociado INNER JOIN suministro ON asociado.dni=suministro.asociado_dni 
@@ -710,7 +711,7 @@
 		public function obtenerSumParaCobrar($cod_sum){
 
 			$cod_sum = trim($cod_sum);
-			$query = "SELECT asociado.nombre, asociado.apellido, suministro.direccion, suministro.cod_suministro, suministro.categoria_suministro, factura_recibo.suministro_cod_suministro, factura_recibo.anio, factura_recibo.mes, factura_recibo.monto_pagar 
+			$query = "SELECT asociado.nombre, asociado.apellido, suministro.direccion, suministro.cod_suministro, suministro.categoria_suministro, suministro.nombre_sum, factura_recibo.suministro_cod_suministro, factura_recibo.anio, factura_recibo.mes, factura_recibo.monto_pagar 
 					FROM asociado INNER JOIN suministro ON asociado.dni = suministro.asociado_dni
 					INNER JOIN factura_recibo ON factura_recibo.suministro_cod_suministro = suministro.cod_suministro
 					WHERE factura_recibo.esta_cancelado=0 AND suministro.estado_corte <> 2 

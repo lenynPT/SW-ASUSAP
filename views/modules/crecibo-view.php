@@ -35,8 +35,7 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Cod Suministro</th>
-                                <th class="text-center">Nombre</th>
-                                <th class="text-center">Apellido</th>
+                                <th class="text-center">Nombre y Apellido</th>
                                 <th class="text-center">Dirección</th>
                                 <th class="text-center">Categoría</th>
                                 <th class="text-center">Año</th>
@@ -53,24 +52,6 @@
                                 <td>2019</td>
                                 <td>Octubre</td>
                                 <td>s/ 6.25</td>
-                                <td><a href="#!" class="btn btn-success btn-raised btn-xs">Cobrar</a></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Claudia Rodriguez</td>
-                                <td>231</td>
-                                <td>2019</td>
-                                <td>Octubre</td>
-                                <td>s/ 4.5</td>
-                                <td><a href="#!" class="btn btn-success btn-raised btn-xs">Cobrar</a></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Ana Quispe</td>
-                                <td>455</td>
-                                <td>2019</td>
-                                <td>Octubre</td>
-                                <td>s/ 8.00</td>
                                 <td><a href="#!" class="btn btn-success btn-raised btn-xs">Cobrar</a></td>
                             </tr>
                         </tbody>

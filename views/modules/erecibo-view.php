@@ -141,8 +141,7 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Cod Suministro</th>
-                                <th class="text-center">Nombre</th>
-                                <th class="text-center">Apellidos</th>
+                                <th class="text-center">Nombre y Apellidos</th>                                
                                 <th class="text-center">Dirección</th>
                                 <th class="text-center">Cancelado</th>
                                 <th class="text-center">Medidor</th>
