@@ -35,10 +35,10 @@ class PDF extends FPDF
     function Footer()
     {
         /*        
+        */
         $this->SetXY(5,-21);
         $this->SetFont('Arial','B',10);
         $this->Cell(25,8,'Cod. Sum.: '.$_POST['codigo_pie'],0,0,'');
-        */
     }
 }
 
